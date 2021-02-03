@@ -6,7 +6,7 @@ Lars: INF100, INF101, INF102, INF122, Java, Python og Haskell
 Mathias: Java, Python, Haskell, C#  
 Andre: INF100, INF101, INF102, INF122, Java, Python og Haskell  
 Bård: Java, Python, C++, litt Haskell, litt Web  
-Jørgen: Java, Python  
+Jørgen: Java, Python
 
 ###Roller for medlemmer
 Alle jobber som utviklere som sammen blir enige om features som må implementeres, og hvem som har ansvar for å
