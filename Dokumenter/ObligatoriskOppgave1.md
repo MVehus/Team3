@@ -2,9 +2,9 @@
 
 ##Deloppgave 1
 ###Kompetanse
-Lars: INF100, INF101, INF102, INF122, Java, Python og Haskell  
-Mathias: Java, Python, Haskell, C#  
-Andre: INF100, INF101, INF102, INF122, Java, Python og Haskell  
+Lars: Java, Python og Haskell  
+Mathias: Java, Python, Haskell og C#  
+Andre: Java, Python og Haskell  
 Bård: Java, Python, C++, litt Haskell, litt Web  
 Jørgen: Java, Python
 
@@ -28,6 +28,9 @@ har fått til, og til slutt hva en tenker å bruke tid på fremover.
 Om en står fast på en feature eller oppgave kan han ta kontakt med andre i teamet og spørre om hjelp utenfor fastsatt møtetid.
 ####Deling og oppbevaring
 All oppbevaring av kode, dokumentasjon og planlegging vil ligge i git repository til projektet.
+
+##Deloppgave 3
+Se Dokumenter/Spesifikasjoner.md
 
 
 
