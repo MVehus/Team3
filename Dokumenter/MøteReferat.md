@@ -14,4 +14,4 @@ Sted : Discord,
 Oppmøte : Alle
 
 Innhold : Enighet om at når man jobber, så sitter man tilgjengelig i discord.
-Oppdatert UML diagram: https://app.creately.com/diagram/E4uRJsPIcEz/view.
+Oppdatert UML diagram: https://app.creately.com/diagram/E4uRJsPIcEz/view. Blitt enig om neste møtet
