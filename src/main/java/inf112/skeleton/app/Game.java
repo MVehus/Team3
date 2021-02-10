@@ -59,15 +59,15 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         Gdx.input.setInputProcessor(this);
 
-        map = new TmxMapLoader().load("src/assets/example.tmx");
+        map = new TmxMapLoader().load("src/assets/VaultMap.tmx");
         boardLayer = (TiledMapTileLayer) map.getLayers().get("Board");
         playerLayer = (TiledMapTileLayer) map.getLayers().get("Player");
         holeLayer = (TiledMapTileLayer) map.getLayers().get("Hole");
         flagLayer = (TiledMapTileLayer) map.getLayers().get("Flag");
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 5, 5);
-        camera.position.x = (float) boardLayer.getHeight()/2;
+        camera.setToOrtho(false, 16, 12);
+        camera.position.x = (float) boardLayer.getWidth()/2;
         camera.update();
         renderer = new OrthogonalTiledMapRenderer(map, 1/boardLayer.getTileHeight());
         renderer.setView(camera);
@@ -94,13 +94,13 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         renderer.render();
 
-        playerLayer.setCell((int) playerPos.x, (int) playerPos.y, playerCell);
+        /*playerLayer.setCell((int) playerPos.x, (int) playerPos.y, playerCell);
         if (holeLayer.getCell((int) playerPos.x, (int) playerPos.y) != null) {
             playerLayer.setCell((int) playerPos.x, (int) playerPos.y, playerDiedCell);
         }
         else if (flagLayer.getCell((int) playerPos.x, (int) playerPos.y) != null) {
             playerLayer.setCell((int) playerPos.x, (int) playerPos.y, playerWonCell);
-        }
+        }*/
     }
 
     @Override
