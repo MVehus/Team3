@@ -14,6 +14,8 @@ implementere dem. Det blir satt opp ukentlige møter hvor teamet oppdateres på 
 og hva som skal jobbes med fremover.
 
 ##Deloppgave 2
+###Projektmetodikk
+
 ###Prosess- og projektplan
 ####Møter
 Avtales minst et fast møte i uken. Eventuelle ekstramøter kan settes opp utenom.

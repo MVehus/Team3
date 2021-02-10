@@ -16,8 +16,10 @@ strekke oss mot ved å yte vårt beste individuelt, og utnytte eksisterende retn
 ####Brukerhistorie
 Bruker skal kunne kjøre applikasjonen og spillebrettet skal vise seg på skjermen i en egen applikasjon.
 ####Akseptansekrav
-- Kartet må vises når applikasjonen kjøres
+- Kartet må vises når applikasjonen kjøres.
 ####Arbeidsoppgaver
+- Lage en kjørbar applikasjon.
+- Spillbrettet vises.
 ####Krav brukerhistorien oppfyller
 
 
@@ -27,7 +29,9 @@ Når bruker skal spille, skal det kunne vises spillebrikker på brettet.
 ####Akseptansekrav
 - Kartet som vises når applikasjonen kjøres skal kunne populeres med spillebrikker.
 ####Arbeidsoppgaver
+- Legge inn spillbrikke til brukeren når spilbrettet vises.
 ####Krav brukerhistorien oppfyller
+
 
 ###3:
 ####Brukerhistorie
@@ -35,7 +39,10 @@ Når bruker gir input (tastetrykk el) skal roboten flytte på seg.
 ####Akseptansekrav
 - Roboten flytter seg ment retning som tilsvarer input fra bruker.
 ####Arbeidsoppgaver
+- Få til at bruker kan komme med input.
+- Flytte brikken til bruker etter gitt input.
 ####Krav brukerhistorien oppfyller
+
 
 ###4:
 ####Brukerhistorie
@@ -44,15 +51,22 @@ Når roboten befinner seg på et flagg, skal dette indikeres til bruker og spill
 - Indre logikk registrer at robot har vært på/innom et flagg.
 - Bruker får bekreftet at hun/han har vært innom et flagg.
 ####Arbeidsoppgaver
+- Registrere at en robot har nådd fram til et flagg.
+- Gi bruker en indikasjon når roboten har nådd et flagg.
 ####Krav brukerhistorien oppfyller
+
 
 ###5:
 ####Brukerhistorie
-Spiller vinner dersom spillets krav for å vinne blir oppfylt
+Spiller vinner dersom spillets krav for å vinne blir oppfylt.
 ####Akseptansekrav
 - At når spillerens robot vært innom alle flagg i riktig rekkefølge, resulterer det i at spilleren vinner.
 ####Arbeidsoppgaver
+- Legge til at roboten registrerer at det er det rette flagget den har nådd.
+- Registrere at roboten har vert innom alle flagg.
+- Gi en melding at spilleren som har vert innom alle flagg først vinner.
 ####Krav brukerhistorien oppfyller
+
 
 ###:
 ####Brukerhistorie
