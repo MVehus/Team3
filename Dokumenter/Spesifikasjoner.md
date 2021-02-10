@@ -54,7 +54,7 @@ Når roboten befinner seg på et flagg, skal dette indikeres til bruker og spill
 - Registrere at en robot har nådd fram til et flagg.
 - Gi bruker en indikasjon når roboten har nådd et flagg.
 ####Krav brukerhistorien oppfyller
-- 
+
 
 ###5:
 ####Brukerhistorie
