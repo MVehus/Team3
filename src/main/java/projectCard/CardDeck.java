@@ -2,6 +2,9 @@ package projectCard;
 
 import java.util.ArrayList;
 
+/**
+ * card deck
+ */
 public class CardDeck {
     private ArrayList<Card> deck = new ArrayList<>();
 
