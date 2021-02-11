@@ -6,7 +6,7 @@ package projectCard;
 public class Card {
 
     private final int priority;
-    private final Value value;
+    public final Value value;
 
     public Card(int priority, Value value){
         this.priority = priority;
@@ -21,6 +21,6 @@ public class Card {
         return priority;
     }
 
-
-
 }
+
+
