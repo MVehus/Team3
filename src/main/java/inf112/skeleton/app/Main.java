@@ -3,11 +3,20 @@ package inf112.skeleton.app;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
+import java.awt.*;
+
 public class Main {
     public static void main(String[] args) {
         Lwjgl3ApplicationConfiguration cfg = new Lwjgl3ApplicationConfiguration();
-        cfg.setTitle("ExampleBuild");
-        cfg.setWindowedMode(1000, 750);
+        cfg.setTitle("Roborally");
+        int width = Lwjgl3ApplicationConfiguration.getDisplayMode().width;
+
+        int formattedHeight = (int) (width * 0.625);
+
+        /** If you want fullscreenmode, uncomment this line  **/
+        //cfg.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
+
+        cfg.setWindowedMode(width - 250, formattedHeight - 250 );
 
         new Lwjgl3Application(new Game(), cfg);
     }
