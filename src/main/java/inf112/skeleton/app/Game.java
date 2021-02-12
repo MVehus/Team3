@@ -65,7 +65,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         boardLayer = (TiledMapTileLayer) map.getLayers().get("Board");
         playerLayer = (TiledMapTileLayer) map.getLayers().get("Player");
         holeLayer = (TiledMapTileLayer) map.getLayers().get("Hole");
-        flagLayer = (TiledMapTileLayer) map.getLayers().get("FlagOne");
+        flagLayer = (TiledMapTileLayer) map.getLayers().get("Flag");
 
         BoardWidth = boardLayer.getWidth();
         BoardHeight = boardLayer.getHeight();
@@ -82,8 +82,8 @@ public class Game extends InputAdapter implements ApplicationListener {
         playerCell.setTile(new StaticTiledMapTile(textureRegion[0][0]));
         playerWonCell.setTile(new StaticTiledMapTile(textureRegion[0][2]));
         playerDiedCell.setTile(new StaticTiledMapTile(textureRegion[0][1]));
-        playerPos.x = 0;
-        playerPos.y = 0;
+        playerPos.x = 1;
+        playerPos.y = 6;
     }
 
     @Override
