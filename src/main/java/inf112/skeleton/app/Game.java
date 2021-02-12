@@ -32,12 +32,14 @@ public class Game extends InputAdapter implements ApplicationListener {
     private final TiledMapTileLayer.Cell playerWonCell = new TiledMapTileLayer.Cell();
     private final TiledMapTileLayer.Cell playerDiedCell = new TiledMapTileLayer.Cell();
     private final Vector2 playerPos = new Vector2();
+    private int BoardWidth;
+    private int BoardHeight;
 
     @Override
     public boolean keyUp(int keycode) {
         playerLayer.setCell((int) playerPos.x, (int) playerPos.y, null);
         if (keycode == Input.Keys.UP) {
-            playerPos.y = (playerPos.y == 4) ? 4 : playerPos.y+1;
+            playerPos.y = (playerPos.y == BoardHeight-1) ? BoardHeight-1 : playerPos.y+1;
         }
         else if (keycode == Input.Keys.DOWN) {
             playerPos.y = (playerPos.y == 0) ? 0 : playerPos.y-1;
@@ -46,7 +48,7 @@ public class Game extends InputAdapter implements ApplicationListener {
             playerPos.x = (playerPos.x == 0) ? 0 : playerPos.x-1;
         }
         else if (keycode == Input.Keys.RIGHT) {
-            playerPos.x = (playerPos.x == 4) ? 4 : playerPos.x+1;
+            playerPos.x = (playerPos.x == BoardWidth-1) ? BoardWidth-1 : playerPos.x+1;
         }
         return super.keyUp(keycode);
     }
@@ -63,11 +65,14 @@ public class Game extends InputAdapter implements ApplicationListener {
         boardLayer = (TiledMapTileLayer) map.getLayers().get("Board");
         playerLayer = (TiledMapTileLayer) map.getLayers().get("Player");
         holeLayer = (TiledMapTileLayer) map.getLayers().get("Hole");
-        flagLayer = (TiledMapTileLayer) map.getLayers().get("Flag");
+        flagLayer = (TiledMapTileLayer) map.getLayers().get("FlagOne");
+
+        BoardWidth = boardLayer.getWidth();
+        BoardHeight = boardLayer.getHeight();
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 16, 12);
-        camera.position.x = (float) boardLayer.getWidth()/2;
+        camera.setToOrtho(false, BoardWidth, BoardHeight);
+        camera.position.x = (float) BoardWidth/2;
         camera.update();
         renderer = new OrthogonalTiledMapRenderer(map, 1/boardLayer.getTileHeight());
         renderer.setView(camera);
@@ -94,13 +99,13 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         renderer.render();
 
-        /*playerLayer.setCell((int) playerPos.x, (int) playerPos.y, playerCell);
+        playerLayer.setCell((int) playerPos.x, (int) playerPos.y, playerCell);
         if (holeLayer.getCell((int) playerPos.x, (int) playerPos.y) != null) {
             playerLayer.setCell((int) playerPos.x, (int) playerPos.y, playerDiedCell);
         }
         else if (flagLayer.getCell((int) playerPos.x, (int) playerPos.y) != null) {
             playerLayer.setCell((int) playerPos.x, (int) playerPos.y, playerWonCell);
-        }*/
+        }
     }
 
     @Override
