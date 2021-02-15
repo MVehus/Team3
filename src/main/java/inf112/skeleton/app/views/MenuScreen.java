@@ -2,6 +2,7 @@ package inf112.skeleton.app.views;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -26,7 +27,6 @@ public class MenuScreen implements Screen {
         Table table = new Table();
         table.setFillParent(true);
         table.setDebug(true);
-        stage.addActor(table);
 
         Skin skin = new Skin(Gdx.files.internal("src/assets/skin/plain-james/plain-james-ui.json"));
 
@@ -39,6 +39,8 @@ public class MenuScreen implements Screen {
         table.add(preferences).fillX().uniformX();
         table.row();
         table.add(exit).fillX().uniformX();
+
+        stage.addActor(table);
     }
 
     @Override
@@ -48,7 +50,11 @@ public class MenuScreen implements Screen {
 
     @Override
     public void render(float delta) {
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClearColor(135/255f, 206/255f, 235/255f, 1);
 
+        stage.act(Gdx.graphics.getDeltaTime());
+        stage.draw();
     }
 
     @Override

@@ -1,9 +1,11 @@
 package inf112.skeleton.app;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import inf112.skeleton.app.views.*;
 
 public class RoboRallyGame extends Game {
+    private SpriteBatch batch;
     private LoadingScreen loadingScreen;
     private PreferencesScreen preferencesScreen;
     private MenuScreen menuScreen;
@@ -17,6 +19,7 @@ public class RoboRallyGame extends Game {
 
     @Override
     public void create() {
+        batch = new SpriteBatch();
         loadingScreen = new LoadingScreen(this);
         setScreen(loadingScreen);
     }
@@ -48,6 +51,7 @@ public class RoboRallyGame extends Game {
 
     @Override
     public void dispose() {
+        batch.dispose();
         super.dispose();
     }
 }
