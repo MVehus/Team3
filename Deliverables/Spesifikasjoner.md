@@ -68,6 +68,36 @@ Spiller vinner dersom spillets krav for å vinne blir oppfylt.
 ####Krav brukerhistorien oppfyller
 
 
+###6:
+####Brukerhistorie
+Som bruker vil jeg kunne spille med andre spillere på forskjellige maskiner
+####Akseptansekrav
+Fungerende multiplayer funksjonalitet
+Korrekt oppdatering av gamesate på alle tilkoblede maskiner
+####Arbeidsoppgaver
+Lese seg opp på relevant kunnskap om P2P
+####Krav brukerhistorien oppfyller
+
+###7:
+####Brukerhistorie
+Når jeg starter spillet, vil jeg ha mulighet til å velge mellom å bli med i et 
+eksisterende spill, eller starte et nytt.
+####Akseptansekrav
+Implementert start meny funksjonalitet
+Fungerende lobbysystem
+####Arbeidsoppgaver
+####Krav brukerhistorien oppfyller
+
+###8:
+####Brukerhistorie
+Når jeg befinner meg i en lobby vil jeg kunne se hvem som er med i spillet.
+####Akseptansekrav
+Fungerende lobbysystem
+Se hvem som er koblet sammen (hvem som er i min lobby)
+Kunne starte spillet
+####Arbeidsoppgaver
+####Krav brukerhistorien oppfyller
+
 ###:
 ####Brukerhistorie
 ####Akseptansekrav
