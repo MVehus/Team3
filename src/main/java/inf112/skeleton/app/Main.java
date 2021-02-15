@@ -16,6 +16,6 @@ public class Main {
 
         cfg.setWindowedMode(width - 250, formattedHeight - 250 );
 
-        new Lwjgl3Application(new Scene2dDemo(), cfg);
+        new Lwjgl3Application(new RoboRallyGame(), cfg);
     }
 }

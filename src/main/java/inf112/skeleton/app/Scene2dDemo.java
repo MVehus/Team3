@@ -26,7 +26,7 @@ public class Scene2dDemo implements ApplicationListener {
         table.setDebug(true); // This is optional, but enables debug lines for tables.
 
         // Add widgets to the table
-        TextButton button1 = new TextButton("Button 1", style, "");
+        //TextButton button1 = new TextButton("Button 1", style, "");
 
     }
 
