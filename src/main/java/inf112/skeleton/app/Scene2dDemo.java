@@ -4,6 +4,8 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -12,43 +14,42 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import org.lwjgl.system.CallbackI;
 import org.w3c.dom.Text;
 
+/**
+ * This is just a demo class, may be deleted later :)
+ */
 public class Scene2dDemo implements ApplicationListener {
 
     private Stage stage;
     private Table table;
     private Skin skin;
-    private TextureAtlas atlas;
-    
+    private TextButton joinGameButton;
+    private TextButton newGameButton;
+
     public void create () {
         skin = new Skin(Gdx.files.internal("src/assets/skin/glassy-new/glassy-ui.json"));
         stage = new Stage(new ScreenViewport());
-
         table = new Table();
+
         //table.setFillParent(true);
         //stage.addActor(table);
         //table.setDebug(true); // This is optional, but enables debug lines for tables.
         table.setWidth(stage.getWidth());
         table.align(Align.center|Align.top);
 
-        table.setPosition(0, Gdx.graphics.getHeight());
+        table.setPosition(0,Gdx.graphics.getHeight());
 
         // Add widgets to the table
 
-        //TextButton button1 = new TextButton("Button 1", style, "");
+        joinGameButton = new TextButton("Join game", skin, "default");
+        newGameButton = new TextButton("Create game", skin, "default");
 
-        TextButton join = new TextButton("Join game", skin, "small");
-        //join.setHeight(150);
-        //join.setWidth(500);
-
-        TextButton create = new TextButton("Create a new game", skin, "small");
-        //create.setHeight(150);
-        //create.setWidth(600);
-
-        table.padTop(50);
-        table.addActor(join);
-        table.addActor(create);
+        table.padTop(30);
+        table.add(joinGameButton);
+        table.row();
+        table.add(newGameButton);
 
         stage.addActor(table);
 
@@ -61,6 +62,8 @@ public class Scene2dDemo implements ApplicationListener {
 
     public void render () {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClearColor(135/255f, 206/255f, 235/255f, 1);
+
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
     }
