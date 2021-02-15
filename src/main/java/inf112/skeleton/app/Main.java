@@ -14,9 +14,11 @@ public class Main {
         /** If you want fullscreenmode, uncomment this line  **/
         //cfg.setFullscreenMode(Lwjgl3ApplicationConfiguration.getDisplayMode());
 
-        //cfg.setWindowedMode(width - 250, formattedHeight - 250 );
-        cfg.setWindowedMode(700,700);
+        cfg.setWindowedMode(width - 250, formattedHeight - 250 );
+        //cfg.setWindowedMode(700,700);
 
-        new Lwjgl3Application(new Scene2dDemo(), cfg);
+        //new Lwjgl3Application(new Game(), cfg);
+        new Lwjgl3Application(new RoboRallyGame(), cfg);
+        //new Lwjgl3Application(new Scene2dDemo(), cfg);
     }
 }

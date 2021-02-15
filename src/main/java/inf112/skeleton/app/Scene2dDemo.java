@@ -20,10 +20,9 @@ public class Scene2dDemo implements ApplicationListener {
     private Table table;
     private Skin skin;
     private TextureAtlas atlas;
-
-
+    
     public void create () {
-        skin = new Skin(Gdx.files.internal("src/assets/skin/glassy-ui.json"));
+        skin = new Skin(Gdx.files.internal("src/assets/skin/glassy-new/glassy-ui.json"));
         stage = new Stage(new ScreenViewport());
 
         table = new Table();
@@ -36,6 +35,8 @@ public class Scene2dDemo implements ApplicationListener {
         table.setPosition(0, Gdx.graphics.getHeight());
 
         // Add widgets to the table
+
+        //TextButton button1 = new TextButton("Button 1", style, "");
 
         TextButton join = new TextButton("Join game", skin, "small");
         //join.setHeight(150);
