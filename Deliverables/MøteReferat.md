@@ -18,9 +18,17 @@ Oppdatert UML diagram: https://app.creately.com/diagram/E4uRJsPIcEz/view. Blitt 
 
 
 ###Onsdag 10/02/2021:
-Varighet: ,
+Varighet: 2 timer,
 Sted: Discord,
 Oppmøte: Alle,
 
 Innhold: Sett gjennom brukerhistorien som er satt opp, fyller på med arbeidskrav slik at akseptansekravene kan oppnå. Lager
 et nytt spillebrett. Oppdaterer og implementerer klassestrukturen.
+
+###Mandag 15/2/2021
+Varighet: 2 timer,
+Sted: Discord,
+Oppmøte: Alle,
+
+Innhold: Begynte på ObligatoriskOppgave2.md og hadde retrospektiv for sist innleverte oblig. Snakket om videre plan for utviklingen
+av projektet. Ble enig om arbeidsoppgaver som hver av teammedlemmene skal jobbe med frem til neste møte Onsdag 17/02.
