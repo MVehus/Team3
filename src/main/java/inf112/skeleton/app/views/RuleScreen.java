@@ -3,6 +3,9 @@ package inf112.skeleton.app.views;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -12,11 +15,15 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import inf112.skeleton.app.RoboRallyGame;
 
-public class MenuScreen implements Screen {
+public class RuleScreen implements Screen {
     private final Stage stage;
     private RoboRallyGame parent;
+    private SpriteBatch batch;
+    private Texture texture;
+    private Sprite sprite;
+    private Skin skin;
 
-    public MenuScreen(RoboRallyGame roboRallyGame) {
+    public RuleScreen(RoboRallyGame roboRallyGame) {
         parent = roboRallyGame;
 
         stage = new Stage(new ScreenViewport());
@@ -25,43 +32,25 @@ public class MenuScreen implements Screen {
 
     @Override
     public void show() {
-        // Create a table that fills the screen. Everything else will go inside this table.
+        batch = new SpriteBatch();
+        texture = new Texture(Gdx.files.internal("src/assets/floor-guide.jpg"));
+        sprite = new Sprite(texture);
+        sprite.setCenterX(Gdx.graphics.getWidth() >> 1);
+        sprite.setCenterY(Gdx.graphics.getHeight() >> 1);
+
         Table table = new Table();
         table.setFillParent(true);
         table.setDebug(true);
-
-        Skin skin = new Skin(Gdx.files.internal("src/assets/skin/plain-james/plain-james-ui.json"));
-
-        TextButton newGame = new TextButton("New Game", skin);
-        TextButton rules = new TextButton("Rules", skin);
-        TextButton exit = new TextButton("Exit", skin);
-
-        table.add(newGame).fillX().uniformX();
-        table.row().pad(10, 0, 10, 0);
-        table.add(rules).fillX().uniformX();
-        table.row();
-        table.add(exit).fillX().uniformX();
-
+        skin = new Skin(Gdx.files.internal("src/assets/skin/plain-james/plain-james-ui.json"));
+        TextButton mainMenu = new TextButton("Main menu", skin);
+        table.add(mainMenu).fillX().uniformX();
+        table.padTop(texture.getHeight()+60);
         stage.addActor(table);
 
-        newGame.addListener(new ChangeListener() {
+        mainMenu.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                parent.changeScreen(RoboRallyGame.APPLICATION);
-            }
-        });
-
-        rules.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                parent.changeScreen(RoboRallyGame.RULES);
-            }
-        });
-
-        exit.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                Gdx.app.exit();
+                parent.changeScreen(RoboRallyGame.MENU);
             }
         });
     }
@@ -70,6 +59,10 @@ public class MenuScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Gdx.gl.glClearColor(175/255f, 175/255f, 175/255f, 1);
+
+        batch.begin();
+        sprite.draw(batch);
+        batch.end();
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
@@ -98,5 +91,6 @@ public class MenuScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
+        skin.dispose();
     }
 }
