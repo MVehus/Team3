@@ -40,7 +40,7 @@ public class RuleScreen implements Screen {
 
         Table table = new Table();
         table.setFillParent(true);
-        table.setDebug(true);
+        table.setDebug(false);
         skin = new Skin(Gdx.files.internal("src/assets/skin/plain-james/plain-james-ui.json"));
         TextButton mainMenu = new TextButton("Main menu", skin);
         table.add(mainMenu).fillX().uniformX();
@@ -91,6 +91,5 @@ public class RuleScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
-        skin.dispose();
     }
 }

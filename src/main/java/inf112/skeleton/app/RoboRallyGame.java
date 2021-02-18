@@ -28,7 +28,7 @@ public class RoboRallyGame extends Game {
     public void changeScreen(int screen){
         switch(screen){
             case MENU:
-                if(menuScreen == null) menuScreen = new MenuScreen(this);
+                menuScreen = new MenuScreen(this);
                 this.setScreen(menuScreen);
                 break;
             case PREFERENCES:
@@ -40,11 +40,11 @@ public class RoboRallyGame extends Game {
                 this.setScreen(mainScreen);
                 break;
             case ENDGAME:
-                if(endScreen == null) endScreen = new EndScreen(this);
+                endScreen = new EndScreen(this);
                 this.setScreen(endScreen);
                 break;
             case RULES:
-                if(ruleScreen == null) ruleScreen = new RuleScreen(this);
+                ruleScreen = new RuleScreen(this);
                 this.setScreen(ruleScreen);
                 break;
         }
