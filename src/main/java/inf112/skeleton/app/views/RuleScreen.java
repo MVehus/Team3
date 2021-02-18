@@ -15,19 +15,14 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import inf112.skeleton.app.RoboRallyGame;
 
-public class RuleScreen implements Screen {
-    private final Stage stage;
-    private RoboRallyGame parent;
+public class RuleScreen extends AbstractScreen {
     private SpriteBatch batch;
     private Texture texture;
     private Sprite sprite;
     private Skin skin;
 
     public RuleScreen(RoboRallyGame roboRallyGame) {
-        parent = roboRallyGame;
-
-        stage = new Stage(new ScreenViewport());
-        Gdx.input.setInputProcessor(stage);
+        super(roboRallyGame);
     }
 
     @Override
@@ -46,6 +41,8 @@ public class RuleScreen implements Screen {
         table.add(mainMenu).fillX().uniformX();
         table.padTop(texture.getHeight()+60);
         stage.addActor(table);
+
+
 
         mainMenu.addListener(new ChangeListener() {
             @Override
@@ -66,30 +63,5 @@ public class RuleScreen implements Screen {
 
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
-    }
-
-    @Override
-    public void resize(int width, int height) {
-        stage.getViewport().update(width, height, true);
-    }
-
-    @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
-
-    }
-
-    @Override
-    public void hide() {
-
-    }
-
-    @Override
-    public void dispose() {
-        stage.dispose();
     }
 }
