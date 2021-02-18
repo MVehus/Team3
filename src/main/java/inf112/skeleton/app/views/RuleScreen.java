@@ -32,11 +32,11 @@ public class RuleScreen extends AbstractScreen {
         sprite = new Sprite(texture);
         sprite.setCenterX(Gdx.graphics.getWidth() >> 1);
         sprite.setCenterY(Gdx.graphics.getHeight() >> 1);
+        skin = new Skin(Gdx.files.internal("src/assets/skin/plain-james/plain-james-ui.json"));
 
         Table table = new Table();
         table.setFillParent(true);
         table.setDebug(false);
-        skin = new Skin(Gdx.files.internal("src/assets/skin/plain-james/plain-james-ui.json"));
         TextButton mainMenu = new TextButton("Main menu", skin);
         table.add(mainMenu).fillX().uniformX();
         table.padTop(texture.getHeight()+60);

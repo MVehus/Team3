@@ -12,6 +12,7 @@ public class RoboRallyGame extends Game {
     private MainScreen mainScreen;
     private EndScreen endScreen;
     private RuleScreen ruleScreen;
+    private AppPreferences preferences;
 
     public final static int MENU = 0;
     public final static int PREFERENCES = 1;
@@ -24,6 +25,7 @@ public class RoboRallyGame extends Game {
         batch = new SpriteBatch();
         loadingScreen = new LoadingScreen(this);
         setScreen(loadingScreen);
+        preferences = new AppPreferences();
     }
     public void changeScreen(int screen){
         switch(screen){
@@ -32,7 +34,7 @@ public class RoboRallyGame extends Game {
                 this.setScreen(menuScreen);
                 break;
             case PREFERENCES:
-                if(preferencesScreen == null) preferencesScreen = new PreferencesScreen(this);
+                preferencesScreen = new PreferencesScreen(this);
                 this.setScreen(preferencesScreen);
                 break;
             case APPLICATION:
@@ -59,5 +61,9 @@ public class RoboRallyGame extends Game {
     public void dispose() {
         batch.dispose();
         super.dispose();
+    }
+
+    public AppPreferences getPreferences() {
+        return this.preferences;
     }
 }
