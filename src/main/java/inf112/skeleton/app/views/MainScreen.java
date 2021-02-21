@@ -1,11 +1,10 @@
 package inf112.skeleton.app.views;
 
-import com.badlogic.gdx.Screen;
 import inf112.skeleton.app.Game;
 import inf112.skeleton.app.RoboRallyGame;
 
 public class MainScreen extends AbstractScreen {
-    private Game game = new Game();
+    private final Game game = new Game();
 
     public MainScreen(RoboRallyGame roboRallyGame) {
         super(roboRallyGame);

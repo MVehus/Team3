@@ -1,19 +1,13 @@
 package inf112.skeleton.app.views;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import inf112.skeleton.app.RoboRallyGame;
 
 public class PreferencesScreen extends AbstractScreen {
-    private Label titleLabel;
-    private Label musicLabel;
-    private Label soundLabel;
-    private Label musicCheckboxLabel;
-    private Label soundCheckboxLabel;
 
     public PreferencesScreen(RoboRallyGame roboRallyGame) {
         super(roboRallyGame);
@@ -27,14 +21,26 @@ public class PreferencesScreen extends AbstractScreen {
         table.setFillParent(true);
         table.setDebug(false);
 
+        CheckBox fullscreenCheckbox = new CheckBox(null, skin);
+        fullscreenCheckbox.setChecked(parent.getPreferences().isFullscreenEnabled());
+        fullscreenCheckbox.addListener(event -> {
+            parent.getPreferences().setFullscreenEnabled(fullscreenCheckbox.isChecked());
+            if (fullscreenCheckbox.isChecked()) {
+                Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+            }
+            else {
+                int width = Lwjgl3ApplicationConfiguration.getDisplayMode().width;
+                int formattedHeight = (int) (width * 0.625);
+                Gdx.graphics.setWindowedMode(width-250,formattedHeight-250);
+            }
+            return false;
+        });
+
         Slider musicSlider = new Slider(0f, 1f, 0.1f,false, skin);
         musicSlider.setValue(parent.getPreferences().getMusicVolume());
-        musicSlider.addListener(new EventListener() {
-            @Override
-            public boolean handle(Event event) {
-                parent.getPreferences().setMusicVolume(musicSlider.getValue());
-                return false;
-            }
+        musicSlider.addListener(event -> {
+            parent.getPreferences().setMusicVolume(musicSlider.getValue());
+            return false;
         });
 
         CheckBox musicCheckbox = new CheckBox(null, skin);
@@ -46,18 +52,15 @@ public class PreferencesScreen extends AbstractScreen {
 
         Slider soundSlider = new Slider(0f, 1f, 0.1f,false, skin);
         soundSlider.setValue(parent.getPreferences().getSoundVolume());
-        soundSlider.addListener(new EventListener() {
-            @Override
-            public boolean handle(Event event) {
-                parent.getPreferences().setSoundVolume(soundSlider.getValue());
-                return false;
-            }
+        soundSlider.addListener(event -> {
+            parent.getPreferences().setSoundVolume(soundSlider.getValue());
+            return false;
         });
 
         CheckBox soundCheckbox = new CheckBox(null, skin);
-        soundCheckbox.setChecked(parent.getPreferences().isSoundEffectsEnabled());
+        soundCheckbox.setChecked(parent.getPreferences().isSoundEnabled());
         soundCheckbox.addListener(event -> {
-            parent.getPreferences().setSoundEffectsEnabled(soundCheckbox.isChecked());
+            parent.getPreferences().setSoundEnabled(soundCheckbox.isChecked());
             return false;
         });
 
@@ -70,13 +73,17 @@ public class PreferencesScreen extends AbstractScreen {
             }
         });
 
-        titleLabel = new Label( "Preferences", skin );
-        musicLabel = new Label( "Music volume", skin );
-        soundLabel = new Label( "Sound volume", skin );
-        musicCheckboxLabel = new Label( "Music", skin );
-        soundCheckboxLabel = new Label( "Sound", skin );
+        Label titleLabel = new Label("Preferences", skin);
+        Label musicLabel = new Label("Music volume", skin);
+        Label soundLabel = new Label("Sound volume", skin);
+        Label musicCheckboxLabel = new Label("Music", skin);
+        Label soundCheckboxLabel = new Label("Sound", skin);
+        Label fullscreenCheckboxLabel = new Label("Fullscreen", skin);
 
         table.add(titleLabel).colspan(2);
+        table.row().pad(10,5,0,5);
+        table.add(fullscreenCheckboxLabel).left();
+        table.add(fullscreenCheckbox);
         table.row().pad(10,5,0,5);
         table.add(musicLabel).left();
         table.add(musicSlider);

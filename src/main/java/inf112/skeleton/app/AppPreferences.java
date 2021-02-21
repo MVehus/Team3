@@ -8,19 +8,11 @@ public class AppPreferences {
     private static final String PREF_MUSIC_ENABLED = "music.enabled";
     private static final String PREF_SOUND_ENABLED = "sound.enabled";
     private static final String PREF_SOUND_VOL = "sound";
+    private static final String PREF_FULLSCREEN_ENABLED = "fullscreen.enabled";
     private static final String PREFS_NAME = "roboRallyPrefs";
 
     protected Preferences getPrefs() {
         return Gdx.app.getPreferences(PREFS_NAME);
-    }
-
-    public boolean isSoundEffectsEnabled() {
-        return getPrefs().getBoolean(PREF_SOUND_ENABLED, true);
-    }
-
-    public void setSoundEffectsEnabled(boolean soundEffectsEnabled) {
-        getPrefs().putBoolean(PREF_SOUND_ENABLED, soundEffectsEnabled);
-        getPrefs().flush();
     }
 
     public boolean isMusicEnabled() {
@@ -29,6 +21,15 @@ public class AppPreferences {
 
     public void setMusicEnabled(boolean musicEnabled) {
         getPrefs().putBoolean(PREF_MUSIC_ENABLED, musicEnabled);
+        getPrefs().flush();
+    }
+
+    public boolean isSoundEnabled() {
+        return getPrefs().getBoolean(PREF_SOUND_ENABLED, true);
+    }
+
+    public void setSoundEnabled(boolean soundEnabled) {
+        getPrefs().putBoolean(PREF_SOUND_ENABLED, soundEnabled);
         getPrefs().flush();
     }
 
@@ -47,6 +48,15 @@ public class AppPreferences {
 
     public void setSoundVolume(float volume) {
         getPrefs().putFloat(PREF_SOUND_VOL, volume);
+        getPrefs().flush();
+    }
+
+    public boolean isFullscreenEnabled() {
+        return getPrefs().getBoolean(PREF_FULLSCREEN_ENABLED, false);
+    }
+
+    public void setFullscreenEnabled(boolean fullscreenEnabled) {
+        getPrefs().putBoolean(PREF_FULLSCREEN_ENABLED, fullscreenEnabled);
         getPrefs().flush();
     }
 }
