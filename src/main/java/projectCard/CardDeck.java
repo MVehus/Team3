@@ -1,6 +1,7 @@
 package projectCard;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 /**
@@ -33,7 +34,6 @@ public class CardDeck {
 
         // Add 18 Move 1, Rotate Right, Rotate Left
         for (int i = 0; i < 18; i++){
-
             deck.add(new Card(r.nextInt(200) + 100, Value.MOVE_ONE));
             deck.add(new Card(r.nextInt(200) + 100, Value.ROTATE_RIGHT));
             deck.add(new Card(r.nextInt(200) + 100, Value.ROTATE_LEFT));
@@ -52,18 +52,18 @@ public class CardDeck {
         }
     }
 
-    public ArrayList<Card> getDeck(){
-        return deck;
-    }
-
-    public int getTotalCards(){
-        return deck.size();
-    }
-
-    public ArrayList<Card> drawCards(int totalCards){
+    /**
+     * Draw n cards
+     *
+     * -> Input vil være => n = 9 - damageTokens
+     *
+     * @param n - total cards
+     * @return List of n cards
+     */
+    public ArrayList<Card> drawCards(int n){
         Random r = new Random();
         ArrayList<Card> cards = new ArrayList<>();
-        for (int i = 0; i < totalCards; i++){
+        for (int i = 0; i < n; i++) {
             int index = r.nextInt(deck.size());
             Card card = deck.get(index);
             deck.remove(index);
@@ -73,9 +73,27 @@ public class CardDeck {
         return cards;
     }
 
+    /**
+     * Shuffle deck
+     */
     public void shuffle(){
-        deck.clear();
-        createDeck();
+        Collections.shuffle(deck);
+    }
+
+    /**
+     *
+     * @return deck
+     */
+    public ArrayList<Card> getDeck(){
+        return deck;
+    }
+
+    /**
+     *
+     * @return total cards
+     */
+    public int getDeckSize(){
+        return deck.size();
     }
 
 }

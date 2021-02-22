@@ -16,7 +16,7 @@ public class CardDeckTest {
 
     @Test
     public void FullDeckContains84Cards(){
-        assertEquals(84, DECK.getTotalCards());
+        assertEquals(84, DECK.getDeckSize());
     }
 
     @Test
@@ -29,7 +29,7 @@ public class CardDeckTest {
     @Test
     public void DeckContains79CardsAfterFiveDrawn(){
         DECK.drawCards(5);
-        assertEquals(79, DECK.getTotalCards());
+        assertEquals(79, DECK.getDeckSize());
     }
 
     @Test
@@ -40,6 +40,4 @@ public class CardDeckTest {
             // TODO
         }
     }
-
-
 }

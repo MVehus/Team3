@@ -98,6 +98,30 @@ Kunne starte spillet
 ####Arbeidsoppgaver
 ####Krav brukerhistorien oppfyller
 
+###9:
+####Brukerhistorie
+Når jeg spiller ønsker jeg å få tildelt nye kort hver runde
+####Akseptansekrav
+Spilleren får tildelt riktig mengde med kort
+Etter runden kvitter spilleren seg med brukte kort. 
+####Arbeidsoppgaver
+- Opprette kortstokk
+- Opprette Kort klassen som holder på type og prioritet.
+####Krav brukerhistorien oppfyller
+
+###10:
+####Brukerhistorie
+Etter jeg har fått tildelt kort, vil jeg velge fem kort og kvitte meg med resten 
+####Akseptansekrav
+Spilleren har mulighet til å velge fem kort
+####Arbeidsoppgaver
+- Implementere metode i Player klassen 
+-
+####Krav brukerhistorien oppfyller
+
+
+
+
 ###:
 ####Brukerhistorie
 ####Akseptansekrav
