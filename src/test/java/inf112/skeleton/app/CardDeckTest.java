@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import projectCard.Card;
 import projectCard.CardDeck;
+import projectCard.Value;
 
 
 import java.util.ArrayList;
@@ -33,11 +34,13 @@ public class CardDeckTest {
     }
 
     @Test
-    //TODO
     public void FullDeckContains18MoveOneCards(){
         int count = 0;
         for (Card c : DECK.getDeck()) {
-            // TODO
+            if (c.getValue() == Value.MOVE_ONE) {
+                count += 1;
+            }
         }
+        assertEquals(18, count);
     }
 }
