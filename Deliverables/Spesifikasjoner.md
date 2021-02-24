@@ -72,10 +72,10 @@ Spiller vinner dersom spillets krav for å vinne blir oppfylt.
 ####Brukerhistorie
 Som bruker vil jeg kunne spille med andre spillere på forskjellige maskiner
 ####Akseptansekrav
-Fungerende multiplayer funksjonalitet
-Korrekt oppdatering av gamesate på alle tilkoblede maskiner
+- Fungerende multiplayer funksjonalitet
+- Korrekt oppdatering av gamesate på alle tilkoblede maskiner
 ####Arbeidsoppgaver
-Lese seg opp på relevant kunnskap om P2P
+- Lese seg opp på relevant kunnskap om P2P
 ####Krav brukerhistorien oppfyller
 
 ###7:
@@ -83,18 +83,19 @@ Lese seg opp på relevant kunnskap om P2P
 Når jeg starter spillet, vil jeg ha mulighet til å velge mellom å bli med i et 
 eksisterende spill, eller starte et nytt.
 ####Akseptansekrav
-Implementert start meny funksjonalitet
+- Implementert start meny funksjonalitet
 Fungerende lobbysystem
 ####Arbeidsoppgaver
 ####Krav brukerhistorien oppfyller
+
 
 ###8:
 ####Brukerhistorie
 Når jeg befinner meg i en lobby vil jeg kunne se hvem som er med i spillet.
 ####Akseptansekrav
-Fungerende lobbysystem
-Se hvem som er koblet sammen (hvem som er i min lobby)
-Kunne starte spillet
+- Fungerende lobbysystem
+- Se hvem som er koblet sammen (hvem som er i min lobby)
+- Kunne starte spillet
 ####Arbeidsoppgaver
 ####Krav brukerhistorien oppfyller
 
@@ -102,8 +103,8 @@ Kunne starte spillet
 ####Brukerhistorie
 Når jeg spiller ønsker jeg å få tildelt nye kort hver runde
 ####Akseptansekrav
-Spilleren får tildelt riktig mengde med kort
-Etter runden kvitter spilleren seg med brukte kort. 
+- Spilleren får tildelt riktig mengde med kort
+- Etter runden kvitter spilleren seg med brukte kort. 
 ####Arbeidsoppgaver
 - Opprette kortstokk
 - Opprette Kort klassen som holder på type og prioritet.
@@ -111,14 +112,33 @@ Etter runden kvitter spilleren seg med brukte kort.
 
 ###10:
 ####Brukerhistorie
-Etter jeg har fått tildelt kort, vil jeg velge fem kort og kvitte meg med resten 
+Som bruker ønsker jeg å velge mellom fem kort og kvitte meg med resten. 
 ####Akseptansekrav
-Spilleren har mulighet til å velge fem kort
+- Spilleren har mulighet til å velge fem kort
 ####Arbeidsoppgaver
 - Implementere metode i Player klassen 
 -
 ####Krav brukerhistorien oppfyller
 
+
+###11:
+####Brukerhistorie
+Som bruker ønsker jeg å velge mellom fullscreen- eller vindumodus før jeg starter spillet. 
+####Akseptansekrav
+- GUI som viser en avkrysningsboks for fullscreen.
+####Arbeidsoppgaver
+- Implementere et vindu som viser spillerens preferanser.
+- Vise en avkrysningsboks som brukeren kan klikke på.
+####Krav brukerhistorien oppfyller
+
+###12:
+####Brukerhistorie
+Når jeg spiller ønsker jeg å lagre preferansene mine til senere. 
+####Akseptansekrav
+- Preferansene til brukeren lagres i en fil lokalt på maskinen. 
+####Arbeidsoppgaver
+
+####Krav brukerhistorien oppfyller
 
 
 
