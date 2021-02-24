@@ -21,6 +21,10 @@ public class Card {
         return priority;
     }
 
+    public String toString(){
+        return this.value + " with  " + this.priority + " priority. ";
+    }
+
 }
 
 

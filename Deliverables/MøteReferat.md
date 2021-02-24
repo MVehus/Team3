@@ -42,3 +42,10 @@ Oppmøte: Alle,
 Innhold: Sett mer på Oblig 2, snakket sammen om planen videre og hvordan det har gått hittil. Fått implementert GUI, fikset litt på klassene, slettet
 ubrukte filer og opprettet Player objekt med testklasse. Planen denne uken er å se mer på serveroppsett og begynne på implementasjonen til spillet.
 Lagt til noen brukerhistorier.
+
+
+###Onsdag 24.02.2021
+Varighet: 2 timer,
+Sted: Discord,
+Oppmøte: André, Jørgen, Bård og Lars
+Innhold: Oppdatert UML diagram, skrevet tester og lagt til brukerhistorie 11-14. 
