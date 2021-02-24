@@ -140,7 +140,23 @@ Når jeg spiller ønsker jeg å lagre preferansene mine til senere.
 
 ####Krav brukerhistorien oppfyller
 
+###13:
+####Brukerhistorie
+Når roboten min tar skade vil jeg at det skal vise.
+####Akseptansekrav
+- Vise antall skadetokens spilleren har
+####Arbeidsoppgaver
+####Krav brukerhistorien oppfyller
 
+###14:
+####Brukerhistorie
+Når roboten min tar skade vil jeg at konsekvensene blir gjeldene.
+####Akseptansekrav
+- Begrense brukerens tilgjengelighet på kort og programmeringsslots i forhold til skade
+####Arbeidsoppgaver
+- Dele ut kort i forhold til skade.
+- Låse programmeringsslots i forhold til skade.
+####Krav brukerhistorien oppfyller
 
 ###:
 ####Brukerhistorie

@@ -51,4 +51,78 @@ public class PlayerTest {
         assertEquals(0,player.getHealth());
     }
 
+    @Test
+    public void PlayerGetsNineCardsWithNoDamageTokens() {
+        //TODO
+    }
+
+    @Test
+    public void PlayerGetsEightCardsWithOneDamageToken() {
+        //TODO
+    }
+
+    @Test
+    public void PlayerGetsSevenCardsWithTwoDamageTokens() {
+        //TODO
+    }
+
+    @Test
+    public void PlayerGetsSixCardsWithThreeDamageTokens() {
+        //TODO
+    }
+
+    @Test
+    public void PlayerGetsFiveCardsWithFourDamageTokens() {
+        //TODO
+    }
+
+    @Test
+    public void PlayerGetsFourCardsWithFiveDamageTokens() {
+        //TODO
+    }
+
+    @Test
+    public void PlayerGetsThreeCardsWithSixDamageTokens() {
+        //TODO
+    }
+
+    @Test
+    public void PlayerGetsTwoCardsWithSevenDamageTokens() {
+        //TODO
+    }
+
+    @Test
+    public void PlayerGetsOneCardWithEightDamageTokens() {
+        //TODO
+    }
+
+    @Test
+    public void PlayerGetsNoCardsWithNineDamageTokens() {
+        //TODO
+    }
+
+    @Test
+    public void PlayerGetsRegisterFiveLockedWithFiveDamageTokens() {
+        //TODO
+    }
+
+    @Test
+    public void PlayerGetsRegisterFourLockedWithSixDamageTokens() {
+        //TODO
+    }
+
+    @Test
+    public void PlayerGetsRegisterThreeLockedWithSevenDamageTokens() {
+        //TODO
+    }
+
+    @Test
+    public void PlayerGetsRegisterTwoLockedWithEightDamageTokens() {
+        //TODO
+    }
+
+    @Test
+    public void PlayerGetsRegisterOneLockedWithNineDamageTokens() {
+        //TODO
+    }
 }
