@@ -10,8 +10,10 @@ public class Player {
 
     private int playerNr;
     private int lifeToken;
-    private ArrayList<Card> cards;
     private int damageToken;
+    private ArrayList<Card> playercards = new ArrayList<Card>();
+    private ArrayList<Card> program = new ArrayList<Card>();
+
 
     public Player(){
         this.lifeToken = 3;
@@ -24,7 +26,7 @@ public class Player {
 
     public void takeDamage() {
         damageToken += 1;
-        if (damageToken == 9) {
+        if (damageToken == 10) {
             //reset position
             loseLifeToken();
             //check for more life tokens
@@ -44,7 +46,34 @@ public class Player {
         }
     }
 
+    public void drawPlayerCards () {
+        //TODO
+    }
+
+    public int getLockedPositions() {
+        if (getDamageTokens() >= 9) {
+            return 5;
+        }
+        else if (getDamageTokens() >= 8) {
+            return 4;
+        }
+        else if (getDamageTokens() >= 7) {
+            return 3;
+        }
+        else if (getDamageTokens() >= 6) {
+            return 2;
+        }
+        else if (getDamageTokens() >= 5) {
+            return 1;
+        }
+        else {
+            return 0;
+        }
+    }
+
     private void resetPosition() {
         //TODO
     }
+
+
 }
