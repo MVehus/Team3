@@ -6,12 +6,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import inf112.skeleton.app.RoboRallyGame;
+import inf112.skeleton.app.ScreenOrchestrator;
 
 public class MenuScreen extends AbstractScreen {
 
-    public MenuScreen(RoboRallyGame roboRallyGame) {
-        super(roboRallyGame);
+    public MenuScreen(ScreenOrchestrator screenOrchestrator) {
+        super(screenOrchestrator);
     }
 
     @Override
@@ -22,12 +22,15 @@ public class MenuScreen extends AbstractScreen {
 
         Skin skin = new Skin(Gdx.files.internal("src/assets/skin/plain-james/plain-james-ui.json"));
 
-        TextButton newGameButton = new TextButton("New Game", skin);
+        TextButton createGameButton = new TextButton("Create Game", skin);
+        TextButton joinGameButton = new TextButton("Join Game", skin);
         TextButton preferencesButton = new TextButton("Preferences", skin);
         TextButton rulesButton = new TextButton("Rules", skin);
         TextButton exitButton = new TextButton("Exit", skin);
 
-        table.add(newGameButton).fillX().uniformX();
+        table.add(createGameButton).fillX().uniformX();
+        table.row().padTop(10);
+        table.add(joinGameButton).fillX().uniformX();
         table.row().padTop(10);
         table.add(preferencesButton).fillX().uniformX();
         table.row().padTop(10);
@@ -37,24 +40,31 @@ public class MenuScreen extends AbstractScreen {
 
         stage.addActor(table);
 
-        newGameButton.addListener(new ChangeListener() {
+        createGameButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                parent.changeScreen(RoboRallyGame.APPLICATION);
+                parent.changeScreen(ScreenOrchestrator.CREATEGAME);
+            }
+        });
+
+        joinGameButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                parent.changeScreen(ScreenOrchestrator.JOINGAME);
             }
         });
 
         preferencesButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                parent.changeScreen(RoboRallyGame.PREFERENCES);
+                parent.changeScreen(ScreenOrchestrator.PREFERENCES);
             }
         });
 
         rulesButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                parent.changeScreen(RoboRallyGame.RULES);
+                parent.changeScreen(ScreenOrchestrator.RULES);
             }
         });
 

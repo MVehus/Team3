@@ -5,14 +5,14 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
-import inf112.skeleton.app.RoboRallyGame;
+import inf112.skeleton.app.ScreenOrchestrator;
 
 public abstract class AbstractScreen implements Screen {
     protected final Stage stage;
-    protected RoboRallyGame parent;
+    protected ScreenOrchestrator parent;
 
-    public AbstractScreen(RoboRallyGame roboRallyGame) {
-        parent = roboRallyGame;
+    public AbstractScreen(ScreenOrchestrator screenOrchestrator) {
+        parent = screenOrchestrator;
 
         stage = new Stage(new ScreenViewport());
         Gdx.input.setInputProcessor(stage);

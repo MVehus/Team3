@@ -4,7 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import inf112.skeleton.app.views.*;
 
-public class RoboRallyGame extends Game {
+public class ScreenOrchestrator extends Game {
     private SpriteBatch batch;
     private LoadingScreen loadingScreen;
     private PreferencesScreen preferencesScreen;
@@ -12,6 +12,8 @@ public class RoboRallyGame extends Game {
     private MainScreen mainScreen;
     private EndScreen endScreen;
     private RuleScreen ruleScreen;
+    private JoinGameScreen joinGameScreen;
+    private CreateGameScreen createGameScreen;
     private AppPreferences preferences;
 
     public final static int MENU = 0;
@@ -19,6 +21,8 @@ public class RoboRallyGame extends Game {
     public final static int APPLICATION = 2;
     public final static int ENDGAME = 3;
     public final static int RULES = 4;
+    public final static int JOINGAME = 5;
+    public final static int CREATEGAME = 6;
 
     @Override
     public void create() {
@@ -48,6 +52,14 @@ public class RoboRallyGame extends Game {
             case RULES:
                 ruleScreen = new RuleScreen(this);
                 this.setScreen(ruleScreen);
+                break;
+            case JOINGAME:
+                joinGameScreen = new JoinGameScreen(this);
+                this.setScreen(joinGameScreen);
+                break;
+            case CREATEGAME:
+                createGameScreen = new CreateGameScreen(this);
+                this.setScreen(createGameScreen);
                 break;
         }
     }

@@ -3,11 +3,11 @@ package inf112.skeleton.app.views;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.graphics.GL20;
-import inf112.skeleton.app.RoboRallyGame;
+import inf112.skeleton.app.ScreenOrchestrator;
 
 public class LoadingScreen extends AbstractScreen {
-    public LoadingScreen(RoboRallyGame roboRallyGame) {
-        super(roboRallyGame);
+    public LoadingScreen(ScreenOrchestrator screenOrchestrator) {
+        super(screenOrchestrator);
     }
 
     @Override
@@ -32,6 +32,6 @@ public class LoadingScreen extends AbstractScreen {
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
 
-        parent.changeScreen(RoboRallyGame.MENU);
+        parent.changeScreen(ScreenOrchestrator.MENU);
     }
 }
