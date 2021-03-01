@@ -1,6 +1,7 @@
 package player;
 
 
+import board.Tile;
 import projectCard.Card;
 import projectCard.Value;
 
@@ -11,8 +12,9 @@ public class Player {
     private int playerNr;
     private int lifeToken;
     private int damageToken;
-    private ArrayList<Card> playercards = new ArrayList<Card>();
+    public ArrayList<Card> playercards = new ArrayList<Card>();
     private ArrayList<Card> program = new ArrayList<Card>();
+    private Tile backupPosition;
 
 
     public Player(){
@@ -70,6 +72,7 @@ public class Player {
             return 0;
         }
     }
+
 
     private void resetPosition() {
         //TODO

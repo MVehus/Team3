@@ -2,7 +2,8 @@ package board;
 
 public class Tile {
 
-    private boolean hasWall;
-    private int type;
+    public boolean hasWall;
+    public int type;
+    public int playerOnTile;
 
 }

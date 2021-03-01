@@ -2,10 +2,8 @@ package inf112.skeleton.app;
 
 import org.junit.Test;
 import player.Player;
-import projectCard.Card;
 import projectCard.CardDeck;
 
-import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
@@ -13,7 +11,6 @@ public class PlayerTest {
 
     Player player = new Player();
     CardDeck deck = new CardDeck();
-    ArrayList<Card> playercards = new ArrayList<Card>();
 
 
     @Test
@@ -59,16 +56,15 @@ public class PlayerTest {
 
     @Test
     public void PlayerGetsNineCardsWithNoDamageTokens() {
-
-        playercards = deck.drawCards(9- player.getDamageTokens());
-        assertEquals(9, playercards.size());
+        player.playercards = deck.drawCards(9- player.getDamageTokens());
+        assertEquals(9, player.playercards.size());
     }
 
     @Test
     public void PlayerGetsEightCardsWithOneDamageToken() {
         player.takeDamage();
-        playercards = deck.drawCards(9- player.getDamageTokens());
-        assertEquals(8, playercards.size());
+        player.playercards = deck.drawCards(9- player.getDamageTokens());
+        assertEquals(8, player.playercards.size());
     }
 
     @Test
@@ -76,8 +72,8 @@ public class PlayerTest {
         for(int i = 0; i < 2; i++) {
             player.takeDamage();
         }
-        playercards = deck.drawCards(9- player.getDamageTokens());
-        assertEquals(7, playercards.size());
+        player.playercards = deck.drawCards(9- player.getDamageTokens());
+        assertEquals(7, player.playercards.size());
     }
 
     @Test
@@ -85,8 +81,8 @@ public class PlayerTest {
         for(int i = 0; i < 3; i++) {
             player.takeDamage();
         }
-        playercards = deck.drawCards(9- player.getDamageTokens());
-        assertEquals(6, playercards.size());
+        player.playercards = deck.drawCards(9- player.getDamageTokens());
+        assertEquals(6, player.playercards.size());
     }
 
     @Test
@@ -94,8 +90,8 @@ public class PlayerTest {
         for(int i = 0; i < 4; i++) {
             player.takeDamage();
         }
-        playercards = deck.drawCards(9- player.getDamageTokens());
-        assertEquals(5, playercards.size());
+        player.playercards = deck.drawCards(9- player.getDamageTokens());
+        assertEquals(5, player.playercards.size());
     }
 
     @Test
@@ -103,8 +99,8 @@ public class PlayerTest {
         for(int i = 0; i < 5; i++) {
             player.takeDamage();
         }
-        playercards = deck.drawCards(9- player.getDamageTokens());
-        assertEquals(4, playercards.size());
+        player.playercards = deck.drawCards(9- player.getDamageTokens());
+        assertEquals(4, player.playercards.size());
     }
 
     @Test
@@ -112,8 +108,8 @@ public class PlayerTest {
         for(int i = 0; i < 6; i++) {
             player.takeDamage();
         }
-        playercards = deck.drawCards(9- player.getDamageTokens());
-        assertEquals(3, playercards.size());
+        player.playercards = deck.drawCards(9- player.getDamageTokens());
+        assertEquals(3, player.playercards.size());
     }
 
     @Test
@@ -121,8 +117,8 @@ public class PlayerTest {
         for(int i = 0; i < 7; i++) {
             player.takeDamage();
         }
-        playercards = deck.drawCards(9- player.getDamageTokens());
-        assertEquals(2, playercards.size());
+        player.playercards = deck.drawCards(9- player.getDamageTokens());
+        assertEquals(2, player.playercards.size());
     }
 
     @Test
@@ -130,8 +126,8 @@ public class PlayerTest {
         for(int i = 0; i < 8; i++) {
             player.takeDamage();
         }
-        playercards = deck.drawCards(9- player.getDamageTokens());
-        assertEquals(1, playercards.size());
+        player.playercards = deck.drawCards(9- player.getDamageTokens());
+        assertEquals(1, player.playercards.size());
     }
 
     @Test
@@ -139,8 +135,8 @@ public class PlayerTest {
         for(int i = 0; i < 9; i++) {
             player.takeDamage();
         }
-        playercards = deck.drawCards(9- player.getDamageTokens());
-        assertEquals(0, playercards.size());
+        player.playercards = deck.drawCards(9- player.getDamageTokens());
+        assertEquals(0, player.playercards.size());
     }
 
     @Test
