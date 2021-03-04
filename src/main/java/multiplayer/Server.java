@@ -9,20 +9,39 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class Server {
+
     private ServerSocket serverSocket;
-    private Socket clientSocket;
     private ArrayList<ServerSideConnection> clients;
+    private LinkedBlockingQueue<String> messages;
+    Socket clientSocket;
 
     public Server(int port) {
+        // Sets up the server and start a server socket.
         try {
             serverSocket = new ServerSocket(port);
             System.out.println("Server started");
             System.out.println("Server IP: " + IpChecker.getIp() + "\nPort: " + port);
             System.out.println("Waiting for clients...");
             clients = new ArrayList<>();
+            messages = new LinkedBlockingQueue<>();
 
+            //Handles incoming messages from clients
+            new Thread(() -> {
+                while (true) {
+                    if (!messages.isEmpty()) {
+                        try {
+                            sendToAllClients(messages.take());
+                        } catch (Exception e) {
+                            System.out.println(e.toString());
+                        }
+                    }
+                }
+            }).start();
+
+            // Accepts incoming connections up to 8 players and starts up a new thread with their ServerSideConnection.
             while (clients.size() < 8) {
                 clientSocket = serverSocket.accept();
                 ServerSideConnection ssc = new ServerSideConnection(clientSocket);
@@ -31,17 +50,22 @@ public class Server {
                 System.out.println("Client connected");
             }
             System.out.println("Maximum number of players have joined the game. Not accepting more connections");
-
         } catch (IOException e) {
             System.out.println(e.toString());
         }
     }
 
+    /**
+     * Sends a message to all clients connected to the server.
+     *
+     * @param str The message to be sent
+     */
     public void sendToAllClients(String str) {
         for (ServerSideConnection client : clients) {
             client.write(str);
         }
     }
+
 
     private class ServerSideConnection implements Runnable {
 
@@ -61,18 +85,21 @@ public class Server {
 
                 while (true) {
                     String inputLine;
-                    if((inputLine = in.readLine()) != null){
+                    if ((inputLine = in.readLine()) != null) {
                         System.out.println("Message: " + inputLine + " from " + clientSocket.toString());
-                        //this.write(inputLine);
-                        sendToAllClients("Message sent from user: " + inputLine);
+                        messages.put(inputLine);
                     }
-
                 }
             } catch (Exception e) {
                 System.out.println(e.toString());
             }
         }
 
+        /**
+         * Writes a message to the client connected by this ServerSideConnection
+         *
+         * @param str The message to be sent
+         */
         public void write(String str) {
             try {
                 out.println(str);
