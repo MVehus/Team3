@@ -11,8 +11,8 @@ public class Player {
     private int playerNr;
     private int lifeToken;
     private int damageToken;
-    public ArrayList<ProgramCard> playercards = new ArrayList<ProgramCard>();
-    private ArrayList<ProgramCard> program = new ArrayList<ProgramCard>();
+    public ArrayList<ProgramCard> playerCards = new ArrayList<ProgramCard>();
+    //private ArrayList<ProgramCard> program = new ArrayList<ProgramCard>();
     private Tile backupPosition;
     private String name;
     private String ip;
@@ -38,11 +38,10 @@ public class Player {
             //reset position
             loseLifeToken();
             //check for more life tokens
-            
         }
     }
 
-    public int getDamageTokens() {
+    public int getNumDamageTokens() {
         return damageToken;
     }
 
@@ -54,29 +53,17 @@ public class Player {
         }
     }
 
-    public void drawPlayerCards () {
+    public void drawProgramCards() {
         //TODO
     }
 
-    public int getLockedPositions() {
-        if (getDamageTokens() >= 9) {
-            return 5;
-        }
-        else if (getDamageTokens() >= 8) {
-            return 4;
-        }
-        else if (getDamageTokens() >= 7) {
-            return 3;
-        }
-        else if (getDamageTokens() >= 6) {
-            return 2;
-        }
-        else if (getDamageTokens() >= 5) {
-            return 1;
-        }
-        else {
+
+    public int numLockedProgramCards() {
+            if(getNumDamageTokens() <= 9 && getNumDamageTokens() >= 5){
+                return getNumDamageTokens() - 4;
+            }
+
             return 0;
-        }
     }
 
 

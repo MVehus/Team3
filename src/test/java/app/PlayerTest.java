@@ -19,14 +19,14 @@ public class PlayerTest {
 
     @Test
     public void PlayerStartsWithNoDamageTokens(){
-        assertEquals(0,player.getDamageTokens());
+        assertEquals(0,player.getNumDamageTokens());
     }
 
 
     @Test
     public void PlayerGetsDamageTokenWhenPlayerTakesDamage(){
         player.takeDamage();
-        assertEquals(1,player.getDamageTokens());
+        assertEquals(1,player.getNumDamageTokens());
     }
 
     @Test
@@ -42,7 +42,7 @@ public class PlayerTest {
         for(int i = 0; i < 10; i++) {
             player.takeDamage();
         }
-        assertEquals(0, player.getDamageTokens());
+        assertEquals(0, player.getNumDamageTokens());
     }
 
     @Test
@@ -55,15 +55,15 @@ public class PlayerTest {
 
     @Test
     public void PlayerGetsNineCardsWithNoDamageTokens() {
-        player.playercards = deck.drawCards(9- player.getDamageTokens());
-        assertEquals(9, player.playercards.size());
+        player.playerCards = deck.drawCards(9- player.getNumDamageTokens());
+        assertEquals(9, player.playerCards.size());
     }
 
     @Test
     public void PlayerGetsEightCardsWithOneDamageToken() {
         player.takeDamage();
-        player.playercards = deck.drawCards(9- player.getDamageTokens());
-        assertEquals(8, player.playercards.size());
+        player.playerCards = deck.drawCards(9- player.getNumDamageTokens());
+        assertEquals(8, player.playerCards.size());
     }
 
     @Test
@@ -71,8 +71,8 @@ public class PlayerTest {
         for(int i = 0; i < 2; i++) {
             player.takeDamage();
         }
-        player.playercards = deck.drawCards(9- player.getDamageTokens());
-        assertEquals(7, player.playercards.size());
+        player.playerCards = deck.drawCards(9- player.getNumDamageTokens());
+        assertEquals(7, player.playerCards.size());
     }
 
     @Test
@@ -80,8 +80,8 @@ public class PlayerTest {
         for(int i = 0; i < 3; i++) {
             player.takeDamage();
         }
-        player.playercards = deck.drawCards(9- player.getDamageTokens());
-        assertEquals(6, player.playercards.size());
+        player.playerCards = deck.drawCards(9- player.getNumDamageTokens());
+        assertEquals(6, player.playerCards.size());
     }
 
     @Test
@@ -89,8 +89,8 @@ public class PlayerTest {
         for(int i = 0; i < 4; i++) {
             player.takeDamage();
         }
-        player.playercards = deck.drawCards(9- player.getDamageTokens());
-        assertEquals(5, player.playercards.size());
+        player.playerCards = deck.drawCards(9- player.getNumDamageTokens());
+        assertEquals(5, player.playerCards.size());
     }
 
     @Test
@@ -98,8 +98,8 @@ public class PlayerTest {
         for(int i = 0; i < 5; i++) {
             player.takeDamage();
         }
-        player.playercards = deck.drawCards(9- player.getDamageTokens());
-        assertEquals(4, player.playercards.size());
+        player.playerCards = deck.drawCards(9- player.getNumDamageTokens());
+        assertEquals(4, player.playerCards.size());
     }
 
     @Test
@@ -107,8 +107,8 @@ public class PlayerTest {
         for(int i = 0; i < 6; i++) {
             player.takeDamage();
         }
-        player.playercards = deck.drawCards(9- player.getDamageTokens());
-        assertEquals(3, player.playercards.size());
+        player.playerCards = deck.drawCards(9- player.getNumDamageTokens());
+        assertEquals(3, player.playerCards.size());
     }
 
     @Test
@@ -116,8 +116,8 @@ public class PlayerTest {
         for(int i = 0; i < 7; i++) {
             player.takeDamage();
         }
-        player.playercards = deck.drawCards(9- player.getDamageTokens());
-        assertEquals(2, player.playercards.size());
+        player.playerCards = deck.drawCards(9- player.getNumDamageTokens());
+        assertEquals(2, player.playerCards.size());
     }
 
     @Test
@@ -125,8 +125,8 @@ public class PlayerTest {
         for(int i = 0; i < 8; i++) {
             player.takeDamage();
         }
-        player.playercards = deck.drawCards(9- player.getDamageTokens());
-        assertEquals(1, player.playercards.size());
+        player.playerCards = deck.drawCards(9- player.getNumDamageTokens());
+        assertEquals(1, player.playerCards.size());
     }
 
     @Test
@@ -134,8 +134,8 @@ public class PlayerTest {
         for(int i = 0; i < 9; i++) {
             player.takeDamage();
         }
-        player.playercards = deck.drawCards(9- player.getDamageTokens());
-        assertEquals(0, player.playercards.size());
+        player.playerCards = deck.drawCards(9- player.getNumDamageTokens());
+        assertEquals(0, player.playerCards.size());
     }
 
     @Test
@@ -143,7 +143,7 @@ public class PlayerTest {
         for(int i = 0; i < 5; i++) {
             player.takeDamage();
         }
-        assertEquals(1, player.getLockedPositions());
+        assertEquals(1, player.numLockedProgramCards());
     }
 
     @Test
@@ -151,7 +151,7 @@ public class PlayerTest {
         for(int i = 0; i < 6; i++) {
             player.takeDamage();
         }
-        assertEquals(2, player.getLockedPositions());
+        assertEquals(2, player.numLockedProgramCards());
     }
 
     @Test
@@ -159,7 +159,7 @@ public class PlayerTest {
         for(int i = 0; i < 7; i++) {
             player.takeDamage();
         }
-        assertEquals(3, player.getLockedPositions());
+        assertEquals(3, player.numLockedProgramCards());
     }
 
     @Test
@@ -167,7 +167,7 @@ public class PlayerTest {
         for(int i = 0; i < 8; i++) {
             player.takeDamage();
         }
-        assertEquals(4, player.getLockedPositions());
+        assertEquals(4, player.numLockedProgramCards());
     }
 
     @Test
@@ -175,6 +175,6 @@ public class PlayerTest {
         for(int i = 0; i < 9; i++) {
             player.takeDamage();
         }
-        assertEquals(5, player.getLockedPositions());
+        assertEquals(5, player.numLockedProgramCards());
     }
 }
