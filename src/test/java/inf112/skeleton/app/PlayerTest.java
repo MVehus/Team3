@@ -5,13 +5,14 @@ import player.Player;
 import projectCard.CardDeck;
 
 
+import java.net.UnknownHostException;
+
 import static org.junit.Assert.assertEquals;
 
 public class PlayerTest {
 
-    Player player = new Player();
+    Player player = new Player("TestPlayer");
     CardDeck deck = new CardDeck();
-
 
     @Test
     public void PlayerHasFullHealthAtStart(){

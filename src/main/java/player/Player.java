@@ -2,8 +2,7 @@ package player;
 
 
 import board.Tile;
-import projectCard.Card;
-import projectCard.Value;
+import projectCard.ProgramCard;
 
 import java.util.ArrayList;
 
@@ -12,18 +11,25 @@ public class Player {
     private int playerNr;
     private int lifeToken;
     private int damageToken;
-    public ArrayList<Card> playercards = new ArrayList<Card>();
-    private ArrayList<Card> program = new ArrayList<Card>();
+    public ArrayList<ProgramCard> playercards = new ArrayList<ProgramCard>();
+    private ArrayList<ProgramCard> program = new ArrayList<ProgramCard>();
     private Tile backupPosition;
+    private String name;
+    private String ip;
 
-
-    public Player(){
+    public Player(String name) {
+        this.name = name;
         this.lifeToken = 3;
         this.damageToken = 0;
+
     }
 
     public int getHealth() {
         return lifeToken;
+    }
+
+    public String getName(){
+        return name;
     }
 
     public void takeDamage() {
