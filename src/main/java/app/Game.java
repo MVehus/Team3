@@ -1,9 +1,6 @@
-package inf112.skeleton.app;
+package app;
 
-import com.badlogic.gdx.ApplicationListener;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -55,6 +52,9 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     @Override
     public void create() {
+
+        //PlayerBoard player = new PlayerBoard(new Player("Arne"));
+
         batch = new SpriteBatch();
         font = new BitmapFont();
         font.setColor(Color.RED);
@@ -71,8 +71,8 @@ public class Game extends InputAdapter implements ApplicationListener {
         BoardHeight = boardLayer.getHeight();
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, BoardWidth, BoardHeight);
-        camera.position.x = (float) BoardWidth/2;
+        camera.setToOrtho(false, BoardWidth  ,BoardHeight );
+        camera.position.x = (float) BoardWidth / 2;
         camera.update();
         renderer = new OrthogonalTiledMapRenderer(map, 1/boardLayer.getTileHeight());
         renderer.setView(camera);
@@ -84,12 +84,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         playerDiedCell.setTile(new StaticTiledMapTile(textureRegion[0][1]));
         playerPos.x = 1;
         playerPos.y = 6;
-    }
-
-    @Override
-    public void dispose() {
-        batch.dispose();
-        font.dispose();
     }
 
     @Override
@@ -108,6 +102,11 @@ public class Game extends InputAdapter implements ApplicationListener {
         }
     }
 
+    @Override
+    public void dispose() {
+        batch.dispose();
+        font.dispose();
+    }
     @Override
     public void resize(int width, int height) {
     }

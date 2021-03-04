@@ -1,4 +1,4 @@
-package inf112.skeleton.app;
+package app;
 
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;

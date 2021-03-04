@@ -48,4 +48,22 @@ Lagt til noen brukerhistorier.
 Varighet: 2 timer,
 Sted: Discord,
 Oppmøte: André, Jørgen, Bård og Lars
-Innhold: Oppdatert UML diagram, skrevet tester og lagt til brukerhistorie 11-14. 
+Innhold: Oppdatert UML diagram, skrevet tester og lagt til brukerhistorie 11-14.
+
+
+###Mandag 01.03.2021
+Varighet: 2 timer,
+Sted: Discord
+Oppmøte: Alle,
+
+Innhold: Ble enige om å ha Server-Client-multiplayer i stedet for P2P-multiplayer. 
+Fordelte arbeidsoppgaver inn mot Oblig 2-fristen på fredag.
+
+
+###Onsdag 03.03.2021
+Varighet: 2 timer,
+Sted: Discord,
+Oppmøte: André, Jørgen, Bård, Mathias,
+
+Innhold: Gjort fremskitt med Server-Client multiplayer, og testet tilkobling
+på et Server-Client-testprosjekt. 

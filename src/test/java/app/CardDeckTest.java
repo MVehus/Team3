@@ -1,8 +1,7 @@
-package inf112.skeleton.app;
+package app;
 
-import org.junit.Before;
 import org.junit.Test;
-import projectCard.Card;
+import projectCard.ProgramCard;
 import projectCard.CardDeck;
 import projectCard.Value;
 
@@ -22,7 +21,7 @@ public class CardDeckTest {
 
     @Test
     public void DrawFiveCards(){
-        ArrayList<Card> cards = new ArrayList<>();
+        ArrayList<ProgramCard> cards = new ArrayList<>();
         cards = DECK.drawCards(5);
         assertEquals(5, cards.size());
     }
@@ -36,11 +35,14 @@ public class CardDeckTest {
     @Test
     public void FullDeckContains18MoveOneCards(){
         int count = 0;
-        for (Card c : DECK.getDeck()) {
+        for (ProgramCard c : DECK.getDeck()) {
             if (c.getValue() == Value.MOVE_ONE) {
                 count += 1;
             }
         }
         assertEquals(18, count);
     }
+
+
+
 }

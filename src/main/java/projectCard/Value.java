@@ -1,7 +1,7 @@
 package projectCard;
 
 /**
- * test
+ * Each can contains one value
  */
 public enum Value {
     MOVE_THREE,

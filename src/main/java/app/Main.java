@@ -1,4 +1,4 @@
-package inf112.skeleton.app;
+package app;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
@@ -13,6 +13,6 @@ public class Main {
 
         cfg.setWindowedMode(width - 250, formattedHeight - 250 );
 
-        new Lwjgl3Application(new RoboRallyGame(), cfg);
+        new Lwjgl3Application(new ScreenOrchestrator(), cfg);
     }
 }

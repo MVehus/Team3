@@ -1,16 +1,16 @@
-package inf112.skeleton.app.views;
+package app.views;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import inf112.skeleton.app.RoboRallyGame;
+import app.ScreenOrchestrator;
 
 public class PreferencesScreen extends AbstractScreen {
 
-    public PreferencesScreen(RoboRallyGame roboRallyGame) {
-        super(roboRallyGame);
+    public PreferencesScreen(ScreenOrchestrator screenOrchestrator) {
+        super(screenOrchestrator);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class PreferencesScreen extends AbstractScreen {
         mainMenu.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                parent.changeScreen(RoboRallyGame.MENU);
+                parent.changeScreen(ScreenOrchestrator.MENU);
             }
         });
 

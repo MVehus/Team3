@@ -9,7 +9,7 @@ import java.util.Random;
  */
 public class CardDeck {
 
-    private ArrayList<Card> deck;
+    private ArrayList<ProgramCard> deck;
 
     public CardDeck(){
         this.deck = new ArrayList<>();
@@ -30,26 +30,29 @@ public class CardDeck {
      * 6 ...    U turn
      */
     private void createDeck(){
-        Random r = new Random();
 
         // Add 18 Move 1, Rotate Right, Rotate Left
         for (int i = 0; i < 18; i++){
-            deck.add(new Card(r.nextInt(200) + 100, Value.MOVE_ONE));
-            deck.add(new Card(r.nextInt(200) + 100, Value.ROTATE_RIGHT));
-            deck.add(new Card(r.nextInt(200) + 100, Value.ROTATE_LEFT));
+            deck.add(new ProgramCard(randomIntInRange(100, 200), Value.MOVE_ONE));
+            deck.add(new ProgramCard(randomIntInRange(100, 200), Value.ROTATE_RIGHT));
+            deck.add(new ProgramCard(randomIntInRange(100, 200), Value.ROTATE_LEFT));
         }
 
         // Add 12 Move 2
         for (int i = 0; i < 12; i++){
-            deck.add(new Card(r.nextInt(300) + 200, Value.MOVE_TWO));
+            deck.add(new ProgramCard(randomIntInRange(200, 300), Value.MOVE_TWO));
         }
 
         // Add 6 Move 3, Back-Up and U-Turn
         for (int i = 0; i < 6; i++){
-            deck.add(new Card(r.nextInt(800) + 700, Value.MOVE_THREE));
-            deck.add(new Card(r.nextInt(700) + 600, Value.BACK_UP));
-            deck.add(new Card(r.nextInt(100) + 10, Value.U_TURN));
+            deck.add(new ProgramCard(randomIntInRange(700, 800), Value.MOVE_THREE));
+            deck.add(new ProgramCard(randomIntInRange(600, 700), Value.BACK_UP));
+            deck.add(new ProgramCard(randomIntInRange(10, 100), Value.U_TURN));
         }
+    }
+
+    private int randomIntInRange(int min, int max){
+        return (min + (int)(Math.random() * ((max - min) + 1)));
     }
 
     /**
@@ -60,12 +63,12 @@ public class CardDeck {
      * @param n - total cards
      * @return List of n cards
      */
-    public ArrayList<Card> drawCards(int n){
+    public ArrayList<ProgramCard> drawCards(int n){
         Random r = new Random();
-        ArrayList<Card> cards = new ArrayList<>();
+        ArrayList<ProgramCard> cards = new ArrayList<>();
         for (int i = 0; i < n; i++) {
             int index = r.nextInt(deck.size());
-            Card card = deck.get(index);
+            ProgramCard card = deck.get(index);
             deck.remove(index);
             cards.add(card);
         }
@@ -84,7 +87,7 @@ public class CardDeck {
      *
      * @return deck
      */
-    public ArrayList<Card> getDeck(){
+    public ArrayList<ProgramCard> getDeck(){
         return deck;
     }
 

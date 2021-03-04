@@ -1,14 +1,15 @@
 package projectCard;
 
 /**
- * test
+ * Card object,
+ * Each Program card contains a priority and a value.
  */
-public class Card {
+public class ProgramCard {
 
     private final int priority;
     public final Value value;
 
-    public Card(int priority, Value value){
+    public ProgramCard(int priority, Value value){
         this.priority = priority;
         this.value = value;
     }
@@ -22,9 +23,8 @@ public class Card {
     }
 
     public String toString(){
-        return this.value + " with  " + this.priority + " priority. ";
+        return (this.value + " with  " + this.priority + " priority. ");
     }
-
 }
 
 
