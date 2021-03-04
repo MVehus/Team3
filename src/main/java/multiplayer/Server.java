@@ -64,10 +64,7 @@ public class Server {
                     if((inputLine = in.readLine()) != null){
                         System.out.println("Message: " + inputLine + " from " + clientSocket.toString());
                         //this.write(inputLine);
-                        //Test if works.
-                        for(ServerSideConnection client : clients){
-                            client.write("Message received from user");
-                        }
+                        sendToAllClients("Message sent from user: " + inputLine);
                     }
 
                 }
