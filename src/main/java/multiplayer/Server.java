@@ -66,7 +66,7 @@ public class Server {
                         //this.write(inputLine);
                         //Test if works.
                         for(ServerSideConnection client : clients){
-                            write("Message received from user");
+                            client.write("Message received from user");
                         }
                     }
 
