@@ -8,10 +8,12 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 
 public class Server {
     private ServerSocket serverSocket;
     private Socket clientSocket;
+    private ArrayList<ServerSideConnection> clients;
 
     public Server(int port) {
         try {
@@ -19,25 +21,27 @@ public class Server {
             System.out.println("Server started");
             System.out.println("Server IP: " + IpChecker.getIp() + "\nPort: " + port);
             System.out.println("Waiting for clients...");
+            clients = new ArrayList<>();
 
-
-            while (true) {
+            while (clients.size() < 8) {
                 clientSocket = serverSocket.accept();
                 ServerSideConnection ssc = new ServerSideConnection(clientSocket);
-                Thread t = new Thread(ssc);
-                t.start();
+                clients.add(ssc);
+                new Thread(ssc).start();
                 System.out.println("Client connected");
             }
+            System.out.println("Maximum number of players have joined the game. Not accepting more connections");
 
         } catch (IOException e) {
             System.out.println(e.toString());
         }
     }
 
-    public static void main(String[] args) {
-        Server server = new Server(32401);
+    public void sendToAllClients(String str) {
+        for (ServerSideConnection client : clients) {
+            client.write(str);
+        }
     }
-
 
     private class ServerSideConnection implements Runnable {
 
@@ -45,7 +49,7 @@ public class Server {
         private PrintWriter out;
         Socket socket;
 
-        public ServerSideConnection(Socket clientSocket){
+        public ServerSideConnection(Socket clientSocket) {
             socket = clientSocket;
         }
 
@@ -57,14 +61,32 @@ public class Server {
 
                 while (true) {
                     String inputLine;
-                    while ((inputLine = in.readLine()) != null) {
+                    if((inputLine = in.readLine()) != null){
                         System.out.println("Message: " + inputLine + " from " + clientSocket.toString());
-                        out.println(inputLine);
+                        //this.write(inputLine);
+                        //Test if works.
+                        for(ServerSideConnection client : clients){
+                            write("Message received from user");
+                        }
                     }
+
                 }
-            } catch (Exception e){
+            } catch (Exception e) {
                 System.out.println(e.toString());
             }
         }
+
+        public void write(String str) {
+            try {
+                out.println(str);
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
+        }
+    }
+
+
+    public static void main(String[] args) {
+        Server server = new Server(32401);
     }
 }
