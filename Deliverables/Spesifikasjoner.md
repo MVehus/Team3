@@ -3,7 +3,7 @@
 ## Målet for applikasjonen
 Målet for utviklingen av applikasjonen dette semesteret kan deles i to seksjoner, samarbeid og produkt.
 
-En del av målet er å ende opp med en fungerende digital versjon av brettspillet RoboRally med multiplayer kapabilitet. Implementert med
+En del av målet er å ende opp med en fungerende digital versjon av brettspillet RoboRally med network kapabilitet. Implementert med
 funksjonaliteten spesifisert i MVP kravene, og gjerne mer om det lar seg gjøre. 
 
 En annen gjerne viktigere del av målet er å forbedre samarbeidsevnene til alle teammedlemmene, samt lære seg å mestre vektøyene som brukes 
@@ -72,7 +72,7 @@ Spiller vinner dersom spillets krav for å vinne blir oppfylt.
 ####Brukerhistorie
 Som bruker vil jeg kunne spille med andre spillere på forskjellige maskiner
 ####Akseptansekrav
-Fungerende multiplayer funksjonalitet
+Fungerende network funksjonalitet
 Korrekt oppdatering av gamesate på alle tilkoblede maskiner
 ####Arbeidsoppgaver
 Lese seg opp på relevant kunnskap om P2P
