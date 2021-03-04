@@ -1,4 +1,4 @@
-package inf112.skeleton.app;
+package app;
 
 import org.junit.Test;
 import projectCard.ProgramCard;

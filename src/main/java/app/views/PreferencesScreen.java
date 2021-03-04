@@ -1,11 +1,11 @@
-package inf112.skeleton.app.views;
+package app.views;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import inf112.skeleton.app.ScreenOrchestrator;
+import app.ScreenOrchestrator;
 
 public class PreferencesScreen extends AbstractScreen {
 

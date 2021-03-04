@@ -1,10 +1,10 @@
-package inf112.skeleton.app.views;
+package app.views;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import inf112.skeleton.app.ScreenOrchestrator;
+import app.ScreenOrchestrator;
 
 public class JoinGameScreen extends AbstractScreen{
     public JoinGameScreen(ScreenOrchestrator screenOrchestrator) {
@@ -19,16 +19,22 @@ public class JoinGameScreen extends AbstractScreen{
         table.setDebug(false);
 
         TextButton mainMenu = new TextButton("Main menu", skin);
-        Label ipLabel = new Label("Connect to a host with an ip-address: ", skin);
+        Label connectLabel = new Label("Connect to a host with an ip-address: ", skin);
+        Label ipLabel = new Label("ip:", skin);
+        Label portLabel = new Label("port:", skin);
         TextField ipInput = new TextField("", skin);
+        TextField portInput = new TextField("", skin);
         TextButton connectButton = new TextButton("Connect", skin);
 
-        table.add(ipLabel).colspan(2);
+        table.add(connectLabel).colspan(5);
         table.row().padTop(10);
-        table.add(ipInput).fillX().padLeft(40);
-        table.add(connectButton).left().padLeft(10);
+        table.add(ipLabel);
+        table.add(ipInput).width(180).padLeft(10);
+        table.add(portLabel).padLeft(10);
+        table.add(portInput).width(85).padLeft(10);
+        table.add(connectButton).padLeft(10);
         table.row().padTop(10);
-        table.add(mainMenu).colspan(2);
+        table.add(mainMenu).colspan(5);
 
         stage.addActor(table);
 

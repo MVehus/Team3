@@ -1,15 +1,15 @@
-package inf112.skeleton.app;
+package app;
 
+import app.views.*;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import inf112.skeleton.app.views.*;
 
 public class ScreenOrchestrator extends Game {
     private SpriteBatch batch;
     private LoadingScreen loadingScreen;
     private PreferencesScreen preferencesScreen;
     private MenuScreen menuScreen;
-    private MainScreen mainScreen;
+    private ApplicationScreen applicationScreen;
     private EndScreen endScreen;
     private RuleScreen ruleScreen;
     private JoinGameScreen joinGameScreen;
@@ -42,8 +42,8 @@ public class ScreenOrchestrator extends Game {
                 this.setScreen(preferencesScreen);
                 break;
             case APPLICATION:
-                if(mainScreen == null) mainScreen = new MainScreen(this);
-                this.setScreen(mainScreen);
+                if(applicationScreen == null) applicationScreen = new ApplicationScreen(this);
+                this.setScreen(applicationScreen);
                 break;
             case ENDGAME:
                 endScreen = new EndScreen(this);

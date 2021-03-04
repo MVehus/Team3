@@ -1,9 +1,9 @@
-package inf112.skeleton.app.views;
+package app.views;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import com.badlogic.gdx.graphics.GL20;
-import inf112.skeleton.app.ScreenOrchestrator;
+import app.ScreenOrchestrator;
 
 public class LoadingScreen extends AbstractScreen {
     public LoadingScreen(ScreenOrchestrator screenOrchestrator) {

@@ -1,6 +1,6 @@
-package inf112.skeleton.app.views;
+package app.views;
 
-import inf112.skeleton.app.ScreenOrchestrator;
+import app.ScreenOrchestrator;
 
 public class EndScreen extends AbstractScreen {
 

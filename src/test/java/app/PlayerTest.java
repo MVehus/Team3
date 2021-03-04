@@ -1,11 +1,9 @@
-package inf112.skeleton.app;
+package app;
 
 import org.junit.Test;
 import player.Player;
 import projectCard.CardDeck;
 
-
-import java.net.UnknownHostException;
 
 import static org.junit.Assert.assertEquals;
 

@@ -1,4 +1,4 @@
-package inf112.skeleton.app;
+package app;
 
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
@@ -14,7 +14,6 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Vector2;
-import player.Player;
 
 public class Game extends InputAdapter implements ApplicationListener {
     private SpriteBatch batch;

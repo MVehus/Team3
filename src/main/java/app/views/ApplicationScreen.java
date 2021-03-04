@@ -1,12 +1,12 @@
-package inf112.skeleton.app.views;
+package app.views;
 
-import inf112.skeleton.app.Game;
-import inf112.skeleton.app.ScreenOrchestrator;
+import app.Game;
+import app.ScreenOrchestrator;
 
-public class MainScreen extends AbstractScreen {
+public class ApplicationScreen extends AbstractScreen {
     private final Game game = new Game();
 
-    public MainScreen(ScreenOrchestrator screenOrchestrator) {
+    public ApplicationScreen(ScreenOrchestrator screenOrchestrator) {
         super(screenOrchestrator);
     }
 

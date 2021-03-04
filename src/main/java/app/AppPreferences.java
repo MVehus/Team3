@@ -1,4 +1,4 @@
-package inf112.skeleton.app;
+package app;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
