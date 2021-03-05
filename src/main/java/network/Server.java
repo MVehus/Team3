@@ -1,5 +1,6 @@
 package network;
 
+import Models.GameStateModel;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
@@ -19,23 +20,31 @@ public class Server {
             System.out.println(e.toString());
         }
         clients = new ArrayList<>();
+
         server.addListener(new Listener() {
             public void received(Connection connection, Object object) {
-                if (!clients.contains(connection))
+                if (!clients.contains(connection)) {
                     clients.add(connection);
-
-                if (object instanceof String) {
-                    String request = (String) object;
-                    System.out.println(request);
-
-                    String response = "response";
-                    connection.sendTCP(response);
                 }
+
+                if (object instanceof GameStateModel) {
+                    GameStateModel request = (GameStateModel) object;
+                    System.out.println(request.toString());
+
+                    //TODO Handle and notify all clients of updated GameState
+                }
+
             }
         });
     }
 
     public ArrayList<Connection> getClients() {
         return clients;
+    }
+
+    public void sendToAllClients(Object obj){
+        for(Connection client : clients){
+            client.sendTCP(obj);
+        }
     }
 }
