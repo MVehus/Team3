@@ -13,8 +13,8 @@ public class Network {
         server =  new Server(port);
     }
 
-    public static Client makeNewClient(String IpAddress, int port){
-        client = new Client(IpAddress, port)
+    public static void makeNewClient(String IpAddress, int port){
+        client = new Client(IpAddress, port);
     }
 
     public static Client getClient() {
