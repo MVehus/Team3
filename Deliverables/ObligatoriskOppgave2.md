@@ -43,13 +43,19 @@ Medlemmene stiller forberedt opp på møtene og forteller hva de har gjort og hv
 Ting en vil forberede:
 - Bedre forståelse av kodebasen slik at en kan jobbe mer effektivt
 - Klare arbeidsoppgaver
-
+- Jevnligere oppdatering av Project board
+- Sette prioriteringer på oppgaver som skal løses og bruke disse
 Ting som gikk bra:
 - God flyt i møtene, særs effektivt, gode diskusjoner
 - Tilgjengelighet på Discord.
-
+- Jobber jevnt og trutt med oppgavene før levering
 
 ###Bli enige om maks tre forbedringspunkter fra retrospektivet, som skal følges opp under neste sprint.
+
+Forberedningspunkter:
+- Bedre forståelse av kodebasen slik at en kan jobbe mer effektivt
+- Jevnligere oppdatering av Project board
+- Sette prioriteringer på oppgaver som skal løses og bruke disse
 
 
 ##Deloppgave 2
@@ -72,15 +78,30 @@ Vi har opprettet tester for Player- og CardDeck klassene.
 Her tester vi at CardDeck inneholder riktige kort basert på deres prioritering og verdi.
 I PlayerTest tester vi at spilleren får riktig mengde med kort basert på antall skade spilleren har tatt.
 
-####Husk å skrive hvilke bugs som finnes i de kravene dere har utført (dersom det finnes bugs).
-
-
 ##Deloppgave 3
 
 ####Dere må dokumentere hvordan prosjektet bygger, testes og kjøres, slik at det er lett for gruppelederne å bygge, teste og kjøre koden deres. Under vurdering kommer koden også til å brukertestes.
 - Se README.md
 
-####Lever klassediagram. (Hvis det er veldig mange klasser, lager dere for de viktigste.) Det er ikke nødvendig å ta med alle metoder og feltvariabler med mindre dere anser dem som viktige for helheten.
-https://app.creately.com/diagram/E4uRJsPIcEz/edit
+#### Klassediagram
+
+Link til klassediagram [APP CREATELY](https://app.creately.com/diagram/E4uRJsPIcEz/edit)
+
+#### MVP
+MVP:
+- Vise et spillebrett ✅
+- Vise brikke på spillebrett ✅
+- Flytte brikke (vha taster e.l. for testing) ✅
+- Robot besøker flagg ✅
+- Robot vinner ved å besøke flagg ✅
+- Spille fra flere maskiner (vise brikker for alle spillere, flytte brikker for alle spillere) ✅
+    - Fått til server- og clientoppsettet. Spillere kan bli med i et eksisterende spill ved å skrive inn PORT og IP- addresse.
+- Dele ut kort
+    - Ikke implementert dette i GUI, men opprettet tester for dette CardDeckTest. Player får tildelt riktig mengde kort basert på hvor mange damage tokens spiller har.
+- Velge 5 kort
+    - Dette er ikke implementert enda da vi ikke har fått lagt til dette i GUIen. Planen til neste innlevering er å lage et område ved siden av spillebrettet som legger støtte til at bruker kan velge kort, programmere runden,  se liv og se damagetokens.
+- Bevege robot ut fra valgte kort
+    - Kommer til neste innlevering.
+
 
 

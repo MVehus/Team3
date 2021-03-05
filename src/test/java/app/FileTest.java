@@ -13,6 +13,4 @@ public class FileTest {
                 Gdx.files.internal("src/assets/skin/plain-james/plain-james-ui.json").exists());
     }
 
-
-
 }
