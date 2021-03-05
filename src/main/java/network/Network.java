@@ -26,6 +26,6 @@ public class Network {
     }
 
     public static ArrayList<Connection> getAllClientsOnServer(){
-        return server.getClients();
+        return server != null ? server.getClients() : null;
     }
 }
