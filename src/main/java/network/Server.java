@@ -23,10 +23,6 @@ public class Server {
 
         server.addListener(new Listener() {
             public void received(Connection connection, Object object) {
-                if (!clients.contains(connection)) {
-                    clients.add(connection);
-                }
-
                 if (object instanceof GameStateModel) {
                     GameStateModel request = (GameStateModel) object;
                     System.out.println(request.toString());
@@ -34,6 +30,16 @@ public class Server {
                     //TODO Handle and notify all clients of updated GameState
                 }
 
+            }
+
+            public void connected(Connection connection){
+                if (!clients.contains(connection)) {
+                    clients.add(connection);
+                }
+            }
+
+            public void disconnected(Connection connection){
+                clients.remove(connection);
             }
         });
     }

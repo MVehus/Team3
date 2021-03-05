@@ -21,6 +21,10 @@ public class Network {
         return client;
     }
 
+    public static void disconnectClient(){
+        client = null;
+    }
+
     public static Server getServer(){
         return server;
     }
