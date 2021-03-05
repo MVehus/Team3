@@ -1,45 +1,27 @@
 package network;
 
-import java.io.*;
-import java.net.Socket;
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
+
+import java.io.IOException;
 
 public class Client {
 
-    private Socket socket;
-    private ObjectOutputStream out;
-    private ObjectInputStream in;
-
-
-    public Client(String IPAddress, int port) {
-        // Tries to connect the client to the server.
+    public Client(String IpAddress, int port) {
+        com.esotericsoftware.kryonet.Client client = new com.esotericsoftware.kryonet.Client();
+        client.start();
         try {
-            socket = new Socket(IPAddress, port);
-            out = new ObjectOutputStream(socket.getOutputStream());
-            in = new ObjectInputStream(socket.getInputStream());
-            System.out.println("Connected to server");
-
-            //Incoming message handler
-            new Thread(() -> {
-                while (true) {
-                    try {
-                        //TODO Handle new GameState when one is received.
-                        System.out.println(in.readObject().toString());
-                    } catch (Exception e) {
-                        System.out.println(e.toString());
-                    }
-                }
-            }).start();
-
-            // Sends updated GameState to Server when a move is made.
-            while (true) {
-                //TODO Sends out updated GameState when a move is made.
-            }
-        } catch (Exception e) {
+            client.connect(5000, IpAddress, port);
+        } catch (IOException e) {
             System.out.println(e.toString());
         }
-    }
-
-    public static void main(String[] args) throws IOException {
-        Client client = new Client("92.221.197.177", 32401);
+        client.addListener(new Listener() {
+            public void received(Connection connection, Object object) {
+                if (object instanceof String) {
+                    String response = (String) object;
+                    System.out.println(response);
+                }
+            }
+        });
     }
 }

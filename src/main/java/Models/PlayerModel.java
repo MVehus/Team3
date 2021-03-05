@@ -1,5 +1,7 @@
 package Models;
 
+import com.badlogic.gdx.math.Vector2;
+import network.Network;
 import projectCard.ProgramCard;
 
 import java.io.Serializable;
@@ -7,16 +9,32 @@ import java.util.ArrayList;
 
 public class PlayerModel implements Serializable {
 
+    private int id;
+    private Vector2 position;
     private int lifeTokens;
     private int damageTokens;
     private ArrayList<ProgramCard> programCards;
     private ProgramCard currentCard;
 
-    public PlayerModel() {
+    public PlayerModel(int id, Vector2 position) {
+        this.id = id;
+        this.position = position;
         lifeTokens = 3;
         damageTokens = 0;
         programCards = null;
         currentCard = null;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public Vector2 getPosition() {
+        return position;
+    }
+
+    public void setPosition(Vector2 position) {
+        this.position = position;
     }
 
     public int getLifeTokens() {
