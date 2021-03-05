@@ -76,7 +76,7 @@ Som bruker vil jeg kunne spille med andre spillere på forskjellige maskiner
 - Korrekt oppdatering av gamesate på alle tilkoblede maskiner
 ####Arbeidsoppgaver
 - Lese seg opp på relevant kunnskap om klient/server
-- Utvikle nødvendige klasser for mulitplayer funksjonalitet.
+- Utvikle nødvendige klasser for mulitplayer funksjonalitet. 
 ####Krav brukerhistorien oppfyller
 
 ###7:
