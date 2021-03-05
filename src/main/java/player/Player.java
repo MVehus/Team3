@@ -1,7 +1,6 @@
 package player;
 
 
-import board.Tile;
 import projectCard.ProgramCard;
 
 import java.util.ArrayList;
@@ -13,7 +12,6 @@ public class Player {
     private int damageToken;
     public ArrayList<ProgramCard> playerCards = new ArrayList<ProgramCard>();
     //private ArrayList<ProgramCard> program = new ArrayList<ProgramCard>();
-    private Tile backupPosition;
     private String name;
     private String ip;
 
