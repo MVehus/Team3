@@ -1,14 +1,16 @@
 package app.views;
 
+import Utilities.IpChecker;
 import app.ScreenOrchestrator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import network.Network;
-import network.Server;
 
 public class CreateGameScreen extends AbstractScreen{
+    int port;
+
     public CreateGameScreen(ScreenOrchestrator screenOrchestrator) {
         super(screenOrchestrator);
     }
@@ -36,29 +38,37 @@ public class CreateGameScreen extends AbstractScreen{
 
         stage.addActor(createServerTable);
 
-        Table createGameTable = new Table();
-        createGameTable.setFillParent(true);
-        createGameTable.setDebug(false);
-
-        Label connectedLabel = new Label("Connected Players:", skin);
-        TextButton createGameButton = new TextButton("Create Game", skin);
-
-        createGameTable.add(connectedLabel);
-        createGameTable.row().padTop(10);
-        createGameTable.add(createGameButton);
-        createGameTable.row().padTop(10);
+        TextButton startGameButton = new TextButton("Start Game", skin);
 
         createServerButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
-                Network.startServer(Integer.parseInt(portInput.getText()));
                 createServerTable.remove();
+                port = Integer.parseInt(portInput.getText());
+                Network.startServer(port);
+
+                Table createGameTable = new Table();
+                createGameTable.setFillParent(true);
+                createGameTable.setDebug(false);
+
+                Label connectedLabel = new Label("To connect to the server, give your friends this information:", skin);
+                Label connectionInfoLabel = new Label("IP: " + IpChecker.getIp() + " - Port: " + port, skin);
+
+                createGameTable.add(connectedLabel);
+                createGameTable.row().padTop(10);
+                createGameTable.add(connectionInfoLabel);
+                createGameTable.row().padTop(10);
+                createGameTable.add(startGameButton);
+                createGameTable.row().padTop(10);
                 createGameTable.add(mainMenu);
+
                 stage.addActor(createGameTable);
+
+                Network.makeNewClient("localhost", port);
             }
         });
 
-        createGameButton.addListener(new ChangeListener() {
+        startGameButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
                 parent.changeScreen(ScreenOrchestrator.APPLICATION);
