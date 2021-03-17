@@ -1,9 +1,17 @@
 package player;
 
 
+import Models.PlayerModel;
+import app.Direction;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.Vector2;
 import projectCard.ProgramCard;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 public class Player {
 
@@ -14,12 +22,52 @@ public class Player {
     //private ArrayList<ProgramCard> program = new ArrayList<ProgramCard>();
     private String name;
     private String ip;
+    private Vector2 position;
+    private Direction direction;
+    private int flagsTaken;
+    private List<String> currentLayers;
 
-    public Player(String name) {
-        this.name = name;
+    public Player(String nameID, Vector2 position) {
+        this.name = nameID;
+        this.position = position;
+        this.direction = Direction.RIGHT;
         this.lifeToken = 3;
         this.damageToken = 0;
+        this.flagsTaken = 0;
+        this.currentLayers = null;
+    }
 
+    public ProgramCard getCurrentCard(){
+        // Gjøre dette på en annen måte? Queue?
+        return playerCards.get(0);
+    }
+
+    public void setLayers(List<String> layers){
+        currentLayers = layers;
+    }
+
+    public List<String> getLayers(){
+        return currentLayers;
+    }
+
+    public Vector2 getPosition(){
+        return position;
+    }
+
+    public Direction getDirection(){
+        return direction;
+    }
+
+    public void setDirection(Direction newDirection){
+        this.direction = newDirection;
+    }
+
+    public void registerFlag(){
+        flagsTaken++;
+    }
+
+    public int getFlagScore(){
+        return flagsTaken;
     }
 
     public int getHealth() {
@@ -55,18 +103,21 @@ public class Player {
         //TODO
     }
 
-
     public int numLockedProgramCards() {
             if(getNumDamageTokens() <= 9 && getNumDamageTokens() >= 5){
                 return getNumDamageTokens() - 4;
             }
-
             return 0;
     }
 
 
     private void resetPosition() {
         //TODO
+    }
+
+    public String toString(){
+        return "PlayerName: " + name + " on position (x: " + position.x + ", y: " + position.y + ") with " + lifeToken + " lifetokens and "
+                + damageToken + " damage tokens. Has taken " + flagsTaken + " flags.";
     }
 
 

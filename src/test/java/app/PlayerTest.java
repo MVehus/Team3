@@ -1,6 +1,8 @@
 package app;
 
+import com.badlogic.gdx.math.Vector2;
 import org.junit.Test;
+import org.lwjgl.system.CallbackI;
 import player.Player;
 import projectCard.CardDeck;
 
@@ -8,8 +10,8 @@ import projectCard.CardDeck;
 import static org.junit.Assert.assertEquals;
 
 public class PlayerTest {
-
-    Player player = new Player("TestPlayer");
+    Vector2 pos = new Vector2(1,6);
+    Player player = new Player("TestPlayer", pos);
     CardDeck deck = new CardDeck();
 
     @Test

@@ -1,5 +1,6 @@
 package app;
 
+import Models.PlayerModel;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL30;
@@ -8,35 +9,51 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Vector2;
+import player.Player;
+import projectCard.ProgramCard;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 public class Game extends InputAdapter implements ApplicationListener {
     private SpriteBatch batch;
     private BitmapFont font;
     private TiledMap map;
+    // LAYERS
     private TiledMapTileLayer boardLayer;
     private TiledMapTileLayer playerLayer;
-    private TiledMapTileLayer holeLayer;
-    private TiledMapTileLayer flagLayer;
+
+    private HashMap<String, TiledMapTileLayer> layers;
+
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
     private final TiledMapTileLayer.Cell playerCell = new TiledMapTileLayer.Cell();
     private final TiledMapTileLayer.Cell playerWonCell = new TiledMapTileLayer.Cell();
     private final TiledMapTileLayer.Cell playerDiedCell = new TiledMapTileLayer.Cell();
-    private final Vector2 playerPos = new Vector2();
-    private int BoardWidth;
-    private int BoardHeight;
+
+    private List<Player> players = new ArrayList<>();
+    //private Vector2 playerPos;
+
+    private int boardWidth;
+    private int boardHeight;
 
     @Override
     public boolean keyUp(int keycode) {
+        Player currentPlayer = players.get(0);
+        Vector2 playerPos = currentPlayer.getPosition();
+
         playerLayer.setCell((int) playerPos.x, (int) playerPos.y, null);
         if (keycode == Input.Keys.UP) {
-            playerPos.y = (playerPos.y == BoardHeight-1) ? BoardHeight-1 : playerPos.y+1;
+            playerPos.y = (playerPos.y == boardHeight -1) ? boardHeight -1 : playerPos.y+1;
         }
         else if (keycode == Input.Keys.DOWN) {
             playerPos.y = (playerPos.y == 0) ? 0 : playerPos.y-1;
@@ -45,7 +62,7 @@ public class Game extends InputAdapter implements ApplicationListener {
             playerPos.x = (playerPos.x == 0) ? 0 : playerPos.x-1;
         }
         else if (keycode == Input.Keys.RIGHT) {
-            playerPos.x = (playerPos.x == BoardWidth-1) ? BoardWidth-1 : playerPos.x+1;
+            playerPos.x = (playerPos.x == boardWidth -1) ? boardWidth -1 : playerPos.x+1;
         }
         return super.keyUp(keycode);
     }
@@ -53,53 +70,195 @@ public class Game extends InputAdapter implements ApplicationListener {
     @Override
     public void create() {
 
-        //PlayerBoard player = new PlayerBoard(new Player("Arne"));
-
         batch = new SpriteBatch();
         font = new BitmapFont();
         font.setColor(Color.RED);
-
         Gdx.input.setInputProcessor(this);
 
+        // Setup map and layers
         map = new TmxMapLoader().load("src/assets/VaultMap.tmx");
-        boardLayer = (TiledMapTileLayer) map.getLayers().get("Board");
-        playerLayer = (TiledMapTileLayer) map.getLayers().get("Player");
-        holeLayer = (TiledMapTileLayer) map.getLayers().get("Hole");
-        flagLayer = (TiledMapTileLayer) map.getLayers().get("Flag");
+        loadLayers();
 
-        BoardWidth = boardLayer.getWidth();
-        BoardHeight = boardLayer.getHeight();
-
+        // Setup camera
+        boardLayer = layers.get("Board");
+        playerLayer = layers.get("Player");
+        boardWidth = boardLayer.getWidth();
+        boardHeight = boardLayer.getHeight();
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, BoardWidth  ,BoardHeight );
-        camera.position.x = (float) BoardWidth / 2;
+        camera.setToOrtho(false, boardWidth, boardHeight);
+        camera.position.x = (float) boardWidth / 2;
         camera.update();
         renderer = new OrthogonalTiledMapRenderer(map, 1/boardLayer.getTileHeight());
         renderer.setView(camera);
 
+        // Load player textures
         Texture playerTexture = new Texture("src/assets/player.png");
         TextureRegion[][] textureRegion = TextureRegion.split(playerTexture, 300, 300);
         playerCell.setTile(new StaticTiledMapTile(textureRegion[0][0]));
         playerWonCell.setTile(new StaticTiledMapTile(textureRegion[0][2]));
         playerDiedCell.setTile(new StaticTiledMapTile(textureRegion[0][1]));
-        playerPos.x = 1;
-        playerPos.y = 6;
+
+        //PLAYERS
+        Player player1 = new Player("André", new Vector2(1,6));
+        players.add(player1);
+
     }
 
     @Override
     public void render() {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
-
         renderer.render();
 
-        playerLayer.setCell((int) playerPos.x, (int) playerPos.y, playerCell);
-        if (holeLayer.getCell((int) playerPos.x, (int) playerPos.y) != null) {
-            playerLayer.setCell((int) playerPos.x, (int) playerPos.y, playerDiedCell);
+        for (Player player : players){
+
+            // Oppdater hvilke layers spiller står på
+            player.setLayers(getLayersOnPosition(player.getPosition()));
+            System.out.println(player.getLayers());
+
+            updatePlayerState(player);
+
+            // Tegn spiller på brettet
+            playerLayer.setCell((int) player.getPosition().x, (int) player.getPosition().y, getPlayerState(player));
         }
-        else if (flagLayer.getCell((int) playerPos.x, (int) playerPos.y) != null) {
-            playerLayer.setCell((int) playerPos.x, (int) playerPos.y, playerWonCell);
+    }
+
+    public void updatePlayerState(Player player){
+        List<String> layers = player.getLayers();
+
+        for(String layer : layers){
+            if(layer.equals("Hole")){
+                player.loseLifeToken();
+            }
+            else if (layer.equals("LaserHorizontal") || layer.equals("LaserVertical")){
+                player.takeDamage();
+            }
+            else if (layer.equals("FlagOne")){
+                if(player.getFlagScore() == 0)
+                    player.registerFlag();
+            }
+            else if (layer.equals("FlagTwo")){
+                if(player.getFlagScore() == 1)
+                    player.registerFlag();
+            }
+            else if (layer.equals("FlagThree")){
+                if(player.getFlagScore() == 2)
+                    player.registerFlag();
+            }
+
         }
+    }
+
+    public List<String> getLayersOnPosition(Vector2 position){
+        List<String> layersOnPos = new ArrayList<>();
+
+        for(String layerName : layers.keySet())
+            if (layers.get(layerName).getCell((int) position.x, (int) position.y) != null){
+                    if(layerName.equals("Board") || layerName.equals("RobotStart")) {
+                    }
+                    else {
+                        layersOnPos.add(layerName);
+                    }
+                }
+
+        return layersOnPos;
+    }
+
+
+    public void updatePlayerPositions(){
+        for (Player p : players){
+            Vector2 position = p.getPosition();
+            TiledMapTileLayer.Cell state = getPlayerState(p);
+            playerLayer.setCell((int) position.x, (int) position.y, state);
+        }
+    }
+
+    /**
+     *
+     * @param player
+     * @return state
+     */
+    public TiledMapTileLayer.Cell getPlayerState(Player player){
+        if (player.getFlagScore() >=3 ){
+            return playerWonCell;
+        }
+        else if (player.getHealth() <= 0){
+            return playerDiedCell;
+        }
+        else {
+            return playerCell;
+        }
+    }
+
+    public void playerTurn(Player player){
+
+        ProgramCard card = player.getCurrentCard();
+
+        switch (card.getValue()){
+            //ROTATE TURNS
+            case U_TURN:
+                switch (player.getDirection()){
+                    case UP:
+                        player.setDirection(Direction.DOWN);
+                    case DOWN:
+                        player.setDirection(Direction.UP);
+                    case RIGHT:
+                        player.setDirection(Direction.LEFT);
+                    case LEFT:
+                        player.setDirection(Direction.RIGHT);
+                }
+
+            case ROTATE_LEFT:
+                switch (player.getDirection()){
+                    case UP:
+                        player.setDirection(Direction.LEFT);
+                    case DOWN:
+                        player.setDirection(Direction.RIGHT);
+                    case RIGHT:
+                        player.setDirection(Direction.UP);
+                    case LEFT:
+                        player.setDirection(Direction.DOWN);
+                }
+            case ROTATE_RIGHT:
+                switch (player.getDirection()){
+                    case UP:
+                        player.setDirection(Direction.RIGHT);
+                    case DOWN:
+                        player.setDirection(Direction.LEFT);
+                    case RIGHT:
+                        player.setDirection(Direction.DOWN);
+                    case LEFT:
+                        player.setDirection(Direction.UP);
+                }
+            // MOVE TURNS
+            case MOVE_ONE:
+        }
+    }
+
+    /**
+     * Get all layers from map and put them into a hashmap
+     * Key - LayerName
+     * Value - TiledMapLayer
+     */
+    public void loadLayers(){
+        List<String> allLayers = Arrays.asList(
+                "Board", "Player", "Hole", "RobotStart",
+                "FlagOne", "FlagTwo", "FlagThree",
+                "LaserHorizontal", "LaserVertical",
+                "PushWallLeft", "PushWallRight", "PushWallTop", "PushWallBottom",
+                "SingleConveyorDown", "SingleConveyorRight", "SingleConveyorUp", "SingleConveyorLeft",
+                "DoubleConveyorUp", "DoubleConveyorRight",
+                "WallLeft", "WallTop", "WallRight", "WallBottom", "WallTopRight", "WallBottomRight", "WallTopLeft", "WallBottomLeft",
+                "Wrench", "HammerWrench",
+                "RotateRight"
+                );
+
+        layers = new HashMap<>();
+        for(String name : allLayers){
+            TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(name);
+            layers.put(name, layer);
+        }
+
     }
 
     @Override
@@ -107,15 +266,19 @@ public class Game extends InputAdapter implements ApplicationListener {
         batch.dispose();
         font.dispose();
     }
-    @Override
-    public void resize(int width, int height) {
-    }
 
     @Override
     public void pause() {
+
     }
 
     @Override
     public void resume() {
+
+    }
+
+    @Override
+    public void resize(int i, int i1) {
+
     }
 }
