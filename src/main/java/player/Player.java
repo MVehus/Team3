@@ -8,6 +8,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
 import projectCard.ProgramCard;
 
+import java.nio.file.DirectoryNotEmptyException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -37,6 +38,29 @@ public class Player {
         this.currentLayers = null;
     }
 
+    public boolean canGo(Direction dir){
+        return false;
+    }
+
+    public void move(Direction dir){
+        int xPos = (int) position.x;
+        int yPos = (int) position.y;
+        switch (dir){
+            case UP:
+                setPosition(xPos, yPos + 1);
+                break;
+            case DOWN:
+                setPosition(xPos, yPos - 1);
+                break;
+            case LEFT:
+                setPosition(xPos - 1, yPos);
+                break;
+            case RIGHT:
+                setPosition(xPos + 1, yPos);
+                break;
+        }
+    }
+
     public ProgramCard getCurrentCard(){
         // Gjøre dette på en annen måte? Queue?
         return playerCards.get(0);
@@ -48,6 +72,12 @@ public class Player {
 
     public List<String> getLayers(){
         return currentLayers;
+    }
+
+    private void setPosition(int x, int y){
+        position.x = x ;
+        position.y = y ;
+
     }
 
     public Vector2 getPosition(){

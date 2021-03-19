@@ -14,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Vector2;
+import org.lwjgl.system.CallbackI;
 import player.Player;
 import projectCard.ProgramCard;
 
@@ -98,8 +99,13 @@ public class Game extends InputAdapter implements ApplicationListener {
         playerDiedCell.setTile(new StaticTiledMapTile(textureRegion[0][1]));
 
         //PLAYERS
-        Player player1 = new Player("André", new Vector2(5,0));
+        Player player1 = new Player("André", new Vector2(0,0));
         players.add(player1);
+        player1.move(Direction.UP);
+        player1.move(Direction.UP);
+        player1.move(Direction.UP);
+        player1.move(Direction.RIGHT);
+        player1.move(Direction.DOWN);
 
     }
 
@@ -156,11 +162,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         }
     }
 
-    /**
-     *
-     * @param player
-     * @return state - Could be playerLayer,
-     */
     public TiledMapTileLayer.Cell getPlayerState(Player player){
         if (player.getFlagScore() >=3 ){
             return playerWonCell;
@@ -217,7 +218,6 @@ public class Game extends InputAdapter implements ApplicationListener {
             case MOVE_ONE:
         }
     }
-
 
     @Override
     public void dispose() {
