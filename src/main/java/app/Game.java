@@ -1,6 +1,5 @@
 package app;
 
-import Models.PlayerModel;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL30;
@@ -9,7 +8,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -20,7 +18,6 @@ import player.Player;
 import projectCard.ProgramCard;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -31,14 +28,14 @@ public class Game extends InputAdapter implements ApplicationListener {
     // LAYERS
     private TiledMapTileLayer boardLayer;
     private TiledMapTileLayer playerLayer;
-
-    private HashMap<String, TiledMapTileLayer> layers;
+    private Board gameBoard;
 
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
     private final TiledMapTileLayer.Cell playerCell = new TiledMapTileLayer.Cell();
     private final TiledMapTileLayer.Cell playerWonCell = new TiledMapTileLayer.Cell();
     private final TiledMapTileLayer.Cell playerDiedCell = new TiledMapTileLayer.Cell();
+
 
     private List<Player> players = new ArrayList<>();
     //private Vector2 playerPos;
@@ -77,13 +74,15 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         // Setup map and layers
         map = new TmxMapLoader().load("src/assets/VaultMap.tmx");
-        loadLayers();
+
+        // Load map into a board object
+        gameBoard = new Board(map);
 
         // Setup camera
-        boardLayer = layers.get("Board");
-        playerLayer = layers.get("Player");
-        boardWidth = boardLayer.getWidth();
-        boardHeight = boardLayer.getHeight();
+        boardLayer = gameBoard.getLayer(Tile.Board);
+        playerLayer = gameBoard.getLayer(Tile.Player);
+        boardWidth = gameBoard.getNumColumns();
+        boardHeight = gameBoard.getNumRows();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, boardWidth, boardHeight);
         camera.position.x = (float) boardWidth / 2;
@@ -99,7 +98,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         playerDiedCell.setTile(new StaticTiledMapTile(textureRegion[0][1]));
 
         //PLAYERS
-        Player player1 = new Player("André", new Vector2(1,6));
+        Player player1 = new Player("André", new Vector2(5,0));
         players.add(player1);
 
     }
@@ -111,12 +110,11 @@ public class Game extends InputAdapter implements ApplicationListener {
         renderer.render();
 
         for (Player player : players){
-
             // Oppdater hvilke layers spiller står på
-            player.setLayers(getLayersOnPosition(player.getPosition()));
-            System.out.println(player.getLayers());
+            //player.setLayers(getLayersOnPosition(player.getPosition()));
+            //System.out.println(player.getLayers());
 
-            updatePlayerState(player);
+            //updatePlayerState(player);
 
             // Tegn spiller på brettet
             playerLayer.setCell((int) player.getPosition().x, (int) player.getPosition().y, getPlayerState(player));
@@ -126,6 +124,7 @@ public class Game extends InputAdapter implements ApplicationListener {
     public void updatePlayerState(Player player){
         List<String> layers = player.getLayers();
 
+        // Loop through layers player is on
         for(String layer : layers){
             if(layer.equals("Hole")){
                 player.loseLifeToken();
@@ -149,22 +148,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         }
     }
 
-    public List<String> getLayersOnPosition(Vector2 position){
-        List<String> layersOnPos = new ArrayList<>();
-
-        for(String layerName : layers.keySet())
-            if (layers.get(layerName).getCell((int) position.x, (int) position.y) != null){
-                    if(layerName.equals("Board") || layerName.equals("RobotStart")) {
-                    }
-                    else {
-                        layersOnPos.add(layerName);
-                    }
-                }
-
-        return layersOnPos;
-    }
-
-
     public void updatePlayerPositions(){
         for (Player p : players){
             Vector2 position = p.getPosition();
@@ -176,7 +159,7 @@ public class Game extends InputAdapter implements ApplicationListener {
     /**
      *
      * @param player
-     * @return state
+     * @return state - Could be playerLayer,
      */
     public TiledMapTileLayer.Cell getPlayerState(Player player){
         if (player.getFlagScore() >=3 ){
@@ -235,31 +218,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         }
     }
 
-    /**
-     * Get all layers from map and put them into a hashmap
-     * Key - LayerName
-     * Value - TiledMapLayer
-     */
-    public void loadLayers(){
-        List<String> allLayers = Arrays.asList(
-                "Board", "Player", "Hole", "RobotStart",
-                "FlagOne", "FlagTwo", "FlagThree",
-                "LaserHorizontal", "LaserVertical",
-                "PushWallLeft", "PushWallRight", "PushWallTop", "PushWallBottom",
-                "SingleConveyorDown", "SingleConveyorRight", "SingleConveyorUp", "SingleConveyorLeft",
-                "DoubleConveyorUp", "DoubleConveyorRight",
-                "WallLeft", "WallTop", "WallRight", "WallBottom", "WallTopRight", "WallBottomRight", "WallTopLeft", "WallBottomLeft",
-                "Wrench", "HammerWrench",
-                "RotateRight"
-                );
-
-        layers = new HashMap<>();
-        for(String name : allLayers){
-            TiledMapTileLayer layer = (TiledMapTileLayer) map.getLayers().get(name);
-            layers.put(name, layer);
-        }
-
-    }
 
     @Override
     public void dispose() {
@@ -268,17 +226,11 @@ public class Game extends InputAdapter implements ApplicationListener {
     }
 
     @Override
-    public void pause() {
-
-    }
+    public void pause() { }
 
     @Override
-    public void resume() {
-
-    }
+    public void resume() { }
 
     @Override
-    public void resize(int i, int i1) {
-
-    }
+    public void resize(int i, int i1) { }
 }
