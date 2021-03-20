@@ -35,10 +35,6 @@ public class Board {
         return tileLocations.get(tile);
     }
 
-    public List<Vector2> getStartPositions(){
-        return tileLocations.get(Tile.RobotStart);
-    }
-
     private void initialize(){
         tileLocations = new HashMap<>();
 

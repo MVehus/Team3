@@ -181,13 +181,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         renderer = new OrthogonalTiledMapRenderer(map, 1/boardLayer.getTileHeight());
         renderer.setView(camera);
 
-        // Load player textures
-        Texture playerTexture = new Texture("src/assets/player.png");
-        TextureRegion[][] textureRegion = TextureRegion.split(playerTexture, 300, 300);
-        playerCell.setTile(new StaticTiledMapTile(textureRegion[0][0]));
-        playerWonCell.setTile(new StaticTiledMapTile(textureRegion[0][2]));
-        playerDiedCell.setTile(new StaticTiledMapTile(textureRegion[0][1]));
-
         //PLAYERS
         Player player1 = new Player("André", new Vector2(0,0));
         players.add(player1);
@@ -207,40 +200,38 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         for (Player player : players){
             // Oppdater hvilke layers spiller står på
-            //player.setLayers(getLayersOnPosition(player.getPosition()));
+            player.setLayers(gameBoard.getTilesOnCell(player.getPosition().x, player.getPosition().y));
             //System.out.println(player.getLayers());
 
-            //updatePlayerState(player);
+            updatePlayerState(player);
 
             // Tegn spiller på brettet
-            playerLayer.setCell((int) player.getPosition().x, (int) player.getPosition().y, getPlayerState(player));
+            playerLayer.setCell((int) player.getPosition().x, (int) player.getPosition().y, player.getPlayerState());
         }
     }
 
     public void updatePlayerState(Player player){
-        List<String> layers = player.getLayers();
 
         // Loop through layers player is on
-        for(String layer : layers){
-            if(layer.equals("Hole")){
+        for(Tile layer : player.getLayers()){
+            if(layer.equals(Tile.Hole)){
                 player.loseLifeToken();
             }
-            else if (layer.equals("LaserHorizontal") || layer.equals("LaserVertical")){
+            else if (layer.equals(Tile.LaserHorizontal) || layer.equals(Tile.LaserVertical)){
                 player.takeDamage();
             }
-            else if (layer.equals("FlagOne")){
+            else if (layer.equals(Tile.FlagOne)){
                 if(player.getFlagScore() == 0)
                     player.registerFlag();
             }
-            else if (layer.equals("FlagTwo")){
+            else if (layer.equals(Tile.FlagTwo)){
                 if(player.getFlagScore() == 1)
                     player.registerFlag();
             }
-            else if (layer.equals("FlagThree")){
+            else if (layer.equals(Tile.FlagThree)){
                 if(player.getFlagScore() == 2)
                     player.registerFlag();
             }
-
         }
     }
 

@@ -3,8 +3,12 @@ package player;
 
 import Models.PlayerModel;
 import app.Direction;
+import app.Tile;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Vector2;
 import projectCard.ProgramCard;
 
@@ -26,18 +30,44 @@ public class Player {
     private Vector2 position;
     private Direction direction;
     private int flagsTaken;
-    private List<String> currentLayers;
+    private List<Tile> currentLayers;
+    private boolean isAlive;
+
+    private final TiledMapTileLayer.Cell playerCell = new TiledMapTileLayer.Cell();
+    private final TiledMapTileLayer.Cell playerWonCell = new TiledMapTileLayer.Cell();
+    private final TiledMapTileLayer.Cell playerDiedCell = new TiledMapTileLayer.Cell();
 
     public Player(String nameID, Vector2 position) {
         this.name = nameID;
+        this.isAlive = true;
         this.position = position;
         this.direction = Direction.RIGHT;
         this.lifeToken = 3;
         this.damageToken = 0;
         this.flagsTaken = 0;
         this.currentLayers = null;
+
+        // Load player textures
+        Texture playerTexture = new Texture("src/assets/player.png");
+        TextureRegion[][] textureRegion = TextureRegion.split(playerTexture, 300, 300);
+        playerCell.setTile(new StaticTiledMapTile(textureRegion[0][0]));
+        playerWonCell.setTile(new StaticTiledMapTile(textureRegion[0][2]));
+        playerDiedCell.setTile(new StaticTiledMapTile(textureRegion[0][1]));
     }
 
+    public boolean isAlive(){
+        return isAlive;
+    }
+
+    public TiledMapTileLayer.Cell getPlayerState(){
+        if(this.getFlagScore() == 3)
+            return playerWonCell;
+        else if(!isAlive)
+            return playerDiedCell;
+        else {
+            return playerCell;
+        }
+    }
     public boolean canGo(Direction dir){
         return false;
     }
@@ -66,11 +96,11 @@ public class Player {
         return playerCards.get(0);
     }
 
-    public void setLayers(List<String> layers){
+    public void setLayers(List<Tile> layers){
         currentLayers = layers;
     }
 
-    public List<String> getLayers(){
+    public List<Tile> getLayers(){
         return currentLayers;
     }
 
@@ -122,6 +152,7 @@ public class Player {
     }
 
     public void loseLifeToken() {
+        isAlive = false;
         lifeToken -= 1;
         if (lifeToken != 0) {
             resetPosition();
@@ -139,7 +170,6 @@ public class Player {
             }
             return 0;
     }
-
 
     private void resetPosition() {
         //TODO
