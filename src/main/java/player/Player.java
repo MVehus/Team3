@@ -68,14 +68,15 @@ public class Player {
             return playerCell;
         }
     }
+
     public boolean canGo(Direction dir){
         return false;
     }
 
-    public void move(Direction dir){
+    public void move(){
         int xPos = (int) position.x;
         int yPos = (int) position.y;
-        switch (dir){
+        switch (this.direction){
             case UP:
                 setPosition(xPos, yPos + 1);
                 break;

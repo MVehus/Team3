@@ -30,6 +30,7 @@ public class Game extends InputAdapter implements ApplicationListener {
     private TiledMapTileLayer boardLayer;
     private TiledMapTileLayer playerLayer;
     private Board gameBoard;
+    private List<Vector2> startPositions;
 
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
@@ -37,9 +38,7 @@ public class Game extends InputAdapter implements ApplicationListener {
     private final TiledMapTileLayer.Cell playerWonCell = new TiledMapTileLayer.Cell();
     private final TiledMapTileLayer.Cell playerDiedCell = new TiledMapTileLayer.Cell();
 
-
     private List<Player> players = new ArrayList<>();
-    //private Vector2 playerPos;
 
     private int boardWidth;
     private int boardHeight;
@@ -185,15 +184,14 @@ public class Game extends InputAdapter implements ApplicationListener {
         renderer = new OrthogonalTiledMapRenderer(map, 1/boardLayer.getTileHeight());
         renderer.setView(camera);
 
-        //PLAYERS
-        Player player1 = new Player("André", new Vector2(0,0));
-        players.add(player1);
-        player1.move(Direction.UP);
-        player1.move(Direction.UP);
-        player1.move(Direction.UP);
-        player1.move(Direction.RIGHT);
-        player1.move(Direction.DOWN);
+        startPositions = gameBoard.getTileLocations(Tile.RobotStart);
 
+        //PLAYERS
+        Player player1 = new Player("André", startPositions.get(3));
+        players.add(player1);
+        player1.move();
+        player1.move();
+        player1.move();
     }
 
     @Override
