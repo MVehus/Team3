@@ -105,7 +105,7 @@ public class Player {
         return currentLayers;
     }
 
-    private void setPosition(int x, int y){
+    public void setPosition(int x, int y){
         position.x = x ;
         position.y = y ;
 

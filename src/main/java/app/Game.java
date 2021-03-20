@@ -110,6 +110,7 @@ public class Game extends InputAdapter implements ApplicationListener {
             }
         }
         System.out.println(currentPlayer.getName() + " at " + gameBoard.getTilesOnCell(playerPos.x, playerPos.y));
+        gameBoard.conveyorBeltMove(players);
         checkForHole(currentPlayer);
         return super.keyUp(keycode);
     }

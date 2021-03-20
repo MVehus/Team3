@@ -4,6 +4,7 @@ import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Vector2;
+import player.Player;
 
 import java.util.*;
 
@@ -77,4 +78,21 @@ public class Board {
         return this.numRows;
     }
 
+
+    public void conveyorBeltMove(List<Player> players) {
+        for (Player player : players) {
+            if (getTilesOnCell(player.getPosition().x, player.getPosition().y).contains(Tile.SingleConveyorDown)) {
+                player.setPosition((int)(player.getPosition().x), (int)player.getPosition().y-1);
+            }
+            else if (getTilesOnCell(player.getPosition().x, player.getPosition().y).contains(Tile.SingleConveyorUp)) {
+                player.setPosition((int)player.getPosition().x, (int)player.getPosition().y+1);
+            }
+            else if (getTilesOnCell(player.getPosition().x, player.getPosition().y).contains(Tile.SingleConveyorLeft)) {
+                player.setPosition((int)player.getPosition().x-1, (int)player.getPosition().y);
+            }
+            else if (getTilesOnCell(player.getPosition().x, player.getPosition().y).contains(Tile.SingleConveyorRight)) {
+                player.setPosition((int)player.getPosition().x+1, (int)player.getPosition().y);
+            }
+        }
+    }
 }
