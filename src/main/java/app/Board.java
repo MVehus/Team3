@@ -54,7 +54,7 @@ public class Board {
         }
     }
 
-    private List<Tile> getTilesOnCell(float x, float y){
+    public List<Tile> getTilesOnCell(float x, float y){
         List<Tile> layersOnPos = new ArrayList<>();
 
         for(Tile layer : layers.keySet())

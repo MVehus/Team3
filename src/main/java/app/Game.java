@@ -50,20 +50,110 @@ public class Game extends InputAdapter implements ApplicationListener {
         Vector2 playerPos = currentPlayer.getPosition();
 
         playerLayer.setCell((int) playerPos.x, (int) playerPos.y, null);
+
         if (keycode == Input.Keys.UP) {
-            playerPos.y = (playerPos.y == boardHeight -1) ? boardHeight -1 : playerPos.y+1;
+            if (moveHasWall(playerPos.x, playerPos.y, playerPos.x, playerPos.y+1)) {
+                System.out.println("Wall");
+                //Do nothing
+            }
+            else if (playerPos.y == boardHeight-1) {
+                System.out.println("Test");
+                currentPlayer.loseLifeToken();
+            }
+            else {
+                System.out.println("Move");
+                playerPos.y = (playerPos.y == boardHeight -1) ? boardHeight -1 : playerPos.y+1;
+            }
         }
+
         else if (keycode == Input.Keys.DOWN) {
-            playerPos.y = (playerPos.y == 0) ? 0 : playerPos.y-1;
+            if (moveHasWall(playerPos.x, playerPos.y, playerPos.x, playerPos.y-1)) {
+                System.out.println("Wall");
+                //Do nothing
+            }
+            else if (playerPos.y == 0) {
+                System.out.println("Test");
+                currentPlayer.loseLifeToken();
+            }
+            else {
+                System.out.println("Move");
+                playerPos.y = (playerPos.y == 0) ? 0 : playerPos.y - 1;
+            }
         }
+
         else if (keycode == Input.Keys.LEFT) {
-            playerPos.x = (playerPos.x == 0) ? 0 : playerPos.x-1;
+            if (moveHasWall(playerPos.x, playerPos.y, playerPos.x-1, playerPos.y)) {
+                System.out.println("Wall");
+                //Do nothing
+            }
+            else if (playerPos.x == 0) {
+                System.out.println("Test");
+                currentPlayer.loseLifeToken();
+            }
+            else {
+                System.out.println("Move");
+                playerPos.x = (playerPos.x == 0) ? 0 : playerPos.x-1;
+            }
+
         }
         else if (keycode == Input.Keys.RIGHT) {
-            playerPos.x = (playerPos.x == boardWidth -1) ? boardWidth -1 : playerPos.x+1;
+            if (moveHasWall(playerPos.x, playerPos.y, playerPos.x+1, playerPos.y)) {
+                System.out.println("Wall");
+                //Do nothing
+            }
+            else if (playerPos.x == boardWidth-1) {
+                System.out.println("Test");
+                currentPlayer.loseLifeToken();
+            }
+            else {
+                System.out.println("Move");
+                playerPos.x = (playerPos.x == boardWidth -1) ? boardWidth -1 : playerPos.x+1;
+            }
         }
+        System.out.println(currentPlayer.getName() + " at " + gameBoard.getTilesOnCell(playerPos.x, playerPos.y));
+        checkForHole(currentPlayer);
         return super.keyUp(keycode);
     }
+
+    private boolean moveHasWall(float x, float y, float x1, float y1) {
+        List<Tile> currentTile = gameBoard.getTilesOnCell(x, y);
+        List<Tile> newTile     = gameBoard.getTilesOnCell(x1, y1);
+
+        if (y < y1) {
+            if (currentTile.contains(Tile.WallTop) || currentTile.contains(Tile.WallTopRight) || currentTile.contains(Tile.WallTopLeft) ||
+                newTile.contains(Tile.WallBottom)  || newTile.contains(Tile.WallBottomRight)  || newTile.contains(Tile.WallBottomLeft))
+                return true;
+            return false;
+        }
+        else if (y > y1) {
+            if (currentTile.contains(Tile.WallBottom) || currentTile.contains(Tile.WallBottomRight) || currentTile.contains(Tile.WallBottomLeft) ||
+                newTile.contains(Tile.WallTop)  || newTile.contains(Tile.WallTopRight)  || newTile.contains(Tile.WallTopLeft))
+                return true;
+            return false;
+        }
+        else if (x < x1) {
+            if (currentTile.contains(Tile.WallRight) || currentTile.contains(Tile.WallTopRight) || currentTile.contains(Tile.WallBottomRight) ||
+                newTile.contains(Tile.WallLeft)  || newTile.contains(Tile.WallTopLeft)  || newTile.contains(Tile.WallBottomLeft))
+                return true;
+            return false;
+        }
+        else if (x > x1) {
+            if (currentTile.contains(Tile.WallLeft) || currentTile.contains(Tile.WallBottomLeft) || currentTile.contains(Tile.WallTopLeft) ||
+                    newTile.contains(Tile.WallRight)  || newTile.contains(Tile.WallTopRight)  || newTile.contains(Tile.WallBottomRight))
+                return true;
+            return false;
+        }
+        return false;
+    }
+
+    private boolean checkForHole(Player player) {
+        if (gameBoard.getTilesOnCell(player.getPosition().x, player.getPosition().y).contains(Tile.Hole)) {
+            player.loseLifeToken();
+            return true;
+        }
+        return false;
+    }
+
 
     @Override
     public void create() {
