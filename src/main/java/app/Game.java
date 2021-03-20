@@ -121,25 +121,29 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         if (y < y1) {
             if (currentTile.contains(Tile.WallTop) || currentTile.contains(Tile.WallTopRight) || currentTile.contains(Tile.WallTopLeft) ||
-                newTile.contains(Tile.WallBottom)  || newTile.contains(Tile.WallBottomRight)  || newTile.contains(Tile.WallBottomLeft))
+                newTile.contains(Tile.WallBottom)  || newTile.contains(Tile.WallBottomRight)  || newTile.contains(Tile.WallBottomLeft) ||
+                currentTile.contains(Tile.PushWallTop) || newTile.contains(Tile.PushWallBottom))
                 return true;
             return false;
         }
         else if (y > y1) {
             if (currentTile.contains(Tile.WallBottom) || currentTile.contains(Tile.WallBottomRight) || currentTile.contains(Tile.WallBottomLeft) ||
-                newTile.contains(Tile.WallTop)  || newTile.contains(Tile.WallTopRight)  || newTile.contains(Tile.WallTopLeft))
+                newTile.contains(Tile.WallTop)  || newTile.contains(Tile.WallTopRight)  || newTile.contains(Tile.WallTopLeft) ||
+                currentTile.contains(Tile.PushWallBottom) || newTile.contains(Tile.PushWallTop))
                 return true;
             return false;
         }
         else if (x < x1) {
             if (currentTile.contains(Tile.WallRight) || currentTile.contains(Tile.WallTopRight) || currentTile.contains(Tile.WallBottomRight) ||
-                newTile.contains(Tile.WallLeft)  || newTile.contains(Tile.WallTopLeft)  || newTile.contains(Tile.WallBottomLeft))
+                newTile.contains(Tile.WallLeft)  || newTile.contains(Tile.WallTopLeft)  || newTile.contains(Tile.WallBottomLeft) ||
+                currentTile.contains(Tile.PushWallRight) || newTile.contains(Tile.PushWallLeft))
                 return true;
             return false;
         }
         else if (x > x1) {
             if (currentTile.contains(Tile.WallLeft) || currentTile.contains(Tile.WallBottomLeft) || currentTile.contains(Tile.WallTopLeft) ||
-                    newTile.contains(Tile.WallRight)  || newTile.contains(Tile.WallTopRight)  || newTile.contains(Tile.WallBottomRight))
+                newTile.contains(Tile.WallRight)  || newTile.contains(Tile.WallTopRight)  || newTile.contains(Tile.WallBottomRight) ||
+                currentTile.contains(Tile.PushWallLeft) || newTile.contains(Tile.PushWallRight))
                 return true;
             return false;
         }
