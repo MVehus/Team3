@@ -110,8 +110,9 @@ public class Game extends InputAdapter implements ApplicationListener {
             }
         }
         System.out.println(currentPlayer.getName() + " at " + gameBoard.getTilesOnCell(playerPos.x, playerPos.y));
+        gameBoard.expressConveyorBeltMove(players);
         gameBoard.conveyorBeltMove(players);
-        checkForHole(currentPlayer);
+        gameBoard.checkForHole(currentPlayer);
         return super.keyUp(keycode);
     }
 
@@ -146,14 +147,6 @@ public class Game extends InputAdapter implements ApplicationListener {
                 currentTile.contains(Tile.PushWallLeft) || newTile.contains(Tile.PushWallRight))
                 return true;
             return false;
-        }
-        return false;
-    }
-
-    private boolean checkForHole(Player player) {
-        if (gameBoard.getTilesOnCell(player.getPosition().x, player.getPosition().y).contains(Tile.Hole)) {
-            player.loseLifeToken();
-            return true;
         }
         return false;
     }

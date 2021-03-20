@@ -94,5 +94,33 @@ public class Board {
                 player.setPosition((int)player.getPosition().x+1, (int)player.getPosition().y);
             }
         }
+        expressConveyorBeltMove(players);
+    }
+
+    public void expressConveyorBeltMove(List<Player> players) {
+        for (Player player : players) {
+
+            if (getTilesOnCell(player.getPosition().x, player.getPosition().y).contains(Tile.DoubleConveyorUp)) {
+                player.setPosition((int)player.getPosition().x, (int)player.getPosition().y+1);
+            }
+
+            else if (getTilesOnCell(player.getPosition().x, player.getPosition().y).contains(Tile.DoubleConveyorRight)) {
+                player.setPosition((int)player.getPosition().x+1, (int)player.getPosition().y);
+            }
+            /*
+            else if (getTilesOnCell(player.getPosition().x, player.getPosition().y).contains(Tile.DoubleConveyorDown)) {
+                player.setPosition((int)(player.getPosition().x), (int)player.getPosition().y-1);
+            }
+            else if (getTilesOnCell(player.getPosition().x, player.getPosition().y).contains(Tile.DoubleConveyorLeft)) {
+                player.setPosition((int)player.getPosition().x-1, (int)player.getPosition().y);
+            }
+             */
+        }
+    }
+
+    public void checkForHole(Player player) {
+        if (getTilesOnCell(player.getPosition().x, player.getPosition().y).contains(Tile.Hole)) {
+            player.loseLifeToken();
+        }
     }
 }
