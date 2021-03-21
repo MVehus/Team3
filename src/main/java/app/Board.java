@@ -56,7 +56,7 @@ public class Board {
 
         for(Tile layer : layers.keySet())
             if (layers.get(layer).getCell((int) x, (int) y) != null){
-                if(layer.equals(Tile.Board) || layer.equals(Tile.Player)) {
+                if(layer.equals(Tile.Board) || layer.equals(Tile.Flag)) {
                 }
                 else {
                     layersOnPos.add(layer);
@@ -77,7 +77,6 @@ public class Board {
     public int getNumRows(){
         return this.numRows;
     }
-
 
     public void conveyorBeltMove(List<Player> players) {
         for (Player player : players) {

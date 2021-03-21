@@ -1,76 +1,70 @@
 package player;
 
 
-import Models.PlayerModel;
 import app.Direction;
 import app.Tile;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Vector2;
+import projectCard.CardDeck;
 import projectCard.ProgramCard;
 
-import java.nio.file.DirectoryNotEmptyException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
 public class Player {
 
-    private int playerNr;
-    private int lifeToken;
-    private int damageToken;
-    public ArrayList<ProgramCard> playerCards = new ArrayList<ProgramCard>();
-    //private ArrayList<ProgramCard> program = new ArrayList<ProgramCard>();
-    private String name;
-    private String ip;
+    private final String name;
     private Vector2 position;
     private Direction direction;
+    public ArrayList<ProgramCard> programCards = new ArrayList<ProgramCard>();
+    private int lifeTokens;
+    private int damageTokens;
     private int flagsTaken;
     private List<Tile> currentLayers;
     private boolean isAlive;
-
-    private final TiledMapTileLayer.Cell playerCell = new TiledMapTileLayer.Cell();
-    private final TiledMapTileLayer.Cell playerWonCell = new TiledMapTileLayer.Cell();
-    private final TiledMapTileLayer.Cell playerDiedCell = new TiledMapTileLayer.Cell();
 
     public Player(String nameID, Vector2 position) {
         this.name = nameID;
         this.isAlive = true;
         this.position = position;
         this.direction = Direction.RIGHT;
-        this.lifeToken = 3;
-        this.damageToken = 0;
+        this.lifeTokens = 3;
+        this.damageTokens = 0;
         this.flagsTaken = 0;
         this.currentLayers = null;
-
-        // Load player textures
-        Texture playerTexture = new Texture("src/assets/player.png");
-        TextureRegion[][] textureRegion = TextureRegion.split(playerTexture, 300, 300);
-        playerCell.setTile(new StaticTiledMapTile(textureRegion[0][0]));
-        playerWonCell.setTile(new StaticTiledMapTile(textureRegion[0][2]));
-        playerDiedCell.setTile(new StaticTiledMapTile(textureRegion[0][1]));
     }
 
     public boolean isAlive(){
         return isAlive;
     }
 
-    public TiledMapTileLayer.Cell getPlayerState(){
-        if(this.getFlagScore() == 3)
-            return playerWonCell;
-        else if(!isAlive)
-            return playerDiedCell;
-        else {
-            return playerCell;
+    public Vector2 getNextCell(){
+        int xPos = (int) position.x;
+        int yPos = (int) position.y;
+        Vector2 nextCell = new Vector2();
+        switch (this.direction){
+            case UP:
+                nextCell.x = xPos;
+                nextCell.y = yPos + 1;
+                break;
+            case DOWN:
+                nextCell.x = xPos;
+                nextCell.y = yPos - 1;
+                break;
+            case LEFT:
+                nextCell.x = xPos - 1;
+                nextCell.y = yPos;
+                break;
+            case RIGHT:
+                nextCell.x = xPos + 1;
+                nextCell.y = yPos;
+                break;
         }
-    }
 
-    public boolean canGo(Direction dir){
-        return false;
+        return nextCell;
     }
 
     public void move(){
@@ -90,11 +84,6 @@ public class Player {
                 setPosition(xPos + 1, yPos);
                 break;
         }
-    }
-
-    public ProgramCard getCurrentCard(){
-        // Gjøre dette på en annen måte? Queue?
-        return playerCards.get(0);
     }
 
     public void setLayers(List<Tile> layers){
@@ -132,7 +121,7 @@ public class Player {
     }
 
     public int getHealth() {
-        return lifeToken;
+        return lifeTokens;
     }
 
     public String getName(){
@@ -140,8 +129,8 @@ public class Player {
     }
 
     public void takeDamage() {
-        damageToken += 1;
-        if (damageToken == 10) {
+        damageTokens += 1;
+        if (damageTokens == 10) {
             //reset position
             loseLifeToken();
             //check for more life tokens
@@ -149,20 +138,30 @@ public class Player {
     }
 
     public int getNumDamageTokens() {
-        return damageToken;
+        return damageTokens;
     }
 
     public void loseLifeToken() {
         isAlive = false;
-        lifeToken -= 1;
-        if (lifeToken != 0) {
+        lifeTokens -= 1;
+        if (lifeTokens != 0) {
             resetPosition();
-            damageToken = 0;
+            damageTokens = 0;
         }
     }
 
-    public void drawProgramCards() {
-        //TODO
+    public void drawProgramCards(CardDeck deck) {
+        int numCards = 9 - damageTokens;
+        programCards = deck.drawCards(numCards);
+    }
+
+    public ProgramCard getCurrentCard(){
+        // Gjøre dette på en annen måte? Queue?
+        return programCards.get(0);
+    }
+
+    public List<ProgramCard> getProgramCards(){
+        return programCards;
     }
 
     public int numLockedProgramCards() {
@@ -177,8 +176,8 @@ public class Player {
     }
 
     public String toString(){
-        return "PlayerName: " + name + " on position (x: " + position.x + ", y: " + position.y + ") with " + lifeToken + " lifetokens and "
-                + damageToken + " damage tokens. Has taken " + flagsTaken + " flags.";
+        return "PlayerName: " + name + " on position (x: " + position.x + ", y: " + position.y + ") with " + lifeTokens + " lifetokens and "
+                + damageTokens + " damage tokens. Has taken " + flagsTaken + " flags.";
     }
 
 
