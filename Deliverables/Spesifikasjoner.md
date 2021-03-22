@@ -41,7 +41,7 @@ strekke oss mot ved å yte vårt beste individuelt, og utnytte eksisterende retn
 |[12](#logic12)| Dytting             | Logic       |<ul><li>- [ ] </li></ul> |
 |[13](#logic13)| Spesialtfelt        | Logic       |<ul><li>- [ ] </li></ul> |
 |[14](#logic14)| Laserskade          | Logic       |<ul><li>- [ ] </li></ul> |
-|[ 1](#multi1) | Spille med andre    | Multiplayer |<ul><li>- [x] </li></ul> |
+|[ 1](#multi1) | Spille med andre    | Multiplayer |<ul><li>- [ ] </li></ul> |
 |[ 2](#multi2) | Host/client valg    | Multiplayer |<ul><li>- [x] </li></ul> |
 |[ 3](#multi1) | Lobby               | Multiplayer |<ul><li>- [ ] </li></ul> |
 
