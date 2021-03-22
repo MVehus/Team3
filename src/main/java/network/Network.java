@@ -18,24 +18,26 @@ public class Network {
             client = new Client(IpAddress, port);
             return true;
         } catch (Exception e) {
-            System.out.println("Could not connnect new client to server with exception: \n" + e.toString());
+            System.out.println("Could not connect new client to server with exception: \n" + e.toString());
             return false;
         }
     }
 
-    public static Client getClient() {
-        return client;
-    }
-
     public static void disconnectClient() {
+        client.disconnect();
         client = null;
     }
 
-    public static Server getServer() {
-        return server;
+    public static ArrayList<Connection> getAllClientsOnServer() {
+        return server.getClients();
     }
 
-    public static ArrayList<Connection> getAllClientsOnServer() {
-        return server != null ? server.getClients() : null;
+    /*
+    public static Client getClient() {
+        return client;
     }
+     public static Server getServer() {
+        return server;
+    }
+     */
 }

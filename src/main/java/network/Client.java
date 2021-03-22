@@ -10,9 +10,10 @@ import java.io.IOException;
 public class Client {
 
     Game game;
+    com.esotericsoftware.kryonet.Client client;
 
     public Client(String IpAddress, int port) {
-        com.esotericsoftware.kryonet.Client client = new com.esotericsoftware.kryonet.Client();
+        client = new com.esotericsoftware.kryonet.Client();
         client.start();
         try {
             client.connect(5000, IpAddress, port);
@@ -28,6 +29,10 @@ public class Client {
                 }
             }
         });
+    }
+
+    public void disconnect(){
+        client.close();
     }
 
     public void setGame(Game game) {
