@@ -1,7 +1,10 @@
 package projectCard;
 
+import org.lwjgl.system.CallbackI;
+
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -9,10 +12,15 @@ import java.util.Random;
  */
 public class CardDeck {
 
-    private ArrayList<ProgramCard> deck;
+    /**
+     * Store deck in a HashMap, store availability in value (True if card is available, False if card is already used)
+     */
+    private final ArrayList<ProgramCard> availableCards;
+    private final ArrayList<ProgramCard> usedCards;
 
     public CardDeck(){
-        this.deck = new ArrayList<>();
+        this.availableCards = new ArrayList<>();
+        this.usedCards = new ArrayList<>();
         createDeck();
     }
 
@@ -32,19 +40,26 @@ public class CardDeck {
     private void createDeck(){
         // Add 18 Move 1, Rotate Right, Rotate Left
         for (int i = 0; i < 18; i++){
-            deck.add(new ProgramCard(randomIntInRange(100, 200), Value.MOVE_ONE));
-            deck.add(new ProgramCard(randomIntInRange(100, 200), Value.ROTATE_RIGHT));
-            deck.add(new ProgramCard(randomIntInRange(100, 200), Value.ROTATE_LEFT));
+            ProgramCard move_one = new ProgramCard(randomIntInRange(100, 200), Value.MOVE_ONE);
+            ProgramCard rotate_right = new ProgramCard(randomIntInRange(100, 200), Value.ROTATE_RIGHT);
+            ProgramCard rotate_left = new ProgramCard(randomIntInRange(100, 200), Value.ROTATE_LEFT);
+            availableCards.add(move_one);
+            availableCards.add(rotate_right);
+            availableCards.add(rotate_left);
         }
         // Add 12 Move 2
         for (int i = 0; i < 12; i++){
-            deck.add(new ProgramCard(randomIntInRange(200, 300), Value.MOVE_TWO));
+            ProgramCard move_two = new ProgramCard(randomIntInRange(200, 300), Value.MOVE_TWO);
+            availableCards.add(move_two);
         }
         // Add 6 Move 3, Back-Up and U-Turn
         for (int i = 0; i < 6; i++){
-            deck.add(new ProgramCard(randomIntInRange(700, 800), Value.MOVE_THREE));
-            deck.add(new ProgramCard(randomIntInRange(600, 700), Value.BACK_UP));
-            deck.add(new ProgramCard(randomIntInRange(10, 100), Value.U_TURN));
+            ProgramCard move_three = new ProgramCard(randomIntInRange(700, 800), Value.MOVE_THREE);
+            ProgramCard back_up = new ProgramCard(randomIntInRange(600, 700), Value.BACK_UP);
+            ProgramCard u_turn = new ProgramCard(randomIntInRange(10, 100), Value.U_TURN);
+            availableCards.add(move_three);
+            availableCards.add(back_up);
+            availableCards.add(u_turn);
         }
     }
 
@@ -57,43 +72,39 @@ public class CardDeck {
      *
      * -> Input vil være => n = 9 - damageTokens
      *
-     * @param n - total cards
+     * @param totalCards - total cards
      * @return List of n cards
      */
-    public ArrayList<ProgramCard> drawCards(int n){
+    public ArrayList<ProgramCard> drawCards(int totalCards){
         Random r = new Random();
         ArrayList<ProgramCard> cards = new ArrayList<>();
-        for (int i = 0; i < n; i++) {
-            int index = r.nextInt(deck.size());
-            ProgramCard card = deck.get(index);
-            deck.remove(index);
+        for (int i = 0; i < totalCards; i++) {
+            int index = r.nextInt(availableCards.size());
+            ProgramCard card = availableCards.get(index);
             cards.add(card);
+            usedCards.add(card);
+            availableCards.remove(card);
         }
-
         return cards;
     }
 
     /**
-     * Shuffle deck
-     */
-    public void shuffle(){
-        Collections.shuffle(deck);
-    }
-
-    /**
-     *
      * @return deck
      */
-    public ArrayList<ProgramCard> getDeck(){
-        return deck;
+    public ArrayList<ProgramCard> getAvailableCards(){
+        return availableCards;
     }
 
     /**
-     *
      * @return total cards
      */
     public int getDeckSize(){
-        return deck.size();
+        return availableCards.size();
     }
+
+    public void restock(){
+        availableCards.addAll(usedCards);
+    }
+
 
 }
