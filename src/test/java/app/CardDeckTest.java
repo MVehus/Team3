@@ -35,12 +35,20 @@ public class CardDeckTest {
     @Test
     public void FullDeckContains18MoveOneCards(){
         int count = 0;
-        for (ProgramCard c : DECK.getDeck()) {
+        for (ProgramCard c : DECK.getAvailableCards()) {
             if (c.getValue() == Value.MOVE_ONE) {
-                count += 1;
+                count++;
             }
         }
         assertEquals(18, count);
+    }
+
+    @Test
+    public void RestockDeck(){
+        ArrayList<ProgramCard> cards = new ArrayList<>();
+        DECK.drawCards(30);
+        DECK.restock();
+        assertEquals(84, DECK.getDeckSize());
     }
 
 

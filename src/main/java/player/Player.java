@@ -3,10 +3,6 @@ package player;
 
 import app.Direction;
 import app.Tile;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Vector2;
 import projectCard.CardDeck;
 import projectCard.ProgramCard;
@@ -176,9 +172,8 @@ public class Player {
     }
 
     public String toString(){
-        return "PlayerName: " + name + " on position (x: " + position.x + ", y: " + position.y + ") with " + lifeTokens + " lifetokens and "
+        return "Player: " + name + " on position (x: " + position.x + ", y: " + position.y + ") with " + lifeTokens + " lifetokens and "
                 + damageTokens + " damage tokens. Has taken " + flagsTaken + " flags.";
     }
-
 
 }

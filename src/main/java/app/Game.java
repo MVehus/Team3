@@ -19,7 +19,6 @@ import projectCard.CardDeck;
 import projectCard.ProgramCard;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -53,27 +52,26 @@ public class Game extends InputAdapter implements ApplicationListener {
         playerLayer.setCell((int) playerPos.x, (int) playerPos.y, null);
 
         if (keycode == Input.Keys.UP) {
-            if (moveHasWall(playerPos.x, playerPos.y, playerPos.x, playerPos.y+1)) {
+            currentPlayer.setDirection(Direction.UP);
+
+            if (!canMove(currentPlayer)) {
                 System.out.println("Wall");
-                //Do nothing
             }
             else if (playerPos.y == boardHeight-1) {
-                System.out.println("Test");
                 currentPlayer.loseLifeToken();
             }
             else if(gameBoard.getTilesOnCell(nextPos.x, nextPos.y).contains(Tile.Player)){
                 System.out.println(currentPlayer.getName() + "has neighbor");
             }
             else {
-                System.out.println("Move");
-                playerPos.y = (playerPos.y == boardHeight -1) ? boardHeight -1 : playerPos.y+1;
+                currentPlayer.move();
             }
         }
 
         else if (keycode == Input.Keys.DOWN) {
-            if (moveHasWall(playerPos.x, playerPos.y, playerPos.x, playerPos.y-1)) {
+            currentPlayer.setDirection(Direction.DOWN);
+            if (!canMove(currentPlayer)) {
                 System.out.println("Wall");
-                //Do nothing
             }
             else if (playerPos.y == 0) {
                 System.out.println("Test");
@@ -83,15 +81,14 @@ public class Game extends InputAdapter implements ApplicationListener {
                 System.out.println(currentPlayer.getName() + "has neighbor");
             }
             else {
-                System.out.println("Move");
-                playerPos.y = (playerPos.y == 0) ? 0 : playerPos.y - 1;
+                currentPlayer.move();
             }
         }
 
         else if (keycode == Input.Keys.LEFT) {
-            if (moveHasWall(playerPos.x, playerPos.y, playerPos.x-1, playerPos.y)) {
+            currentPlayer.setDirection(Direction.LEFT);
+            if (!canMove(currentPlayer)) {
                 System.out.println("Wall");
-                //Do nothing
             }
             else if (playerPos.x == 0) {
                 System.out.println("Test");
@@ -100,14 +97,14 @@ public class Game extends InputAdapter implements ApplicationListener {
             else if(gameBoard.getTilesOnCell(nextPos.x, nextPos.y).contains(Tile.Player)){
                 System.out.println(currentPlayer.getName() + "has neighbor");
             }
-            else {
-                System.out.println("Move");
-                playerPos.x = (playerPos.x == 0) ? 0 : playerPos.x-1;
+            else{
+                currentPlayer.move();
             }
 
         }
         else if (keycode == Input.Keys.RIGHT) {
-            if (moveHasWall(playerPos.x, playerPos.y, playerPos.x+1, playerPos.y)) {
+            currentPlayer.setDirection(Direction.RIGHT);
+            if (!canMove(currentPlayer)) {
                 System.out.println("Wall");
                 //Do nothing
             }
@@ -119,49 +116,13 @@ public class Game extends InputAdapter implements ApplicationListener {
                 System.out.println(currentPlayer.getName() + "has neighbor");
             }
             else {
-                System.out.println("Move");
-                playerPos.x = (playerPos.x == boardWidth -1) ? boardWidth -1 : playerPos.x+1;
+                currentPlayer.move();
             }
         }
         System.out.println(currentPlayer.getName() + " at " + gameBoard.getTilesOnCell(playerPos.x, playerPos.y));
         gameBoard.conveyorBeltMove(currentPlayers);
         //checkForHole(currentPlayer);
         return super.keyUp(keycode);
-    }
-
-    private boolean moveHasWall(float x, float y, float x1, float y1) {
-        List<Tile> currentTile = gameBoard.getTilesOnCell(x, y);
-        List<Tile> newTile     = gameBoard.getTilesOnCell(x1, y1);
-
-        if (y < y1) {
-            if (currentTile.contains(Tile.WallTop) || currentTile.contains(Tile.WallTopRight) || currentTile.contains(Tile.WallTopLeft) ||
-                newTile.contains(Tile.WallBottom)  || newTile.contains(Tile.WallBottomRight)  || newTile.contains(Tile.WallBottomLeft) ||
-                currentTile.contains(Tile.PushWallTop) || newTile.contains(Tile.PushWallBottom))
-                return true;
-            return false;
-        }
-        else if (y > y1) {
-            if (currentTile.contains(Tile.WallBottom) || currentTile.contains(Tile.WallBottomRight) || currentTile.contains(Tile.WallBottomLeft) ||
-                newTile.contains(Tile.WallTop)  || newTile.contains(Tile.WallTopRight)  || newTile.contains(Tile.WallTopLeft) ||
-                currentTile.contains(Tile.PushWallBottom) || newTile.contains(Tile.PushWallTop))
-                return true;
-            return false;
-        }
-        else if (x < x1) {
-            if (currentTile.contains(Tile.WallRight) || currentTile.contains(Tile.WallTopRight) || currentTile.contains(Tile.WallBottomRight) ||
-                newTile.contains(Tile.WallLeft)  || newTile.contains(Tile.WallTopLeft)  || newTile.contains(Tile.WallBottomLeft) ||
-                currentTile.contains(Tile.PushWallRight) || newTile.contains(Tile.PushWallLeft))
-                return true;
-            return false;
-        }
-        else if (x > x1) {
-            if (currentTile.contains(Tile.WallLeft) || currentTile.contains(Tile.WallBottomLeft) || currentTile.contains(Tile.WallTopLeft) ||
-                newTile.contains(Tile.WallRight)  || newTile.contains(Tile.WallTopRight)  || newTile.contains(Tile.WallBottomRight) ||
-                currentTile.contains(Tile.PushWallLeft) || newTile.contains(Tile.PushWallRight))
-                return true;
-            return false;
-        }
-        return false;
     }
 
     private boolean canMove(Player player){
@@ -204,7 +165,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         }
         return false;
     }
-
 
     @Override
     public void create() {
@@ -251,7 +211,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         for (Player player : currentPlayers){
             // Oppdater hvilke layers spiller står på
-            player.setLayers(gameBoard.getTilesOnCell(player.getPosition().x, player.getPosition().y));
+            //player.setLayers(gameBoard.getTilesOnCell(player.getPosition().x, player.getPosition().y));
 
             updatePlayerState(player);
 
@@ -277,11 +237,12 @@ public class Game extends InputAdapter implements ApplicationListener {
      * D. Lasers Fire
      * E. Touch Checkpoints
      */
-    public void newRound(){
+    public void round(){
         // Choose cards
+        System.out.println("Deck contains: " + deck.getDeckSize());
         for(Player p : currentPlayers){
-            //p.drawProgramCards(deck);
-            //System.out.println(p.getName() + " cards : " + p.getProgramCards());
+            p.drawProgramCards(deck);
+            System.out.println(p.getName() + " cards : " + p.getProgramCards());
         }
 
         // Move robots based on current card
