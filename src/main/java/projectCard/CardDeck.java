@@ -30,19 +30,16 @@ public class CardDeck {
      * 6 ...    U turn
      */
     private void createDeck(){
-
         // Add 18 Move 1, Rotate Right, Rotate Left
         for (int i = 0; i < 18; i++){
             deck.add(new ProgramCard(randomIntInRange(100, 200), Value.MOVE_ONE));
             deck.add(new ProgramCard(randomIntInRange(100, 200), Value.ROTATE_RIGHT));
             deck.add(new ProgramCard(randomIntInRange(100, 200), Value.ROTATE_LEFT));
         }
-
         // Add 12 Move 2
         for (int i = 0; i < 12; i++){
             deck.add(new ProgramCard(randomIntInRange(200, 300), Value.MOVE_TWO));
         }
-
         // Add 6 Move 3, Back-Up and U-Turn
         for (int i = 0; i < 6; i++){
             deck.add(new ProgramCard(randomIntInRange(700, 800), Value.MOVE_THREE));
