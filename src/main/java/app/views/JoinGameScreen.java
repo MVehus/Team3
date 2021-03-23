@@ -1,14 +1,11 @@
 package app.views;
 
+import app.ScreenOrchestrator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import app.ScreenOrchestrator;
-import network.Client;
 import network.Network;
-
-import java.util.concurrent.ExecutionException;
 
 public class JoinGameScreen extends AbstractScreen{
     public JoinGameScreen(ScreenOrchestrator screenOrchestrator) {
@@ -53,14 +50,12 @@ public class JoinGameScreen extends AbstractScreen{
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 joinGameTable.remove();
-                Network.makeNewClient(ipInput.getText(), Integer.parseInt(portInput.getText()));
-                /*if (Network.getAllClientsOnServer().contains(Network.getClient())) {
+                if (Network.makeNewClient(ipInput.getText(), Integer.parseInt(portInput.getText()))) {
                     connectedTable.add(connectedLabel);
                 }
                 else {
                     connectedTable.add(connectionFailedLabel);
-                }*/
-                connectedTable.add(connectedLabel);
+                }
                 connectedTable.row().padTop(10);
                 connectedTable.add(mainMenu);
                 stage.addActor(connectedTable);

@@ -35,4 +35,7 @@ See *File Structure*
     - A testing folder for tests. 
     
 ## Known bugs
-- Resizing Game window may lead to poor quality among the tiles. 
+- Resizing Game window may lead to poor quality among the tiles.
+
+## Thanks to
+- Arild from taco-laget for the program card images.
