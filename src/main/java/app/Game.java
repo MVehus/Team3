@@ -44,7 +44,7 @@ public class Game extends InputAdapter implements ApplicationListener {
     public boolean keyUp(int keycode) {
         Player currentPlayer = players.get(0);
         Vector2 playerPos = currentPlayer.getPosition();
-        Vector2 nextPos = currentPlayer.getNextCell();
+        Vector2 nextPos = currentPlayer.getNextCells(1);
 
         playerLayer.setCell((int) playerPos.x, (int) playerPos.y, null);
 
@@ -118,10 +118,14 @@ public class Game extends InputAdapter implements ApplicationListener {
                 //Network.sendToServer(currentPlayer.getModel());
             }
         }
+
         updatePlayerState(currentPlayer);
         System.out.println(currentPlayer.toString());
-        System.out.println(" ");
         System.out.println(currentPlayer.getName() + " at " + gameBoard.getTilesOnCell(playerPos.x, playerPos.y));
+        System.out.println(playerOnNextCell(currentPlayer));
+        System.out.println(" ");
+
+
 
         return super.keyUp(keycode);
     }
@@ -147,13 +151,15 @@ public class Game extends InputAdapter implements ApplicationListener {
         // SET UP CLIENT
         //Network.setGameReferenceForClient(this);
 
-
         // TEST SPILLERE
-        Player player1 = new Player(1, "André", new Vector2(2,2));
+        Player player1 = new Player(1, "André", new Vector2(1,1));
         players.add(player1);
 
-        Player player2 = new Player(2, "Bård", new Vector2(2,3));
+        Player player2 = new Player(2, "Test1", new Vector2(2,3));
         players.add(player2);
+
+        Player player3 = new Player(2, "Test2", new Vector2(3,0));
+        players.add(player3);
 
 
         //if (Network.hostingServer()){ Network.sendPlayerListToClients(); }
@@ -170,7 +176,7 @@ public class Game extends InputAdapter implements ApplicationListener {
     private boolean canMove(Player player){
         Vector2 currentPos = player.getPosition();
         List<Tile> currentTile = gameBoard.getTilesOnCell(currentPos.x, currentPos.y);
-        Vector2 newPos = player.getNextCell();
+        Vector2 newPos = player.getNextCells(1);
         List<Tile> newTile = gameBoard.getTilesOnCell(newPos.x, newPos.y);
 
         if(currentPos.y < newPos.y){
@@ -198,6 +204,19 @@ public class Game extends InputAdapter implements ApplicationListener {
                 return false;
         }
         return true;
+    }
+
+    private boolean playerOnNextCell(Player player){
+        Vector2 currentPos = player.getPosition();
+        List<Tile> currentTile = gameBoard.getTilesOnCell(currentPos.x, currentPos.y);
+        Vector2 newPos = player.getNextCells(1);
+        List<Tile> newTile = gameBoard.getTilesOnCell(newPos.x, newPos.y);
+
+        if(newTile.contains(Tile.Player)){
+            System.out.println(player.getName() + " has a neigbour " + player.getDirection());
+            return true;
+        }
+        return false;
     }
 
     @Override

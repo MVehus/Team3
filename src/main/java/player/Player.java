@@ -45,7 +45,7 @@ public class Player {
         return isAlive;
     }
 
-    public Vector2 getNextCell() {
+    public Vector2 getNextCells(int distance) {
         int xPos = (int) position.x;
         int yPos = (int) position.y;
         Vector2 nextCell = new Vector2();
