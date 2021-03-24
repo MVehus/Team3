@@ -22,7 +22,6 @@ public class Player {
     private List<Tile> currentLayers;
     private boolean isAlive;
 
-    private Vector2 startPosition;
     private Vector2 checkPointPosition;
 
     public Player(int id, String name, Vector2 position) {
@@ -30,8 +29,7 @@ public class Player {
         this.name = name;
         this.isAlive = true;
         this.position = position;
-        this.startPosition = position;
-        this.checkPointPosition = null;
+        this.checkPointPosition = position; // Checkpoint position as startposition until flag taken
         this.direction = Direction.RIGHT;
         this.lifeTokens = 3;
         this.damageTokens = 0;
@@ -92,21 +90,15 @@ public class Player {
         }
     }
 
-    public void setLayers(List<Tile> layers) {
-        currentLayers = layers;
-    }
-
-    public List<Tile> getLayers() {
-        return currentLayers;
-    }
-
     public void setPosition(int x, int y) {
         position.x = x;
         position.y = y;
-
     }
 
     public Vector2 getPosition() {
+        if (lifeTokens == 0){
+            return checkPointPosition;
+        }
         return position;
     }
 
@@ -151,7 +143,6 @@ public class Player {
         isAlive = false;
         lifeTokens -= 1;
         if (lifeTokens != 0) {
-            resetPosition();
             damageTokens = 0;
         }
     }
@@ -177,18 +168,15 @@ public class Player {
         return 0;
     }
 
-    public void resetPosition() {
-        if(checkPointPosition == null) {
-            this.position = startPosition;
-        }
-        else {
-            position = checkPointPosition;
-        }
+    public void markPosAsCheckpoint(){
+        checkPointPosition = this.getPosition();
     }
 
-    public String toString() {
-        return name + " on (x: " + position.x + ", y: " + position.y + ") with " + lifeTokens + " HP and "
-                + damageTokens + " damage tokens. Has " + flagsTaken + " flags.";
+    public void reset() {
+        if(lifeTokens <= 0){
+            isAlive = true;
+            position = checkPointPosition;
+        }
     }
 
     public void rotate(Direction dir) {
@@ -226,6 +214,11 @@ public class Player {
 
     public PlayerModel getModel() {
         return new PlayerModel(id, position, lifeTokens, damageTokens, flagsTaken, direction, getCurrentCard());
+    }
+
+    public String toString() {
+        return name + " on (x: " + position.x + ", y: " + position.y + ") with " + lifeTokens + " HP and "
+                + damageTokens + " damage tokens. Has " + flagsTaken + " flags.";
     }
 
 }

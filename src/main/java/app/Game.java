@@ -1,6 +1,5 @@
 package app;
 
-import Models.GameStateModel;
 import Models.PlayerModel;
 import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
@@ -16,7 +15,6 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Vector2;
-import network.Network;
 import player.Player;
 import projectCard.CardDeck;
 import projectCard.Value;
@@ -58,7 +56,6 @@ public class Game extends InputAdapter implements ApplicationListener {
             }
             else if (playerPos.y == boardHeight-1) {
                 currentPlayer.loseLifeToken();
-                currentPlayer.resetPosition();
             }
             else if(gameBoard.getTilesOnCell(nextPos.x, nextPos.y).contains(Tile.Player)){
                 System.out.println(currentPlayer.getName() + "has neighbor");
@@ -76,7 +73,6 @@ public class Game extends InputAdapter implements ApplicationListener {
             else if (playerPos.y == 0) {
                 System.out.println("Test");
                 currentPlayer.loseLifeToken();
-                currentPlayer.resetPosition();
             }
             else if(gameBoard.getTilesOnCell(nextPos.x, nextPos.y).contains(Tile.Player)){
                 System.out.println(currentPlayer.getName() + "has neighbor");
@@ -94,7 +90,6 @@ public class Game extends InputAdapter implements ApplicationListener {
             else if (playerPos.x == 0) {
                 System.out.println("Test");
                 currentPlayer.loseLifeToken();
-                currentPlayer.resetPosition();
             }
             else if(gameBoard.getTilesOnCell(nextPos.x, nextPos.y).contains(Tile.Player)){
                 System.out.println(currentPlayer.getName() + "has neighbor");
@@ -211,14 +206,9 @@ public class Game extends InputAdapter implements ApplicationListener {
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
         renderer.render();
 
-        // SPILLERE VELGER KORT I DENNE FASEN
-        //chooseCards();
-
-        // RUNDE: BEVEG KORT FRA CURRENTCARD
-        //round();
-
-        for(Player p : players)
+        for(Player p : players){
             playerLayer.setCell((int) p.getPosition().x, (int) p.getPosition().y, getPlayerTexture(p));
+        }
     }
 
     public void updatePlayer(PlayerModel playerModel){
