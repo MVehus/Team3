@@ -1,4 +1,5 @@
 package player;
+
 import Models.PlayerModel;
 import app.Direction;
 import app.Tile;
@@ -33,19 +34,19 @@ public class Player {
         this.currentLayers = null;
     }
 
-    public int getId(){
+    public int getId() {
         return id;
     }
 
-    public boolean isAlive(){
+    public boolean isAlive() {
         return isAlive;
     }
 
-    public Vector2 getNextCell(){
+    public Vector2 getNextCell() {
         int xPos = (int) position.x;
         int yPos = (int) position.y;
         Vector2 nextCell = new Vector2();
-        switch (this.direction){
+        switch (this.direction) {
             case UP:
                 nextCell.x = xPos;
                 nextCell.y = yPos + 1;
@@ -67,10 +68,10 @@ public class Player {
         return nextCell;
     }
 
-    public void move(){
+    public void move() {
         int xPos = (int) position.x;
         int yPos = (int) position.y;
-        switch (this.direction){
+        switch (this.direction) {
             case UP:
                 setPosition(xPos, yPos + 1);
                 break;
@@ -86,37 +87,37 @@ public class Player {
         }
     }
 
-    public void setLayers(List<Tile> layers){
+    public void setLayers(List<Tile> layers) {
         currentLayers = layers;
     }
 
-    public List<Tile> getLayers(){
+    public List<Tile> getLayers() {
         return currentLayers;
     }
 
-    public void setPosition(int x, int y){
-        position.x = x ;
-        position.y = y ;
+    public void setPosition(int x, int y) {
+        position.x = x;
+        position.y = y;
 
     }
 
-    public Vector2 getPosition(){
+    public Vector2 getPosition() {
         return position;
     }
 
-    public Direction getDirection(){
+    public Direction getDirection() {
         return direction;
     }
 
-    public void setDirection(Direction newDirection){
+    public void setDirection(Direction newDirection) {
         this.direction = newDirection;
     }
 
-    public void registerFlag(){
+    public void registerFlag() {
         flagsTaken++;
     }
 
-    public int getFlagScore(){
+    public int getFlagScore() {
         return flagsTaken;
     }
 
@@ -124,7 +125,7 @@ public class Player {
         return lifeTokens;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 
@@ -155,58 +156,66 @@ public class Player {
         cards = deck.drawCards(numCards);
     }
 
-    public ProgramCard getCurrentCard(){
+    public ProgramCard getCurrentCard() {
         // Gjøre dette på en annen måte? Queue?
         return cards.get(0);
     }
 
-    public List<ProgramCard> getCards(){
+    public List<ProgramCard> getCards() {
         return cards;
     }
 
     public int numLockedProgramCards() {
-            if(getNumDamageTokens() <= 9 && getNumDamageTokens() >= 5){
-                return getNumDamageTokens() - 4;
-            }
-            return 0;
+        if (getNumDamageTokens() <= 9 && getNumDamageTokens() >= 5) {
+            return getNumDamageTokens() - 4;
+        }
+        return 0;
     }
 
     private void resetPosition() {
         //TODO
     }
 
-    public String toString(){
+    public String toString() {
         return "Player: " + name + " on position (x: " + position.x + ", y: " + position.y + ") with " + lifeTokens + " lifetokens and "
                 + damageTokens + " damage tokens. Has taken " + flagsTaken + " flags.";
     }
 
-    public void rotate(Direction dir){
-        switch (dir){
+    public void rotate(Direction dir) {
+        switch (dir) {
             case RIGHT:
-                if(direction == Direction.UP)
+                if (direction == Direction.UP)
                     setDirection(Direction.RIGHT);
-                else if(direction == Direction.RIGHT)
+                else if (direction == Direction.RIGHT)
                     setDirection(Direction.DOWN);
-                else if(direction == Direction.DOWN)
+                else if (direction == Direction.DOWN)
                     setDirection(Direction.LEFT);
-                else if(direction == Direction.LEFT)
+                else if (direction == Direction.LEFT)
                     setDirection(Direction.UP);
 
             case LEFT:
-                if(direction == Direction.UP)
+                if (direction == Direction.UP)
                     setDirection(Direction.LEFT);
-                else if(direction == Direction.RIGHT)
+                else if (direction == Direction.RIGHT)
                     setDirection(Direction.UP);
-                else if(direction == Direction.DOWN)
+                else if (direction == Direction.DOWN)
                     setDirection(Direction.RIGHT);
-                else if(direction == Direction.LEFT)
+                else if (direction == Direction.LEFT)
                     setDirection(Direction.DOWN);
 
         }
     }
 
-    public PlayerModel getModel(){
-        return new PlayerModel(id, position, lifeTokens, damageTokens, getCurrentCard());
+    public void setNewPlayerState(PlayerModel playerModel) {
+        this.position = playerModel.getPosition();
+        this.lifeTokens = playerModel.getLifeTokens();
+        this.damageTokens = playerModel.getDamageTokens();
+        this.flagsTaken = playerModel.getFlagsTaken();
+        this.direction = playerModel.getDirection();
+    }
+
+    public PlayerModel getModel() {
+        return new PlayerModel(id, position, lifeTokens, damageTokens, flagsTaken, direction, getCurrentCard());
     }
 
 }
