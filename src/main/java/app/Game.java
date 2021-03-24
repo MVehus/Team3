@@ -134,11 +134,8 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         if (Network.hostingServer()) {
             Network.sendPlayerListToClients();
-            time(2000);
-        } else {
-            time(5000);
         }
-
+        time(2000);
 
         loadTextures(players);
 
