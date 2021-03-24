@@ -3,6 +3,7 @@ package network;
 import com.esotericsoftware.kryonet.Connection;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Network {
 
@@ -29,7 +30,11 @@ public class Network {
     }
 
     public static ArrayList<Connection> getAllClientsOnServer() {
-        return server.getClients();
+        return server != null ? server.getClients() : new ArrayList<>();
+    }
+
+    public static HashMap<Integer, Connection> getClientIdTable(){
+        return server != null ? server.getClientIdTable() : new HashMap<>();
     }
 
     /*

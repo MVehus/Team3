@@ -6,10 +6,13 @@ import com.esotericsoftware.kryonet.Listener;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Server {
     private com.esotericsoftware.kryonet.Server server;
     private ArrayList<Connection> clients;
+    private HashMap<Integer, Connection> clientIdTable;
+    private GameStateModel currentGameState;
 
     public Server(int port) {
         server = new com.esotericsoftware.kryonet.Server();
@@ -26,17 +29,21 @@ public class Server {
                 if (object instanceof GameStateModel) {
                     GameStateModel newGameState = (GameStateModel) object;
                     System.out.println("New GameState received from connection : " + connection);
-                    sendToAllClients(newGameState);
+                    currentGameState = newGameState;
+                    sendToAllClients(newGameState, connection);
                 }
             }
 
-            public void connected(Connection connection){
+            public void connected(Connection connection) {
                 if (!clients.contains(connection)) {
                     clients.add(connection);
                 }
+                if (!clientIdTable.containsValue(connection)) {
+                    clientIdTable.put(connection.getID(), connection);
+                }
             }
 
-            public void disconnected(Connection connection){
+            public void disconnected(Connection connection) {
                 clients.remove(connection);
             }
         });
@@ -46,11 +53,17 @@ public class Server {
         return clients;
     }
 
-    public void sendToAllClients(Object obj){
-        for(Connection client : clients){
-            try{
-                client.sendTCP(obj);
-            } catch (Exception e){
+    public HashMap<Integer, Connection> getClientIdTable() {
+        return clientIdTable;
+    }
+
+    public void sendToAllClients(Object obj, Connection sender) {
+        for (Connection client : clients) {
+            try {
+                if (client != sender) {
+                    client.sendTCP(obj);
+                }
+            } catch (Exception e) {
                 System.out.println("Could not send message to client: " + client);
             }
 

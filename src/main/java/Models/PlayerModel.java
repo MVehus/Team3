@@ -1,11 +1,9 @@
 package Models;
 
 import com.badlogic.gdx.math.Vector2;
-import network.Network;
 import projectCard.ProgramCard;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class PlayerModel implements Serializable {
 
@@ -13,7 +11,6 @@ public class PlayerModel implements Serializable {
     private Vector2 position;
     private int lifeTokens;
     private int damageTokens;
-    private ArrayList<ProgramCard> programCards;
     private ProgramCard currentCard;
 
     public PlayerModel(int id, Vector2 position) {
@@ -21,7 +18,6 @@ public class PlayerModel implements Serializable {
         this.position = position;
         lifeTokens = 3;
         damageTokens = 0;
-        programCards = null;
         currentCard = null;
     }
 
@@ -51,14 +47,6 @@ public class PlayerModel implements Serializable {
 
     public void setDamageTokens(int damageTokens) {
         this.damageTokens = damageTokens;
-    }
-
-    public ArrayList<ProgramCard> getProgramCards() {
-        return programCards;
-    }
-
-    public void setProgramCards(ArrayList<ProgramCard> programCards) {
-        this.programCards = programCards;
     }
 
     public ProgramCard getCurrentCard() {
