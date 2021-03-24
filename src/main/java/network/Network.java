@@ -2,6 +2,7 @@ package network;
 
 import app.Game;
 import com.esotericsoftware.kryonet.Connection;
+import player.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,6 +37,10 @@ public class Network {
 
     public static HashMap<Integer, Connection> getClientIdTable(){
         return server != null ? server.getClientIdTable() : new HashMap<>();
+    }
+
+    public static ArrayList<Player> getPlayersOnServer(){
+        return server.getPlayers();
     }
 
     public static void setGameReferenceForClient(Game game){

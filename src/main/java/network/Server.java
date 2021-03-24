@@ -1,8 +1,8 @@
 package network;
 
-import Models.GameStateModel;
 import Models.PlayerModel;
-import app.Tile;
+import Utilities.StartPositionUtility;
+import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import player.Player;
@@ -19,6 +19,7 @@ public class Server {
 
     public Server(int port) {
         server = new com.esotericsoftware.kryonet.Server();
+        NetworkUtilities.setUpKryo(server.getKryo());
         server.start();
         try {
             server.bind(port);
@@ -35,7 +36,8 @@ public class Server {
                 if (object instanceof PlayerModel) {
                     PlayerModel updatedPlayerModel = (PlayerModel) object;
                     System.out.println("Received updated PlayerModel from connection : " + connection);
-                    sendToAllClients(updatedPlayerModel, connection);
+                    players.get(connection.getID()-1).setNewPlayerState(updatedPlayerModel);
+                    sendToAllClients(updatedPlayerModel);
                 }
             }
 
@@ -43,10 +45,8 @@ public class Server {
                 if (!clients.contains(connection)) {
                     clients.add(connection);
                     sendId(connection);
-                    players.add(new Player(connection.getID(), null, null));
+                    players.add(new Player(connection.getID(), null, StartPositionUtility.getStartPosition(connection.getID() - 1)));
                 }
-
-                sendToAllClients(players, null);
             }
 
             public void disconnected(Connection connection) {
@@ -63,26 +63,29 @@ public class Server {
         return clientIdTable;
     }
 
-    public void sendId(Connection connection){
+    public ArrayList<Player> getPlayers(){
+        return players;
+    }
+
+    public void sendId(Connection connection) {
         try {
-            server.sendToTCP(connection.getID(), connection.getID());
-        } catch (Exception e){
+            connection.sendTCP(connection.getID());
+        } catch (Exception e) {
             System.out.println("Could not send id to client with exception: \n" + e.toString());
         }
     }
 
     public void sendPlayerListToClients() {
-        sendToAllClients(players, null);
+        //Gdx.app.postRunnable(() -> sendToAllClients(players));
+        sendToAllClients(players);
     }
 
-    public void sendToAllClients(Object obj, Connection sender) {
+    public void sendToAllClients(Object obj) {
         for (Connection client : clients) {
             try {
-                if (client != sender) {
-                    server.sendToTCP(client.getID(), obj);
-                }
+                client.sendTCP(obj);
             } catch (Exception e) {
-                System.out.println("Could not send message to client: " + client);
+                System.out.println("Could not send message: " + obj.toString() + " to client: " + client + "\n" + e.toString());
             }
 
         }

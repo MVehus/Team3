@@ -2,7 +2,9 @@ package app;
 
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 
-public enum Direction {
+import java.io.Serializable;
+
+public enum Direction implements Serializable {
     UP,
     DOWN,
     LEFT,

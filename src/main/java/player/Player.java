@@ -6,11 +6,13 @@ import app.Tile;
 import com.badlogic.gdx.math.Vector2;
 import projectCard.CardDeck;
 import projectCard.ProgramCard;
+import projectCard.Value;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Player {
+public class Player implements Serializable {
     private final int id;
     private final String name;
     private Vector2 position;
@@ -158,7 +160,7 @@ public class Player {
 
     public ProgramCard getCurrentCard() {
         // Gjøre dette på en annen måte? Queue?
-        return cards.get(0);
+        return cards.get(0).equals(null) ? new ProgramCard(0, Value.U_TURN) : cards.get(0);
     }
 
     public List<ProgramCard> getCards() {
@@ -177,8 +179,11 @@ public class Player {
     }
 
     public String toString() {
-        return "Player: " + name + " on position (x: " + position.x + ", y: " + position.y + ") with " + lifeTokens + " lifetokens and "
+        /*return "Player: " + name + " on position (x: " + position.x + ", y: " + position.y + ") with " + lifeTokens + " lifetokens and "
                 + damageTokens + " damage tokens. Has taken " + flagsTaken + " flags.";
+
+         */
+        return Integer.toString(getId());
     }
 
     public void rotate(Direction dir) {

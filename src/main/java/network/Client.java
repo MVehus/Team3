@@ -19,6 +19,7 @@ public class Client {
 
     public Client(String IpAddress, int port) {
         client = new com.esotericsoftware.kryonet.Client();
+        NetworkUtilities.setUpKryo(client.getKryo());
         client.start();
         try {
             client.connect(5000, IpAddress, port);
@@ -41,9 +42,9 @@ public class Client {
 
                 } else if (object instanceof ArrayList) {
                     if (game != null) {
-                        Gdx.app.postRunnable(() -> game.setPlayerList((ArrayList<Player>) object));
+                        //Gdx.app.postRunnable(() -> game.setPlayerList((ArrayList<Player>) object));
+                        game.setPlayerList((ArrayList<Player>) object);
                     }
-                    System.out.println("Players connected: " + (ArrayList<Player>) object);
                 }
             }
         });

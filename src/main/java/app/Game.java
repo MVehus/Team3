@@ -44,7 +44,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     @Override
     public boolean keyUp(int keycode) {
-        Player currentPlayer = players.get(Network.getMyId());
+        Player currentPlayer = players.get(Network.getMyId() - 1);
         Vector2 playerPos = currentPlayer.getPosition();
         Vector2 nextPos = currentPlayer.getNextCell();
 
@@ -55,67 +55,52 @@ public class Game extends InputAdapter implements ApplicationListener {
 
             if (!canMove(currentPlayer)) {
                 System.out.println("Wall");
-            }
-            else if (playerPos.y == boardHeight-1) {
+            } else if (playerPos.y == boardHeight - 1) {
                 currentPlayer.loseLifeToken();
-            }
-            else if(gameBoard.getTilesOnCell(nextPos.x, nextPos.y).contains(Tile.Player)){
+            } else if (gameBoard.getTilesOnCell(nextPos.x, nextPos.y).contains(Tile.Player)) {
                 System.out.println(currentPlayer.getName() + "has neighbor");
-            }
-            else {
+            } else {
                 currentPlayer.move();
                 Network.sendToServer(currentPlayer.getModel());
             }
-        }
-        else if (keycode == Input.Keys.DOWN) {
+        } else if (keycode == Input.Keys.DOWN) {
             currentPlayer.setDirection(Direction.DOWN);
             if (!canMove(currentPlayer)) {
                 System.out.println("Wall");
-            }
-            else if (playerPos.y == 0) {
+            } else if (playerPos.y == 0) {
                 System.out.println("Test");
                 currentPlayer.loseLifeToken();
-            }
-            else if(gameBoard.getTilesOnCell(nextPos.x, nextPos.y).contains(Tile.Player)){
+            } else if (gameBoard.getTilesOnCell(nextPos.x, nextPos.y).contains(Tile.Player)) {
                 System.out.println(currentPlayer.getName() + "has neighbor");
-            }
-            else {
+            } else {
                 currentPlayer.move();
                 Network.sendToServer(currentPlayer.getModel());
             }
-        }
-        else if (keycode == Input.Keys.LEFT) {
+        } else if (keycode == Input.Keys.LEFT) {
             currentPlayer.setDirection(Direction.LEFT);
             if (!canMove(currentPlayer)) {
                 System.out.println("Wall");
-            }
-            else if (playerPos.x == 0) {
+            } else if (playerPos.x == 0) {
                 System.out.println("Test");
                 currentPlayer.loseLifeToken();
-            }
-            else if(gameBoard.getTilesOnCell(nextPos.x, nextPos.y).contains(Tile.Player)){
+            } else if (gameBoard.getTilesOnCell(nextPos.x, nextPos.y).contains(Tile.Player)) {
                 System.out.println(currentPlayer.getName() + "has neighbor");
-            }
-            else{
+            } else {
                 currentPlayer.move();
                 Network.sendToServer(currentPlayer.getModel());
             }
 
-        }
-        else if (keycode == Input.Keys.RIGHT) {
+        } else if (keycode == Input.Keys.RIGHT) {
             currentPlayer.setDirection(Direction.RIGHT);
             if (!canMove(currentPlayer)) {
                 System.out.println("Wall");
                 //Do nothing
-            }
-            else if (playerPos.x == boardWidth-1) {
+            } else if (playerPos.x == boardWidth - 1) {
                 System.out.println("Test");
                 currentPlayer.loseLifeToken();
-            }
-            else if(gameBoard.getTilesOnCell(nextPos.x, nextPos.y).contains(Tile.Player)){
+            } else if (gameBoard.getTilesOnCell(nextPos.x, nextPos.y).contains(Tile.Player)) {
                 System.out.println(currentPlayer.getName() + "has neighbor");
-            }
-            else {
+            } else {
                 currentPlayer.move();
                 Network.sendToServer(currentPlayer.getModel());
             }
@@ -141,35 +126,17 @@ public class Game extends InputAdapter implements ApplicationListener {
         setupCameraAndRenderer();
 
         startPositions = gameBoard.getTileLocations(Tile.RobotStart);
-        System.out.println(startPositions);
+        //System.out.println(startPositions);
 
         // SET UP CLIENT
         Network.setGameReferenceForClient(this);
 
-        /*
-        // TEST SPILLERE
-        Player player1 = new Player(1, "André", startPositions.get(0));
-        players.add(player1);
 
-        Player player2 = new Player(2, "Bård", startPositions.get(1));
-        players.add(player2);
-
-        Player player3 = new Player(3, "Mathias", startPositions.get(2));
-        players.add(player3);
-
-        Player player4 = new Player(4, "Lars", startPositions.get(3));
-        players.add(player4);
-
-        Player player5 = new Player(5, "Jørgen", startPositions.get(4));
-        players.add(player5);
-         */
-        if (Network.hostingServer()){
+        if (Network.hostingServer()) {
             Network.sendPlayerListToClients();
         }
 
-        for(Player player : players){
-            player.setPosition((int) startPositions.get(player.getId()).x, (int) startPositions.get(player.getId()).y);
-        }
+        time(2000);
 
         loadTextures(players);
 
@@ -282,39 +249,36 @@ public class Game extends InputAdapter implements ApplicationListener {
         allTextures.add(player5Textures);
         allTextures.add(player6Textures);
 
-        for(Player player : players){
+        for (Player player : players) {
             playerTextures.put(player.getId(), allTextures.get(player.getId() - 1));
             System.out.println(player.getId() + " " + allTextures.get(player.getId() - 1));
         }
     }
 
-    private boolean canMove(Player player){
+    private boolean canMove(Player player) {
         Vector2 currentPos = player.getPosition();
         List<Tile> currentTile = gameBoard.getTilesOnCell(currentPos.x, currentPos.y);
         Vector2 newPos = player.getNextCell();
         List<Tile> newTile = gameBoard.getTilesOnCell(newPos.x, newPos.y);
 
-        if(currentPos.y < newPos.y){
+        if (currentPos.y < newPos.y) {
             if (currentTile.contains(Tile.WallTop) || currentTile.contains(Tile.WallTopRight) || currentTile.contains(Tile.WallTopLeft) ||
-                    newTile.contains(Tile.WallBottom)  || newTile.contains(Tile.WallBottomRight)  || newTile.contains(Tile.WallBottomLeft) ||
+                    newTile.contains(Tile.WallBottom) || newTile.contains(Tile.WallBottomRight) || newTile.contains(Tile.WallBottomLeft) ||
                     currentTile.contains(Tile.PushWallTop) || newTile.contains(Tile.PushWallBottom))
                 return false;
-        }
-        else if (currentPos.y > newPos.y) {
+        } else if (currentPos.y > newPos.y) {
             if (currentTile.contains(Tile.WallBottom) || currentTile.contains(Tile.WallBottomRight) || currentTile.contains(Tile.WallBottomLeft) ||
-                    newTile.contains(Tile.WallTop)  || newTile.contains(Tile.WallTopRight)  || newTile.contains(Tile.WallTopLeft) ||
+                    newTile.contains(Tile.WallTop) || newTile.contains(Tile.WallTopRight) || newTile.contains(Tile.WallTopLeft) ||
                     currentTile.contains(Tile.PushWallBottom) || newTile.contains(Tile.PushWallTop))
                 return false;
-        }
-        else if (currentPos.x < newPos.x) {
+        } else if (currentPos.x < newPos.x) {
             if (currentTile.contains(Tile.WallRight) || currentTile.contains(Tile.WallTopRight) || currentTile.contains(Tile.WallBottomRight) ||
-                    newTile.contains(Tile.WallLeft)  || newTile.contains(Tile.WallTopLeft)  || newTile.contains(Tile.WallBottomLeft) ||
+                    newTile.contains(Tile.WallLeft) || newTile.contains(Tile.WallTopLeft) || newTile.contains(Tile.WallBottomLeft) ||
                     currentTile.contains(Tile.PushWallRight) || newTile.contains(Tile.PushWallLeft))
                 return false;
-        }
-        else if (currentPos.x > newPos.x) {
+        } else if (currentPos.x > newPos.x) {
             if (currentTile.contains(Tile.WallLeft) || currentTile.contains(Tile.WallBottomLeft) || currentTile.contains(Tile.WallTopLeft) ||
-                    newTile.contains(Tile.WallRight)  || newTile.contains(Tile.WallTopRight)  || newTile.contains(Tile.WallBottomRight) ||
+                    newTile.contains(Tile.WallRight) || newTile.contains(Tile.WallTopRight) || newTile.contains(Tile.WallBottomRight) ||
                     currentTile.contains(Tile.PushWallLeft) || newTile.contains(Tile.PushWallRight))
                 return false;
         }
@@ -333,15 +297,18 @@ public class Game extends InputAdapter implements ApplicationListener {
         // RUNDE: BEVEG KORT FRA CURRENTCARD
         //round();
 
-        for(Player p : players)
-            playerLayer.setCell((int) p.getPosition().x, (int) p.getPosition().y, getPlayerTexture(p));
+        if (!players.isEmpty()) {
+            for (Player p : players) {
+                playerLayer.setCell((int) p.getPosition().x, (int) p.getPosition().y, getPlayerTexture(p));
+            }
+        }
     }
 
-    public void updatePlayer(PlayerModel playerModel){
+    public void updatePlayer(PlayerModel playerModel) {
         players.get(playerModel.getId()).setNewPlayerState(playerModel);
     }
 
-    public void setPlayerList(ArrayList<Player> players){
+    public void setPlayerList(ArrayList<Player> players) {
         this.players = players;
     }
 
@@ -356,7 +323,7 @@ public class Game extends InputAdapter implements ApplicationListener {
      * D. Lasers Fire
      * E. Touch Checkpoints
      */
-    public void round(){
+    public void round() {
 
         // Move players based on current card
         // Sort players by priority
@@ -371,7 +338,7 @@ public class Game extends InputAdapter implements ApplicationListener {
             }
         });
 
-        for(Player p : players){
+        for (Player p : players) {
             playerTurn(p);
             playerLayer.setCell((int) p.getPosition().x, (int) p.getPosition().y, getPlayerTexture(p));
         }
@@ -389,88 +356,78 @@ public class Game extends InputAdapter implements ApplicationListener {
     private void time(int n) {
         try {
             Thread.sleep(n);                 //1000 milliseconds is one second.
-        } catch(InterruptedException ex) {
+        } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
     }
 
-    public void updatePlayerState(Player player){
+    public void updatePlayerState(Player player) {
         // Loop through layers player is on
         List<Tile> tilesOnPos = gameBoard.getTilesOnCell(player.getPosition().x, player.getPosition().y);
-        for(Tile layer : tilesOnPos){
-            if(layer.equals(Tile.Hole)){
+        for (Tile layer : tilesOnPos) {
+            if (layer.equals(Tile.Hole)) {
                 System.out.println(player.getName() + " is on hole, lost one token. ");
                 player.loseLifeToken();
-            }
-            else if (layer.equals(Tile.LaserHorizontal) || layer.equals(Tile.LaserVertical)){
+            } else if (layer.equals(Tile.LaserHorizontal) || layer.equals(Tile.LaserVertical)) {
                 System.out.println(player.getName() + " took one damage.");
                 player.takeDamage();
-            }
-            else if (layer.equals(Tile.FlagOne)){
-                if(player.getFlagScore() == 0)
+            } else if (layer.equals(Tile.FlagOne)) {
+                if (player.getFlagScore() == 0)
                     System.out.println(player.getName() + " captured flag one!");
-                    player.registerFlag();
-            }
-            else if (layer.equals(Tile.FlagTwo)){
-                if(player.getFlagScore() == 1)
+                player.registerFlag();
+            } else if (layer.equals(Tile.FlagTwo)) {
+                if (player.getFlagScore() == 1)
                     System.out.println(player.getName() + " captured flag two!");
-                    player.registerFlag();
-            }
-            else if (layer.equals(Tile.FlagThree)){
-                if(player.getFlagScore() == 2)
+                player.registerFlag();
+            } else if (layer.equals(Tile.FlagThree)) {
+                if (player.getFlagScore() == 2)
                     System.out.println(player.getName() + " captured flag three!");
-                    player.registerFlag();
+                player.registerFlag();
             }
         }
     }
 
-    public void playerTurn(Player player){
+    public void playerTurn(Player player) {
 
         Value cardValue = player.getCurrentCard().getValue();
         System.out.println(player.getName() + " " + cardValue);
 
-        if(cardValue == Value.U_TURN){
+        if (cardValue == Value.U_TURN) {
             time(1000);
             player.rotate(Direction.RIGHT);
             player.rotate(Direction.RIGHT);
             updatePlayerState(player);
-        }
-        else if(cardValue == Value.ROTATE_RIGHT){
+        } else if (cardValue == Value.ROTATE_RIGHT) {
             time(1000);
             player.rotate(Direction.RIGHT);
             updatePlayerState(player);
-        }
-        else if(cardValue == Value.ROTATE_LEFT){
+        } else if (cardValue == Value.ROTATE_LEFT) {
             time(1000);
             player.rotate(Direction.LEFT);
             updatePlayerState(player);
-        }
-        else if(cardValue == Value.MOVE_ONE){
-            if(canMove(player))
+        } else if (cardValue == Value.MOVE_ONE) {
+            if (canMove(player))
                 time(1000);
-                player.move();
-                updatePlayerState(player);
-        }
-        else if(cardValue == Value.MOVE_TWO){
+            player.move();
+            updatePlayerState(player);
+        } else if (cardValue == Value.MOVE_TWO) {
 
-            for(int step = 0; step < 2 ; step++){
-                if(canMove(player)){
+            for (int step = 0; step < 2; step++) {
+                if (canMove(player)) {
                     time(1000);
                     player.move();
                     updatePlayerState(player);
                 }
             }
-        }
-        else if(cardValue == Value.MOVE_THREE){
-            for(int step = 0; step < 3 ; step++){
-                if(canMove(player)){
+        } else if (cardValue == Value.MOVE_THREE) {
+            for (int step = 0; step < 3; step++) {
+                if (canMove(player)) {
                     time(1000);
                     player.move();
                     updatePlayerState(player);
                 }
             }
-        }
-        else if(cardValue == Value.BACK_UP){
+        } else if (cardValue == Value.BACK_UP) {
             time(1000);
             System.out.println("BACKUP NOT IMPLEMENTED");
         }
@@ -479,11 +436,11 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     }
 
-    private TiledMapTileLayer.Cell getPlayerTexture(Player player){
+    private TiledMapTileLayer.Cell getPlayerTexture(Player player) {
         List<TiledMapTileLayer.Cell> textures = playerTextures.get(player.getId());
-        if(player.getFlagScore() == 3)
+        if (player.getFlagScore() == 3)
             return textures.get(1);
-        else if(!player.isAlive())
+        else if (!player.isAlive())
             return textures.get(2);
         else {
             return textures.get(0);
@@ -500,7 +457,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         camera.setToOrtho(false, boardWidth, boardHeight);
         camera.position.x = (float) boardWidth / 2;
         camera.update();
-        renderer = new OrthogonalTiledMapRenderer(map, 1/ boardLayer.getTileHeight());
+        renderer = new OrthogonalTiledMapRenderer(map, 1 / boardLayer.getTileHeight());
         renderer.setView(camera);
     }
 
@@ -511,11 +468,14 @@ public class Game extends InputAdapter implements ApplicationListener {
     }
 
     @Override
-    public void pause() { }
+    public void pause() {
+    }
 
     @Override
-    public void resume() { }
+    public void resume() {
+    }
 
     @Override
-    public void resize(int i, int i1) { }
+    public void resize(int i, int i1) {
+    }
 }
