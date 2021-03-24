@@ -16,7 +16,7 @@ import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Vector2;
 import player.Player;
 import projectCard.CardDeck;
-import projectCard.ProgramCard;
+import projectCard.Value;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -120,9 +120,46 @@ public class Game extends InputAdapter implements ApplicationListener {
             }
         }
         System.out.println(currentPlayer.getName() + " at " + gameBoard.getTilesOnCell(playerPos.x, playerPos.y));
-        gameBoard.conveyorBeltMove(currentPlayers);
-        //checkForHole(currentPlayer);
+
+
         return super.keyUp(keycode);
+    }
+
+    @Override
+    public void create() {
+        batch = new SpriteBatch();
+        font = new BitmapFont();
+        font.setColor(Color.RED);
+        Gdx.input.setInputProcessor(this);
+
+        // Setup map and layers
+        map = new TmxMapLoader().load("src/assets/VaultMap.tmx");
+
+        // Load map into a board object
+        gameBoard = new Board(map);
+
+        setupCameraAndRenderer();
+
+        // Load player textures
+        Texture playerTexture = new Texture("src/assets/player.png");
+        TextureRegion[][] textureRegion = TextureRegion.split(playerTexture, 300, 300);
+        playerCell.setTile(new StaticTiledMapTile(textureRegion[0][0]));
+        playerWonCell.setTile(new StaticTiledMapTile(textureRegion[0][2]));
+        playerDiedCell.setTile(new StaticTiledMapTile(textureRegion[0][1]));
+
+        startPositions = gameBoard.getTileLocations(Tile.RobotStart);
+
+        //PLAYERS
+        Player player1 = new Player("André", startPositions.get(2));
+        currentPlayers.add(player1);
+        /*Player player2 = new Player("Bård", startPositions.get(1));
+        currentPlayers.add(player2);
+        Player player3 = new Player("Are", startPositions.get(2));
+        currentPlayers.add(player3);*/
+
+        // CARDS
+        deck = new CardDeck();
+
     }
 
     private boolean canMove(Player player){
@@ -158,75 +195,30 @@ public class Game extends InputAdapter implements ApplicationListener {
         return true;
     }
 
-    private boolean checkForHole(Player player) {
-        if (gameBoard.getTilesOnCell(player.getPosition().x, player.getPosition().y).contains(Tile.Hole)) {
-            player.loseLifeToken();
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public void create() {
-        batch = new SpriteBatch();
-        font = new BitmapFont();
-        font.setColor(Color.RED);
-        Gdx.input.setInputProcessor(this);
-
-        // Setup map and layers
-        map = new TmxMapLoader().load("src/assets/VaultMap.tmx");
-
-        // Load map into a board object
-        gameBoard = new Board(map);
-
-        setupCameraAndRenderer();
-
-        // Load player textures
-        Texture playerTexture = new Texture("src/assets/player.png");
-        TextureRegion[][] textureRegion = TextureRegion.split(playerTexture, 300, 300);
-        playerCell.setTile(new StaticTiledMapTile(textureRegion[0][0]));
-        playerWonCell.setTile(new StaticTiledMapTile(textureRegion[0][2]));
-        playerDiedCell.setTile(new StaticTiledMapTile(textureRegion[0][1]));
-
-        startPositions = gameBoard.getTileLocations(Tile.RobotStart);
-
-        //PLAYERS
-        Player player1 = new Player("André", startPositions.get(0));
-        currentPlayers.add(player1);
-        Player player2 = new Player("Bård", startPositions.get(1));
-        currentPlayers.add(player2);
-        Player player3 = new Player("Are", startPositions.get(2));
-        currentPlayers.add(player3);
-
-        // CARDS
-        deck = new CardDeck();
-
-    }
-
     @Override
     public void render() {
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
         renderer.render();
 
-        for (Player player : currentPlayers){
-            // Oppdater hvilke layers spiller står på
-            //player.setLayers(gameBoard.getTilesOnCell(player.getPosition().x, player.getPosition().y));
+        // SPILLERE VELGER KORT I DENNE FASEN
+        //chooseCards();
 
-            updatePlayerState(player);
+        // RUNDE: BEVEG KORT FRA CURRENTCARD
+        //round();
 
-            // Tegn spiller på brettet
-            playerLayer.setCell((int) player.getPosition().x, (int) player.getPosition().y, getPlayerTexture(player));
-        }
+        for(Player p : currentPlayers)
+            playerLayer.setCell((int) p.getPosition().x, (int) p.getPosition().y, getPlayerTexture(p));
+
     }
 
-    private TiledMapTileLayer.Cell getPlayerTexture(Player player){
-        if(player.getFlagScore() == 3)
-            return playerWonCell;
-        else if(!player.isAlive())
-            return playerDiedCell;
-        else {
-            return playerCell;
+    private void chooseCards() {
+        // Choose cards
+        for(Player p : currentPlayers){
+            if(p.getProgramCards().size() == 0){
+                p.drawProgramCards(deck);
+                System.out.println(p.getName() + " cards : " + p.getProgramCards());
+            }
         }
     }
 
@@ -238,40 +230,44 @@ public class Game extends InputAdapter implements ApplicationListener {
      * E. Touch Checkpoints
      */
     public void round(){
-        // Choose cards
-        System.out.println("Deck contains: " + deck.getDeckSize());
-        for(Player p : currentPlayers){
-            p.drawProgramCards(deck);
-            System.out.println(p.getName() + " cards : " + p.getProgramCards());
-        }
 
-        // Move robots based on current card
-
-        // Sorter spillere basert på høyest prioritet
+        // Move players based on current card
+        // Sort players by priority
         currentPlayers.sort(new Comparator<Player>() {
             @Override
             public int compare(Player p1, Player p2) {
-                if (p1.getCurrentCard().getPriority() > p2.getCurrentCard().getPriority())
-                    return 1;
                 if (p1.getCurrentCard().getPriority() < p2.getCurrentCard().getPriority())
+                    return 1;
+                if (p1.getCurrentCard().getPriority() > p2.getCurrentCard().getPriority())
                     return -1;
                 return 0;
             }
         });
 
         for(Player p : currentPlayers){
-            System.out.println();
+            playerTurn(p);
+            playerLayer.setCell((int) p.getPosition().x, (int) p.getPosition().y, getPlayerTexture(p));
         }
 
         // Move board elements
+        gameBoard.conveyorBeltMove(currentPlayers);
 
         // Fire lasers
+        System.out.println("___LASERS FIRE");
 
         // Touch checkpoints
+        System.out.println("___TOUCH CHECKPOINTS");
+    }
+
+    private void time(int n) {
+        try {
+            Thread.sleep(n);                 //1000 milliseconds is one second.
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
+        }
     }
 
     public void updatePlayerState(Player player){
-
         // Loop through layers player is on
         List<Tile> tilesOnPos = gameBoard.getTilesOnCell(player.getPosition().x, player.getPosition().y);
         for(Tile layer : tilesOnPos){
@@ -303,46 +299,66 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     public void playerTurn(Player player){
 
-        ProgramCard card = player.getCurrentCard();
+        Value cardValue = player.getCurrentCard().getValue();
+        System.out.println(player.getName() + " " + cardValue);
 
-        switch (card.getValue()){
-            //ROTATE TURNS
-            case U_TURN:
-                switch (player.getDirection()){
-                    case UP:
-                        player.setDirection(Direction.DOWN);
-                    case DOWN:
-                        player.setDirection(Direction.UP);
-                    case RIGHT:
-                        player.setDirection(Direction.LEFT);
-                    case LEFT:
-                        player.setDirection(Direction.RIGHT);
-                }
+        if(cardValue == Value.U_TURN){
+            time(1000);
+            player.rotate(Direction.RIGHT);
+            player.rotate(Direction.RIGHT);
+            updatePlayerState(player);
+        }
+        else if(cardValue == Value.ROTATE_RIGHT){
+            time(1000);
+            player.rotate(Direction.RIGHT);
+            updatePlayerState(player);
+        }
+        else if(cardValue == Value.ROTATE_LEFT){
+            time(1000);
+            player.rotate(Direction.LEFT);
+            updatePlayerState(player);
+        }
+        else if(cardValue == Value.MOVE_ONE){
+            if(canMove(player))
+                time(1000);
+                player.move();
+                updatePlayerState(player);
+        }
+        else if(cardValue == Value.MOVE_TWO){
 
-            case ROTATE_LEFT:
-                switch (player.getDirection()){
-                    case UP:
-                        player.setDirection(Direction.LEFT);
-                    case DOWN:
-                        player.setDirection(Direction.RIGHT);
-                    case RIGHT:
-                        player.setDirection(Direction.UP);
-                    case LEFT:
-                        player.setDirection(Direction.DOWN);
+            for(int step = 0; step < 2 ; step++){
+                if(canMove(player)){
+                    time(1000);
+                    player.move();
+                    updatePlayerState(player);
                 }
-            case ROTATE_RIGHT:
-                switch (player.getDirection()){
-                    case UP:
-                        player.setDirection(Direction.RIGHT);
-                    case DOWN:
-                        player.setDirection(Direction.LEFT);
-                    case RIGHT:
-                        player.setDirection(Direction.DOWN);
-                    case LEFT:
-                        player.setDirection(Direction.UP);
+            }
+        }
+        else if(cardValue == Value.MOVE_THREE){
+            for(int step = 0; step < 3 ; step++){
+                if(canMove(player)){
+                    time(1000);
+                    player.move();
+                    updatePlayerState(player);
                 }
-            // MOVE TURNS
-            case MOVE_ONE:
+            }
+        }
+        else if(cardValue == Value.BACK_UP){
+            time(1000);
+            System.out.println("BACKUP NOT IMPLEMENTED");
+        }
+
+        player.getProgramCards().remove(player.getCurrentCard());
+
+    }
+
+    private TiledMapTileLayer.Cell getPlayerTexture(Player player){
+        if(player.getFlagScore() == 3)
+            return playerWonCell;
+        else if(!player.isAlive())
+            return playerDiedCell;
+        else {
+            return playerCell;
         }
     }
 

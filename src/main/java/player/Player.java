@@ -6,6 +6,7 @@ import app.Tile;
 import com.badlogic.gdx.math.Vector2;
 import projectCard.CardDeck;
 import projectCard.ProgramCard;
+import projectCard.Value;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -174,6 +175,31 @@ public class Player {
     public String toString(){
         return "Player: " + name + " on position (x: " + position.x + ", y: " + position.y + ") with " + lifeTokens + " lifetokens and "
                 + damageTokens + " damage tokens. Has taken " + flagsTaken + " flags.";
+    }
+
+    public void rotate(Direction dir){
+        switch (dir){
+            case RIGHT:
+                if(direction == Direction.UP)
+                    setDirection(Direction.RIGHT);
+                else if(direction == Direction.RIGHT)
+                    setDirection(Direction.DOWN);
+                else if(direction == Direction.DOWN)
+                    setDirection(Direction.LEFT);
+                else if(direction == Direction.LEFT)
+                    setDirection(Direction.UP);
+
+            case LEFT:
+                if(direction == Direction.UP)
+                    setDirection(Direction.LEFT);
+                else if(direction == Direction.RIGHT)
+                    setDirection(Direction.UP);
+                else if(direction == Direction.DOWN)
+                    setDirection(Direction.RIGHT);
+                else if(direction == Direction.LEFT)
+                    setDirection(Direction.DOWN);
+
+        }
     }
 
 }
