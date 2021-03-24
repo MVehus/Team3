@@ -38,33 +38,31 @@ public class CardDeck {
      * 6 ...    U turn
      */
     private void createDeck(){
-        // Add 18 Move 1, Rotate Right, Rotate Left
-        for (int i = 0; i < 18; i++){
-            ProgramCard move_one = new ProgramCard(randomIntInRange(100, 200), Value.MOVE_ONE);
-            ProgramCard rotate_right = new ProgramCard(randomIntInRange(100, 200), Value.ROTATE_RIGHT);
-            ProgramCard rotate_left = new ProgramCard(randomIntInRange(100, 200), Value.ROTATE_LEFT);
-            availableCards.add(move_one);
-            availableCards.add(rotate_right);
-            availableCards.add(rotate_left);
+        for (int i = 1; i <= 84; i++){
+            if (i<=6) {
+                availableCards.add(new ProgramCard(i*10, Value.U_TURN));
+            }
+            else if (i<=42) {
+                if (i%2==0) {
+                    availableCards.add(new ProgramCard(i*10, Value.ROTATE_RIGHT));
+                }
+                else {
+                    availableCards.add(new ProgramCard(i*10, Value.ROTATE_LEFT));
+                }
+            }
+            else if (i<=48) {
+                availableCards.add(new ProgramCard(i*10, Value.BACK_UP));
+            }
+            else if (i<=66) {
+                availableCards.add(new ProgramCard(i*10, Value.MOVE_ONE));
+            }
+            else if (i<=78) {
+                availableCards.add(new ProgramCard(i*10, Value.MOVE_TWO));
+            }
+            else {
+                availableCards.add(new ProgramCard(i*10, Value.MOVE_THREE));
+            }
         }
-        // Add 12 Move 2
-        for (int i = 0; i < 12; i++){
-            ProgramCard move_two = new ProgramCard(randomIntInRange(200, 300), Value.MOVE_TWO);
-            availableCards.add(move_two);
-        }
-        // Add 6 Move 3, Back-Up and U-Turn
-        for (int i = 0; i < 6; i++){
-            ProgramCard move_three = new ProgramCard(randomIntInRange(700, 800), Value.MOVE_THREE);
-            ProgramCard back_up = new ProgramCard(randomIntInRange(600, 700), Value.BACK_UP);
-            ProgramCard u_turn = new ProgramCard(randomIntInRange(10, 100), Value.U_TURN);
-            availableCards.add(move_three);
-            availableCards.add(back_up);
-            availableCards.add(u_turn);
-        }
-    }
-
-    private int randomIntInRange(int min, int max){
-        return (min + (int)(Math.random() * ((max - min) + 1)));
     }
 
     /**

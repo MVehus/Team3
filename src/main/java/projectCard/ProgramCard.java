@@ -22,8 +22,12 @@ public class ProgramCard {
         return priority;
     }
 
+    public String getCardImagePath() {
+        return ("src/assets/programCards/" + this.value + "/" + this.value + "_" + this.priority + ".jpg");
+    }
+
     public String toString(){
-        return (this.value + " with  " + this.priority + " priority. ");
+        return (this.priority + " priority for " + this.value);
     }
 }
 

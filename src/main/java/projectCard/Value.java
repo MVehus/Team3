@@ -17,6 +17,6 @@ public enum Value {
 
     public static final List<Value> ROTATE_CARDS = Arrays.asList(ROTATE_LEFT, ROTATE_RIGHT, U_TURN);
 
-    public static final List<Value> MOVE_CARDS = Arrays.asList(MOVE_THREE, MOVE_TWO, MOVE_ONE);
+    public static final List<Value> MOVE_CARDS = Arrays.asList(MOVE_THREE, MOVE_TWO, MOVE_ONE, BACK_UP);
 
 }
