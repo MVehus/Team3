@@ -37,23 +37,12 @@ public class PlayerModel implements Serializable {
         return lifeTokens;
     }
 
-    public void setLifeTokens(int lifeTokens) {
-        this.lifeTokens = lifeTokens;
-    }
-
     public int getDamageTokens() {
         return damageTokens;
-    }
-
-    public void setDamageTokens(int damageTokens) {
-        this.damageTokens = damageTokens;
     }
 
     public ProgramCard getCurrentCard() {
         return currentCard;
     }
 
-    public void setCurrentCard(ProgramCard currentCard) {
-        this.currentCard = currentCard;
-    }
 }
