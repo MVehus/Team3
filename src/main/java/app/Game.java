@@ -123,6 +123,9 @@ public class Game extends InputAdapter implements ApplicationListener {
                 //Network.sendToServer(currentPlayer.getModel());
             }
         }
+        updatePlayerState(currentPlayer);
+        System.out.println(currentPlayer.toString());
+        System.out.println(" ");
         System.out.println(currentPlayer.getName() + " at " + gameBoard.getTilesOnCell(playerPos.x, playerPos.y));
 
         return super.keyUp(keycode);
@@ -288,19 +291,23 @@ public class Game extends InputAdapter implements ApplicationListener {
                 player.takeDamage();
             }
             else if (layer.equals(Tile.FlagOne)){
-                if(player.getFlagScore() == 0)
+                if(player.getFlagScore() == 0) {
                     System.out.println(player.getName() + " captured flag one!");
                     player.registerFlag();
+                }
             }
             else if (layer.equals(Tile.FlagTwo)){
-                if(player.getFlagScore() == 1)
+                if(player.getFlagScore() == 1){
                     System.out.println(player.getName() + " captured flag two!");
                     player.registerFlag();
+                }
+
             }
             else if (layer.equals(Tile.FlagThree)){
-                if(player.getFlagScore() == 2)
+                if(player.getFlagScore() == 2){
                     System.out.println(player.getName() + " captured flag three!");
                     player.registerFlag();
+                }
             }
         }
     }

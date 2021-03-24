@@ -187,8 +187,8 @@ public class Player {
     }
 
     public String toString() {
-        return "Player: " + name + " on position (x: " + position.x + ", y: " + position.y + ") with " + lifeTokens + " lifetokens and "
-                + damageTokens + " damage tokens. Has taken " + flagsTaken + " flags.";
+        return name + " on (x: " + position.x + ", y: " + position.y + ") with " + lifeTokens + " HP and "
+                + damageTokens + " damage tokens. Has " + flagsTaken + " flags.";
     }
 
     public void rotate(Direction dir) {
