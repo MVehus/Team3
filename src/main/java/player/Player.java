@@ -22,11 +22,16 @@ public class Player {
     private List<Tile> currentLayers;
     private boolean isAlive;
 
+    private Vector2 startPosition;
+    private Vector2 checkPointPosition;
+
     public Player(int id, String name, Vector2 position) {
         this.id = id;
         this.name = name;
         this.isAlive = true;
         this.position = position;
+        this.startPosition = position;
+        this.checkPointPosition = null;
         this.direction = Direction.RIGHT;
         this.lifeTokens = 3;
         this.damageTokens = 0;
@@ -172,8 +177,13 @@ public class Player {
         return 0;
     }
 
-    private void resetPosition() {
-        //TODO
+    public void resetPosition() {
+        if(checkPointPosition == null) {
+            this.position = startPosition;
+        }
+        else {
+            position = checkPointPosition;
+        }
     }
 
     public String toString() {

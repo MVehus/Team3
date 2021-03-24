@@ -58,6 +58,7 @@ public class Game extends InputAdapter implements ApplicationListener {
             }
             else if (playerPos.y == boardHeight-1) {
                 currentPlayer.loseLifeToken();
+                currentPlayer.resetPosition();
             }
             else if(gameBoard.getTilesOnCell(nextPos.x, nextPos.y).contains(Tile.Player)){
                 System.out.println(currentPlayer.getName() + "has neighbor");
@@ -75,6 +76,7 @@ public class Game extends InputAdapter implements ApplicationListener {
             else if (playerPos.y == 0) {
                 System.out.println("Test");
                 currentPlayer.loseLifeToken();
+                currentPlayer.resetPosition();
             }
             else if(gameBoard.getTilesOnCell(nextPos.x, nextPos.y).contains(Tile.Player)){
                 System.out.println(currentPlayer.getName() + "has neighbor");
@@ -92,6 +94,7 @@ public class Game extends InputAdapter implements ApplicationListener {
             else if (playerPos.x == 0) {
                 System.out.println("Test");
                 currentPlayer.loseLifeToken();
+                currentPlayer.resetPosition();
             }
             else if(gameBoard.getTilesOnCell(nextPos.x, nextPos.y).contains(Tile.Player)){
                 System.out.println(currentPlayer.getName() + "has neighbor");
@@ -154,14 +157,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         Player player2 = new Player(2, "Bård", new Vector2(2,3));
         players.add(player2);
 
-        Player player3 = new Player(3, "Mathias", startPositions.get(2));
-        players.add(player3);
-
-        Player player4 = new Player(4, "Lars", startPositions.get(3));
-        players.add(player4);
-
-        Player player5 = new Player(5, "Jørgen", startPositions.get(4));
-        players.add(player5);
 
         //if (Network.hostingServer()){ Network.sendPlayerListToClients(); }
 
@@ -449,8 +444,8 @@ public class Game extends InputAdapter implements ApplicationListener {
         Texture player1Texture = new Texture("src/assets/players/player_1.png");
         TextureRegion[][] texture1Region = TextureRegion.split(player1Texture, 300, 300);
         player1_cell.setTile(new StaticTiledMapTile(texture1Region[0][0]));
-        player1_wonCell.setTile(new StaticTiledMapTile(texture1Region[0][2]));
-        player1_diedCell.setTile(new StaticTiledMapTile(texture1Region[0][1]));
+        player1_diedCell.setTile(new StaticTiledMapTile(texture1Region[0][2]));
+        player1_wonCell.setTile(new StaticTiledMapTile(texture1Region[0][1]));
         List<TiledMapTileLayer.Cell> player1Textures = new ArrayList<>();
         player1Textures.add(player1_cell);
         player1Textures.add(player1_wonCell);
@@ -460,8 +455,8 @@ public class Game extends InputAdapter implements ApplicationListener {
         Texture player2Texture = new Texture("src/assets/players/player_2.png");
         TextureRegion[][] texture2Region = TextureRegion.split(player2Texture, 300, 300);
         player2_cell.setTile(new StaticTiledMapTile(texture2Region[0][0]));
-        player2_wonCell.setTile(new StaticTiledMapTile(texture2Region[0][2]));
-        player2_diedCell.setTile(new StaticTiledMapTile(texture2Region[0][1]));
+        player2_diedCell.setTile(new StaticTiledMapTile(texture2Region[0][2]));
+        player2_wonCell.setTile(new StaticTiledMapTile(texture2Region[0][1]));
         List<TiledMapTileLayer.Cell> player2Textures = new ArrayList<>();
         player2Textures.add(player2_cell);
         player2Textures.add(player2_wonCell);
@@ -471,8 +466,8 @@ public class Game extends InputAdapter implements ApplicationListener {
         Texture player3Texture = new Texture("src/assets/players/player_3.png");
         TextureRegion[][] texture3Region = TextureRegion.split(player3Texture, 300, 300);
         player3_cell.setTile(new StaticTiledMapTile(texture3Region[0][0]));
-        player3_wonCell.setTile(new StaticTiledMapTile(texture3Region[0][2]));
-        player3_diedCell.setTile(new StaticTiledMapTile(texture3Region[0][1]));
+        player3_diedCell.setTile(new StaticTiledMapTile(texture3Region[0][2]));
+        player3_wonCell.setTile(new StaticTiledMapTile(texture3Region[0][1]));
         List<TiledMapTileLayer.Cell> player3Textures = new ArrayList<>();
         player3Textures.add(player3_cell);
         player3Textures.add(player3_wonCell);
@@ -482,8 +477,8 @@ public class Game extends InputAdapter implements ApplicationListener {
         Texture player4Texture = new Texture("src/assets/players/player_4.png");
         TextureRegion[][] texture4Region = TextureRegion.split(player4Texture, 300, 300);
         player4_cell.setTile(new StaticTiledMapTile(texture4Region[0][0]));
-        player4_wonCell.setTile(new StaticTiledMapTile(texture4Region[0][2]));
-        player4_diedCell.setTile(new StaticTiledMapTile(texture4Region[0][1]));
+        player4_diedCell.setTile(new StaticTiledMapTile(texture4Region[0][2]));
+        player4_wonCell.setTile(new StaticTiledMapTile(texture4Region[0][1]));
         List<TiledMapTileLayer.Cell> player4Textures = new ArrayList<>();
         player4Textures.add(player4_cell);
         player4Textures.add(player4_wonCell);
@@ -493,8 +488,8 @@ public class Game extends InputAdapter implements ApplicationListener {
         Texture player5Texture = new Texture("src/assets/players/player_5.png");
         TextureRegion[][] texture5Region = TextureRegion.split(player5Texture, 300, 300);
         player5_cell.setTile(new StaticTiledMapTile(texture5Region[0][0]));
-        player5_wonCell.setTile(new StaticTiledMapTile(texture5Region[0][2]));
-        player5_diedCell.setTile(new StaticTiledMapTile(texture5Region[0][1]));
+        player5_diedCell.setTile(new StaticTiledMapTile(texture5Region[0][2]));
+        player5_wonCell.setTile(new StaticTiledMapTile(texture5Region[0][1]));
         List<TiledMapTileLayer.Cell> player5Textures = new ArrayList<>();
         player5Textures.add(player5_cell);
         player5Textures.add(player5_wonCell);
@@ -504,8 +499,8 @@ public class Game extends InputAdapter implements ApplicationListener {
         Texture player6Texture = new Texture("src/assets/players/player_6.png");
         TextureRegion[][] texture6Region = TextureRegion.split(player6Texture, 300, 300);
         player6_cell.setTile(new StaticTiledMapTile(texture6Region[0][0]));
-        player6_wonCell.setTile(new StaticTiledMapTile(texture6Region[0][2]));
-        player6_diedCell.setTile(new StaticTiledMapTile(texture6Region[0][1]));
+        player6_diedCell.setTile(new StaticTiledMapTile(texture6Region[0][2]));
+        player6_wonCell.setTile(new StaticTiledMapTile(texture6Region[0][1]));
         List<TiledMapTileLayer.Cell> player6Textures = new ArrayList<>();
         player6Textures.add(player6_cell);
         player6Textures.add(player6_wonCell);
