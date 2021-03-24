@@ -13,12 +13,12 @@ public class PlayerModel implements Serializable {
     private int damageTokens;
     private ProgramCard currentCard;
 
-    public PlayerModel(int id, Vector2 position) {
+    public PlayerModel(int id, Vector2 position, int lifeTokens, int damageTokens, ProgramCard currentCard) {
         this.id = id;
         this.position = position;
-        lifeTokens = 3;
-        damageTokens = 0;
-        currentCard = null;
+        this.lifeTokens = lifeTokens;
+        this.damageTokens = damageTokens;
+        this.currentCard = currentCard;
     }
 
     public int getId() {

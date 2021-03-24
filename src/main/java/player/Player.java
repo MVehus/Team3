@@ -1,4 +1,5 @@
 package player;
+import Models.PlayerModel;
 import app.Direction;
 import app.Tile;
 import com.badlogic.gdx.math.Vector2;
@@ -202,6 +203,10 @@ public class Player {
                     setDirection(Direction.DOWN);
 
         }
+    }
+
+    public PlayerModel getModel(){
+        return new PlayerModel(id, position, lifeTokens, damageTokens, getCurrentCard());
     }
 
 }
