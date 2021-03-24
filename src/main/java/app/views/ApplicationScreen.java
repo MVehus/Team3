@@ -3,6 +3,7 @@ package app.views;
 import app.Game;
 import app.ScreenOrchestrator;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Net;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -31,6 +32,7 @@ public class ApplicationScreen extends AbstractScreen {
     private int width;
     private int height;
     private int gameWidth;
+    private Player player;
 
     private final Skin skin = new Skin(Gdx.files.internal("src/assets/skin/plain-james/plain-james-ui.json"));
 
@@ -38,6 +40,7 @@ public class ApplicationScreen extends AbstractScreen {
         super(screenOrchestrator);
         width = Gdx.graphics.getWidth();
         height = Gdx.graphics.getHeight();
+        player = Network.getPlayersOnServer().get(Network.getMyId());
     }
 
     @Override
@@ -71,7 +74,6 @@ public class ApplicationScreen extends AbstractScreen {
     }
 
     private void updateFlags() {
-        Player player = new Player(0, "Lars", new Vector2(1, 1));
         Sprite sprite;
         switch (player.getFlagScore()) {
             case 0:
@@ -96,7 +98,6 @@ public class ApplicationScreen extends AbstractScreen {
     }
 
     private void updateLifeTokens() {
-        Player player = new Player(0, "Lars", new Vector2(1, 1));
         Sprite sprite;
         switch (player.getHealth()) {
             case 0:
@@ -121,7 +122,6 @@ public class ApplicationScreen extends AbstractScreen {
     }
 
     private void updateDamageTokens() {
-        Player player = new Player(0, "Lars", new Vector2(1, 1));
         Sprite sprite;
         switch (player.getNumDamageTokens()) {
             case 10:

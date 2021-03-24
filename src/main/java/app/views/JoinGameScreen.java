@@ -70,7 +70,6 @@ public class JoinGameScreen extends AbstractScreen{
                     connectedTable.add(mainMenu);
                     stage.addActor(connectedTable);
                 }
-
             }
         });
 

@@ -13,11 +13,9 @@ import java.util.Random;
 public class CardDeck {
 
     private final ArrayList<ProgramCard> availableCards;
-    private final ArrayList<ProgramCard> usedCards;
 
     public CardDeck(){
         this.availableCards = new ArrayList<>();
-        this.usedCards = new ArrayList<>();
         createDeck();
     }
 
@@ -64,7 +62,6 @@ public class CardDeck {
             int index = r.nextInt(availableCards.size());
             ProgramCard card = availableCards.get(index);
             cards.add(card);
-            usedCards.add(card);
             availableCards.remove(card);
         }
         return cards;
@@ -82,9 +79,5 @@ public class CardDeck {
      */
     public int getDeckSize(){
         return availableCards.size();
-    }
-
-    public void restock(){
-        availableCards.addAll(usedCards);
     }
 }
