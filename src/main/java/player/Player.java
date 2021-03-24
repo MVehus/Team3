@@ -1,30 +1,28 @@
 package player;
-
-
 import app.Direction;
 import app.Tile;
 import com.badlogic.gdx.math.Vector2;
 import projectCard.CardDeck;
 import projectCard.ProgramCard;
-import projectCard.Value;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-
+    private final int id;
     private final String name;
     private Vector2 position;
     private Direction direction;
-    public ArrayList<ProgramCard> programCards = new ArrayList<ProgramCard>();
+    public ArrayList<ProgramCard> cards = new ArrayList<ProgramCard>();
     private int lifeTokens;
     private int damageTokens;
     private int flagsTaken;
     private List<Tile> currentLayers;
     private boolean isAlive;
 
-    public Player(String nameID, Vector2 position) {
-        this.name = nameID;
+    public Player(int id, String name, Vector2 position) {
+        this.id = id;
+        this.name = name;
         this.isAlive = true;
         this.position = position;
         this.direction = Direction.RIGHT;
@@ -32,6 +30,10 @@ public class Player {
         this.damageTokens = 0;
         this.flagsTaken = 0;
         this.currentLayers = null;
+    }
+
+    public int getId(){
+        return id;
     }
 
     public boolean isAlive(){
@@ -149,16 +151,16 @@ public class Player {
 
     public void drawProgramCards(CardDeck deck) {
         int numCards = 9 - damageTokens;
-        programCards = deck.drawCards(numCards);
+        cards = deck.drawCards(numCards);
     }
 
     public ProgramCard getCurrentCard(){
         // Gjøre dette på en annen måte? Queue?
-        return programCards.get(0);
+        return cards.get(0);
     }
 
-    public List<ProgramCard> getProgramCards(){
-        return programCards;
+    public List<ProgramCard> getCards(){
+        return cards;
     }
 
     public int numLockedProgramCards() {
