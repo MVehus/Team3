@@ -10,10 +10,16 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import network.Network;
@@ -23,22 +29,25 @@ public class ApplicationScreen extends AbstractScreen {
     private final Game game = new Game();
     private int width;
     private int height;
+    private int gameWidth;
 
-    private Image cardSlotsTop;
-    private Image cardSlotsMiddle;
-    private Image cardSlotsBottom;
+    private final Skin skin = new Skin(Gdx.files.internal("src/assets/skin/plain-james/plain-james-ui.json"));
 
     public ApplicationScreen(ScreenOrchestrator screenOrchestrator) {
         super(screenOrchestrator);
+        width = Gdx.graphics.getWidth();
+        height = Gdx.graphics.getHeight();
     }
 
     @Override
     public void show() {
         game.create();
-        width = Gdx.graphics.getWidth();
-        height = Gdx.graphics.getHeight();
+        gameWidth = Gdx.graphics.getWidth()*2/3;
 
-        initializeCardSlots();
+        initCardSlots();
+        initButtons();
+
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
@@ -47,38 +56,71 @@ public class ApplicationScreen extends AbstractScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //Game side of screen
-        Gdx.gl.glViewport( 0,0,Gdx.graphics.getWidth()*2/3,Gdx.graphics.getHeight() );
+        Gdx.gl.glViewport( 0,0,gameWidth,Gdx.graphics.getHeight() );
         game.render();
 
         //UI side of screen
-        Gdx.gl.glViewport( Gdx.graphics.getWidth()*2/3,0,Gdx.graphics.getWidth()/3,Gdx.graphics.getHeight() );
-
+        Gdx.gl.glViewport( 0,0,width,Gdx.graphics.getHeight() );
+        stage.setDebugAll(true);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
     }
 
-    private void initializeCardSlots() {
+    private void initCardSlots() {
         Sprite texture = new Sprite(new Texture("src/assets/playerGUI/cardSlots.jpg"));
-        cardSlotsTop = new Image(new SpriteDrawable(texture));
-        cardSlotsTop.setWidth(width-40);
-        cardSlotsTop.setHeight(200);
-        cardSlotsTop.setPosition(20, 430);
+        Image cardSlotsTop = new Image(new SpriteDrawable(texture));
+        cardSlotsTop.setWidth(width-gameWidth);
+        cardSlotsTop.setHeight((float) ((width-gameWidth)/5*4/3));
+        cardSlotsTop.setPosition(gameWidth, (float) ((width-gameWidth)/5*4/3)*2+80);
         cardSlotsTop.setColor(Color.LIGHT_GRAY);
 
-        cardSlotsMiddle = new Image(new SpriteDrawable(texture));
-        cardSlotsMiddle.setWidth(width-40);
-        cardSlotsMiddle.setHeight(200);
-        cardSlotsMiddle.setPosition(20, 230);
+        Image cardSlotsMiddle = new Image(new SpriteDrawable(texture));
+        cardSlotsMiddle.setWidth(width-gameWidth);
+        cardSlotsMiddle.setHeight((float) ((width-gameWidth)/5*4/3));
+        cardSlotsMiddle.setPosition(gameWidth, (float) ((width-gameWidth)/5*4/3)+80);
         cardSlotsMiddle.setColor(Color.LIGHT_GRAY);
 
-        cardSlotsBottom = new Image(new SpriteDrawable(texture));
-        cardSlotsBottom.setWidth(width-40);
-        cardSlotsBottom.setHeight(200);
-        cardSlotsBottom.setPosition(20, 20);
+        Image cardSlotsBottom = new Image(new SpriteDrawable(texture));
+        cardSlotsBottom.setWidth(width-gameWidth);
+        cardSlotsBottom.setHeight((float) ((width-gameWidth)/5*4/3));
+        cardSlotsBottom.setPosition(gameWidth, 80);
 
         stage.addActor(cardSlotsTop);
         stage.addActor(cardSlotsMiddle);
         stage.addActor(cardSlotsBottom);
+    }
+
+    private void initButtons() {
+        TextButton lockInButton = new TextButton("Lock in Cards", skin);
+        lockInButton.setPosition(width-320, 10);
+        lockInButton.setWidth(300);
+        lockInButton.setHeight(60);
+
+        TextButton powerDownButton = new TextButton("Power Down", skin);
+        powerDownButton.setPosition(gameWidth+20, 10);
+        powerDownButton.setWidth(300);
+        powerDownButton.setHeight(60);
+
+        lockInButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                System.out.println("Lock in");
+            }
+        });
+
+        powerDownButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                System.out.println("Power down");
+            }
+        });
+
+        stage.addActor(lockInButton);
+        stage.addActor(powerDownButton);
+    }
+
+    private void initDamageTokens() {
+
     }
 
     @Override
