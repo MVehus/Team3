@@ -25,6 +25,7 @@ public class Server {
             System.out.println(e.toString());
         }
         clients = new ArrayList<>();
+        clientIdTable = new HashMap<>();
 
         server.addListener(new Listener() {
             public void received(Connection connection, Object object) {
