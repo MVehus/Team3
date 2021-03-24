@@ -52,13 +52,25 @@ public class JoinGameScreen extends AbstractScreen{
                 joinGameTable.remove();
                 if (Network.makeNewClient(ipInput.getText(), Integer.parseInt(portInput.getText()))) {
                     connectedTable.add(connectedLabel);
+                    connectedTable.row().padTop(10);
+                    connectedTable.add(mainMenu);
+                    stage.addActor(connectedTable);
+                    while (!Network.gameStarted()) {
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    parent.changeScreen(ScreenOrchestrator.APPLICATION);
                 }
                 else {
                     connectedTable.add(connectionFailedLabel);
+                    connectedTable.row().padTop(10);
+                    connectedTable.add(mainMenu);
+                    stage.addActor(connectedTable);
                 }
-                connectedTable.row().padTop(10);
-                connectedTable.add(mainMenu);
-                stage.addActor(connectedTable);
+
             }
         });
 

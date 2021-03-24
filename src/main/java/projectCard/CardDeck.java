@@ -12,9 +12,6 @@ import java.util.Random;
  */
 public class CardDeck {
 
-    /**
-     * Store deck in a HashMap, store availability in value (True if card is available, False if card is already used)
-     */
     private final ArrayList<ProgramCard> availableCards;
     private final ArrayList<ProgramCard> usedCards;
 
@@ -24,19 +21,6 @@ public class CardDeck {
         createDeck();
     }
 
-    /**
-     * Program Card Deck contains following:
-     *  Move Cards
-     * 18 ...   Move 1
-     * 12 ...   Move 2
-     * 6 ...    Move 3
-     * 6 ...    Back Up
-     *
-     *  Rotate Cards
-     * 18 ...   Rotate Right
-     * 18 ...   Rotate Left
-     * 6 ...    U turn
-     */
     private void createDeck(){
         for (int i = 1; i <= 84; i++){
             if (i<=6) {
@@ -68,7 +52,7 @@ public class CardDeck {
     /**
      * Draw n cards
      *
-     * -> Input vil være => n = 9 - damageTokens
+     * -> Input will be => n = 9 - damageTokens
      *
      * @param totalCards - total cards
      * @return List of n cards
@@ -103,6 +87,4 @@ public class CardDeck {
     public void restock(){
         availableCards.addAll(usedCards);
     }
-
-
 }

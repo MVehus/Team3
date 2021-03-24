@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -67,6 +68,102 @@ public class ApplicationScreen extends AbstractScreen {
         //stage.setDebugAll(true);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
+    }
+
+    private void updateFlags() {
+        Player player = new Player(0, "Lars", new Vector2(1, 1));
+        Sprite sprite;
+        switch (player.getFlagScore()) {
+            case 0:
+                sprite = new Sprite(new Texture("src/assets/playerGUI/flags/flags0.png"));
+                break;
+            case 1:
+                sprite = new Sprite(new Texture("src/assets/playerGUI/flags/flags1.png"));
+                break;
+            case 2:
+                sprite = new Sprite(new Texture("src/assets/playerGUI/flags/flags2.png"));
+                break;
+            default:
+                sprite = new Sprite(new Texture("src/assets/playerGUI/flags/flags3.png"));
+                break;
+        }
+        Image flags = new Image(new SpriteDrawable(sprite));
+        flags.setPosition(gameWidth, height-(200+(width-gameWidth)/10));
+        flags.setWidth((width-gameWidth)/2);
+        flags.setHeight((width-gameWidth)/6);
+
+        stage.addActor(flags);
+    }
+
+    private void updateLifeTokens() {
+        Player player = new Player(0, "Lars", new Vector2(1, 1));
+        Sprite sprite;
+        switch (player.getHealth()) {
+            case 0:
+                sprite = new Sprite(new Texture("src/assets/playerGUI/lifeTokens/lifeTokens3.png"));
+                break;
+            case 1:
+                sprite = new Sprite(new Texture("src/assets/playerGUI/lifeTokens/lifeTokens2.png"));
+                break;
+            case 2:
+                sprite = new Sprite(new Texture("src/assets/playerGUI/lifeTokens/lifeTokens1.png"));
+                break;
+            default:
+                sprite = new Sprite(new Texture("src/assets/playerGUI/lifeTokens/lifeTokens0.png"));
+                break;
+        }
+        Image lifeTokens = new Image(new SpriteDrawable(sprite));
+        lifeTokens.setPosition(gameWidth+((width-gameWidth)/2), height-(200+(width-gameWidth)/10));
+        lifeTokens.setWidth((width-gameWidth)/2);
+        lifeTokens.setHeight((width-gameWidth)/6);
+
+        stage.addActor(lifeTokens);
+    }
+
+    private void updateDamageTokens() {
+        Player player = new Player(0, "Lars", new Vector2(1, 1));
+        Sprite sprite;
+        switch (player.getNumDamageTokens()) {
+            case 10:
+                sprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens10.png"));
+                break;
+            case 9:
+                sprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens9.png"));
+                break;
+            case 8:
+                sprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens8.png"));
+                break;
+            case 7:
+                sprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens7.png"));
+                break;
+            case 6:
+                sprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens6.png"));
+                break;
+            case 5:
+                sprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens5.png"));
+                break;
+            case 4:
+                sprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens4.png"));
+                break;
+            case 3:
+                sprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens3.png"));
+                break;
+            case 2:
+                sprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens2.png"));
+                break;
+            case 1:
+                sprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens1.png"));
+                break;
+            default:
+                sprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens0.png"));
+                break;
+        }
+        Image damageTokens = new Image(new SpriteDrawable(sprite));
+        damageTokens.setPosition(gameWidth, height-150);
+        damageTokens.setWidth(width-gameWidth);
+        damageTokens.setHeight((width-gameWidth)/10);
+
+        stage.addActor(damageTokens);
     }
 
     private void initCardSlots() {
@@ -144,12 +241,12 @@ public class ApplicationScreen extends AbstractScreen {
 
     private void initLifeTokens() {
         Sprite texture = new Sprite(new Texture("src/assets/playerGUI/lifeTokens/lifeTokens0.png"));
-        Image flags = new Image(new SpriteDrawable(texture));
-        flags.setPosition(gameWidth+((width-gameWidth)/2), height-(200+(width-gameWidth)/10));
-        flags.setWidth((width-gameWidth)/2);
-        flags.setHeight((width-gameWidth)/6);
+        Image lifeTokens = new Image(new SpriteDrawable(texture));
+        lifeTokens.setPosition(gameWidth+((width-gameWidth)/2), height-(200+(width-gameWidth)/10));
+        lifeTokens.setWidth((width-gameWidth)/2);
+        lifeTokens.setHeight((width-gameWidth)/6);
 
-        stage.addActor(flags);
+        stage.addActor(lifeTokens);
     }
 
     @Override
