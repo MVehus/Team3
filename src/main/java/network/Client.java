@@ -3,6 +3,7 @@ package network;
 import Models.GameStateModel;
 import Models.PlayerModel;
 import app.Game;
+import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import player.Player;
@@ -29,8 +30,9 @@ public class Client {
             public void received(Connection connection, Object object) {
                 if (object instanceof PlayerModel) {
                     PlayerModel updatedPlayerModel = (PlayerModel) object;
+                    System.out.println("Player " + connection.getID() + " updated");
                     if (game != null) {
-                        game.updatePlayer(updatedPlayerModel);
+                        Gdx.app.postRunnable(() -> game.updatePlayer(updatedPlayerModel));
                     }
 
                 } else if (object instanceof Integer) {
@@ -39,8 +41,9 @@ public class Client {
 
                 } else if (object instanceof ArrayList) {
                     if (game != null) {
-                        game.setPlayerList((ArrayList<Player>) object);
+                        Gdx.app.postRunnable(() -> game.setPlayerList((ArrayList<Player>) object));
                     }
+                    System.out.println("Players connected: " + (ArrayList<Player>) object);
                 }
             }
         });

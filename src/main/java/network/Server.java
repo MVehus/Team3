@@ -42,12 +42,11 @@ public class Server {
             public void connected(Connection connection) {
                 if (!clients.contains(connection)) {
                     clients.add(connection);
+                    sendId(connection);
+                    players.add(new Player(connection.getID(), null, null));
                 }
-                if (!clientIdTable.containsValue(connection)) {
-                    clientIdTable.put(connection.getID(), connection);
-                }
-                players.add(new Player(connection.getID(), null, null));
-                sendId(connection);
+
+                sendToAllClients(players, null);
             }
 
             public void disconnected(Connection connection) {
@@ -80,7 +79,7 @@ public class Server {
         for (Connection client : clients) {
             try {
                 if (client != sender) {
-                    client.sendTCP(obj);
+                    server.sendToTCP(client.getID(), obj);
                 }
             } catch (Exception e) {
                 System.out.println("Could not send message to client: " + client);
