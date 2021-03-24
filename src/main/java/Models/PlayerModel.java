@@ -1,11 +1,10 @@
 package Models;
 
+import app.Direction;
 import com.badlogic.gdx.math.Vector2;
-import network.Network;
 import projectCard.ProgramCard;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public class PlayerModel implements Serializable {
 
@@ -13,16 +12,18 @@ public class PlayerModel implements Serializable {
     private Vector2 position;
     private int lifeTokens;
     private int damageTokens;
-    private ArrayList<ProgramCard> programCards;
+    private int flagsTaken;
+    private Direction direction;
     private ProgramCard currentCard;
 
-    public PlayerModel(int id, Vector2 position) {
+    public PlayerModel(int id, Vector2 position, int lifeTokens, int damageTokens, int flagsTaken, Direction direction, ProgramCard currentCard) {
         this.id = id;
         this.position = position;
-        lifeTokens = 3;
-        damageTokens = 0;
-        programCards = null;
-        currentCard = null;
+        this.lifeTokens = lifeTokens;
+        this.damageTokens = damageTokens;
+        this.flagsTaken = flagsTaken;
+        this.direction = direction;
+        this.currentCard = currentCard;
     }
 
     public int getId() {
@@ -33,39 +34,24 @@ public class PlayerModel implements Serializable {
         return position;
     }
 
-    public void setPosition(Vector2 position) {
-        this.position = position;
-    }
-
     public int getLifeTokens() {
         return lifeTokens;
-    }
-
-    public void setLifeTokens(int lifeTokens) {
-        this.lifeTokens = lifeTokens;
     }
 
     public int getDamageTokens() {
         return damageTokens;
     }
 
-    public void setDamageTokens(int damageTokens) {
-        this.damageTokens = damageTokens;
+    public int getFlagsTaken() {
+        return flagsTaken;
     }
 
-    public ArrayList<ProgramCard> getProgramCards() {
-        return programCards;
-    }
-
-    public void setProgramCards(ArrayList<ProgramCard> programCards) {
-        this.programCards = programCards;
+    public Direction getDirection() {
+        return direction;
     }
 
     public ProgramCard getCurrentCard() {
         return currentCard;
     }
 
-    public void setCurrentCard(ProgramCard currentCard) {
-        this.currentCard = currentCard;
-    }
 }

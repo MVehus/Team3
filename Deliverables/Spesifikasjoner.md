@@ -19,31 +19,31 @@ strekke oss mot ved å yte vårt beste individuelt, og utnytte eksisterende retn
 |[ 2](#gui2)   | Vise spillebrikker  | Gui         |<ul><li>- [x] </li></ul> |
 |[ 3](#gui3)   | Input flytter brikke| Gui         |<ul><li>- [x] </li></ul> |
 |[ 4](#gui4)   | Flaggindikasjon     | Gui         |<ul><li>- [x] </li></ul> |
-|[11](#gui5)   | Window/Fullscreen   | Gui         |<ul><li>- [x] </li></ul> |
-|[12](#gui6)   | Lagre preferanser   | Gui         |<ul><li>- [x] </li></ul> |
-|[13](#gui7)   | Vise skadetokens    | Gui         |<ul><li>- [ ] </li></ul> |
-|[15](#gui8)   | Kjøre runde         | Gui         |<ul><li>- [ ] </li></ul> |
-|[18](#gui9)   | Programkort         | Gui         |<ul><li>- [ ] </li></ul> |
-|[19](#gui10)  | Power down          | Gui         |<ul><li>- [ ] </li></ul> |
-|[20](#gui11)  | Kjøre programkort   | Gui         |<ul><li>- [ ] </li></ul> |
-|[23](#gui12)  | Laser               | Gui         |<ul><li>- [ ] </li></ul> |
-|[ 4](#logic1) | Flaggindikasjon     | Logic       |<ul><li>- [ ] </li></ul> |
-|[ 5](#logic2) | Win-condition       | Logic       |<ul><li>- [ ] </li></ul> |
-|[ 9](#logic3) | Utdeling av kort    | Logic       |<ul><li>- [ ] </li></ul> |
-|[10](#logic4) | Velge kort          | Logic       |<ul><li>- [ ] </li></ul> |
-|[14](#logic5) | Skadekonsekvens     | Logic       |<ul><li>- [ ] </li></ul> |
-|[15](#logic6) | Kjøre runde         | Logic       |<ul><li>- [ ] </li></ul> |
-|[16](#logic7) | Stokke kortstokk    | Logic       |<ul><li>- [ ] </li></ul> |
-|[17](#logic8) | Programkort         | Logic       |<ul><li>- [ ] </li></ul> |
-|[18](#logic9) | Timer               | Logic       |<ul><li>- [ ] </li></ul> |
-|[19](#logic10)| Power down          | Logic       |<ul><li>- [ ] </li></ul> |
-|[20](#logic11)| Kjøre programkort   | Logic       |<ul><li>- [ ] </li></ul> |
-|[21](#logic12)| Dytting             | Logic       |<ul><li>- [ ] </li></ul> |
-|[22](#logic13)| Spesialtfelt        | Logic       |<ul><li>- [ ] </li></ul> |
-|[23](#logic14)| Laserskade          | Logic       |<ul><li>- [ ] </li></ul> |
-|[ 6](#multi1) | Spille med andre    | Multiplayer |<ul><li>- [x] </li></ul> |
-|[ 7](#multi2) | Host/client valg    | Multiplayer |<ul><li>- [x] </li></ul> |
-|[ 8](#multi1) | Lobby               | Multiplayer |<ul><li>- [ ] </li></ul> |
+|[ 5](#gui5)   | Window/Fullscreen   | Gui         |<ul><li>- [x] </li></ul> |
+|[ 6](#gui6)   | Lagre preferanser   | Gui         |<ul><li>- [x] </li></ul> |
+|[ 7](#gui7)   | Vise skadetokens    | Gui         |<ul><li>- [ ] </li></ul> |
+|[ 8](#gui8)   | Kjøre runde         | Gui         |<ul><li>- [ ] </li></ul> |
+|[ 9](#gui9)   | Programkort         | Gui         |<ul><li>- [ ] </li></ul> |
+|[10](#gui10)  | Power down          | Gui         |<ul><li>- [ ] </li></ul> |
+|[11](#gui11)  | Kjøre programkort   | Gui         |<ul><li>- [ ] </li></ul> |
+|[12](#gui12)  | Laser               | Gui         |<ul><li>- [ ] </li></ul> |
+|[ 1](#logic1) | Flaggindikasjon     | Logic       |<ul><li>- [ ] </li></ul> |
+|[ 2](#logic2) | Win-condition       | Logic       |<ul><li>- [ ] </li></ul> |
+|[ 3](#logic3) | Utdeling av kort    | Logic       |<ul><li>- [ ] </li></ul> |
+|[ 4](#logic4) | Velge kort          | Logic       |<ul><li>- [ ] </li></ul> |
+|[ 5](#logic5) | Skadekonsekvens     | Logic       |<ul><li>- [ ] </li></ul> |
+|[ 6](#logic6) | Kjøre runde         | Logic       |<ul><li>- [ ] </li></ul> |
+|[ 7](#logic7) | Stokke kortstokk    | Logic       |<ul><li>- [ ] </li></ul> |
+|[ 8](#logic8) | Programkort         | Logic       |<ul><li>- [ ] </li></ul> |
+|[ 9](#logic9) | Timer               | Logic       |<ul><li>- [ ] </li></ul> |
+|[10](#logic10)| Power down          | Logic       |<ul><li>- [ ] </li></ul> |
+|[11](#logic11)| Kjøre programkort   | Logic       |<ul><li>- [ ] </li></ul> |
+|[12](#logic12)| Dytting             | Logic       |<ul><li>- [ ] </li></ul> |
+|[13](#logic13)| Spesialtfelt        | Logic       |<ul><li>- [ ] </li></ul> |
+|[14](#logic14)| Laserskade          | Logic       |<ul><li>- [ ] </li></ul> |
+|[ 1](#multi1) | Spille med andre    | Multiplayer |<ul><li>- [ ] </li></ul> |
+|[ 2](#multi2) | Host/client valg    | Multiplayer |<ul><li>- [x] </li></ul> |
+|[ 3](#multi1) | Lobby               | Multiplayer |<ul><li>- [ ] </li></ul> |
 
 
 ## Gui
@@ -94,7 +94,7 @@ Når roboten befinner seg på et flagg, skal dette indikeres til bruker og spill
 #### Krav brukerhistorien oppfyller
 
 <a name="gui5"></a>
-### 11:
+### 5:
 #### Brukerhistorie
 Som bruker ønsker jeg å velge mellom fullscreen- eller vindumodus før jeg starter spillet.
 #### Akseptansekrav
@@ -105,7 +105,7 @@ Som bruker ønsker jeg å velge mellom fullscreen- eller vindumodus før jeg sta
 #### Krav brukerhistorien oppfyller
 
 <a name="gui6"></a>
-### 12:
+### 6:
 #### Brukerhistorie
 Når jeg spiller ønsker jeg å lagre preferansene mine til senere.
 #### Akseptansekrav
@@ -115,7 +115,7 @@ Når jeg spiller ønsker jeg å lagre preferansene mine til senere.
 #### Krav brukerhistorien oppfyller
 
 <a name="gui7"></a>
-### 13:
+### 7:
 #### Brukerhistorie
 Når roboten min tar skade vil jeg at det skal vise.
 #### Akseptansekrav
@@ -124,7 +124,7 @@ Når roboten min tar skade vil jeg at det skal vise.
 #### Krav brukerhistorien oppfyller
 
 <a name="gui8"></a>
-### 15:
+### 8:
 #### Brukerhistorie
 Når en tur starter så skal programmet gå gjennom alle stegene i turen.
 #### Akseptansekrav
@@ -135,7 +135,7 @@ Når en tur kjører gjennom alle stegene som en tur skal ha.
 #### Krav brukerhistorien oppfyller
 
 <a name="gui9"></a>
-### 18:
+### 9:
 #### Brukerhistorie
 Når alle utenom ein bruker har valgt kort og trykt på "ferdig" knapp så har
 den siste brukeren 30 sekunder på å velge kort før det blir tildelt tilfeldig.
@@ -147,7 +147,7 @@ i forhold til programmeringsstadiet.
 #### Krav brukerhistorien oppfyller
 
 <a name="gui10"></a>
-### 19:
+### 10:
 #### Brukerhistorie
 Som spiller vil eg kunne annonsere "power down"
 #### Akseptansekrav
@@ -162,7 +162,7 @@ Når spilleren har mulighet til å bruke "power down" og alle konsekvenser blir 
 #### Krav brukerhistorien oppfyller
 
 <a name="gui11"></a>
-### 20:
+### 11:
 #### Brukerhistorie
 Spillet skal kjøre programkortene til spillerene
 #### Akseptansekrav
@@ -172,7 +172,7 @@ Når spillet kjører alle programkortene til alle spillere i rett rekkefølge.
 #### Krav brukerhistorien oppfyller
 
 <a name="gui12"></a>
-### 23:
+### 12:
 #### Brukerhistorie
 Roboten min skal ta skade hvis den blir truffet av laser
 #### Akseptansekrav
@@ -185,7 +185,7 @@ At roboter tar skade av lasere når laserene skyter.
 ## Gamelogic
 
 <a name="logic1"></a>
-### 4:
+### 1:
 #### Brukerhistorie
 Når roboten befinner seg på et flagg, skal dette indikeres til bruker og spillogikken skal registrere det.
 #### Akseptansekrav
@@ -197,7 +197,7 @@ Når roboten befinner seg på et flagg, skal dette indikeres til bruker og spill
 #### Krav brukerhistorien oppfyller
 
 <a name="logic2"></a>
-### 5:
+### 2:
 #### Brukerhistorie
 Spiller vinner dersom spillets krav for å vinne blir oppfylt.
 #### Akseptansekrav
@@ -209,7 +209,7 @@ Spiller vinner dersom spillets krav for å vinne blir oppfylt.
 #### Krav brukerhistorien oppfyller
 
 <a name="logic3"></a>
-### 9:
+### 3:
 #### Brukerhistorie
 Når jeg spiller ønsker jeg å få tildelt nye kort hver runde
 #### Akseptansekrav
@@ -221,7 +221,7 @@ Når jeg spiller ønsker jeg å få tildelt nye kort hver runde
 #### Krav brukerhistorien oppfyller
 
 <a name="logic4"></a>
-### 10:
+### 4:
 #### Brukerhistorie
 Som bruker ønsker jeg å velge mellom fem kort og kvitte meg med resten.
 #### Akseptansekrav
@@ -232,7 +232,7 @@ Som bruker ønsker jeg å velge mellom fem kort og kvitte meg med resten.
 #### Krav brukerhistorien oppfyller
 
 <a name="logic5"></a>
-### 14:
+### 5:
 #### Brukerhistorie
 Skade roboten min tar skal gi meg konsekvenser.
 #### Akseptansekrav
@@ -243,7 +243,7 @@ Skade roboten min tar skal gi meg konsekvenser.
 #### Krav brukerhistorien oppfyller
 
 <a name="logic6"></a>
-### 15:
+### 6:
 #### Brukerhistorie
 Når en tur starter så skal programmet gå gjennom alle stegene i turen.
 #### Akseptansekrav
@@ -257,7 +257,7 @@ Når en tur kjører gjennom alle stegene som en tur skal ha.
 #### Krav brukerhistorien oppfyller
 
 <a name="logic7"></a>
-### 16:
+### 7:
 #### Brukerhistorie
 Når programmet skal dele ut kort, skal kortstokken stokkes.
 #### Akseptansekrav
@@ -267,7 +267,7 @@ At kortstokken er i en tilfeldig rekkefølge før det deles ut kort.
 #### Krav brukerhistorien oppfyller
 
 <a name="logic8"></a>
-### 17:
+### 8:
 #### Brukerhistorie
 Når eg har fått utdelt kort vil eg kunne arrangere kortene i programkortet.
 #### Akseptansekrav
@@ -280,7 +280,7 @@ At brukeren kan velge kva kort skal i kva posisjon i programkortet.
 #### Krav brukerhistorien oppfyller
 
 <a name="logic9"></a>
-### 18:
+### 9:
 #### Brukerhistorie
 Når alle utenom ein bruker har valgt kort og trykt på "ferdig" knapp så har
 den siste brukeren 30 sekunder på å velge kort før det blir tildelt tilfeldig.
@@ -294,7 +294,7 @@ i forhold til programmeringsstadiet.
 #### Krav brukerhistorien oppfyller
 
 <a name="logic10"></a>
-### 19:
+### 10:
 #### Brukerhistorie
 Som spiller vil eg kunne annonsere "power down"
 #### Akseptansekrav
@@ -310,7 +310,7 @@ Når spilleren har mulighet til å bruke "power down" og alle konsekvenser blir 
 #### Krav brukerhistorien oppfyller
 
 <a name="logic11"></a>
-### 20:
+### 11:
 #### Brukerhistorie
 Spillet skal kjøre programkortene til spillerene
 #### Akseptansekrav
@@ -321,7 +321,7 @@ Når spillet kjører alle programkortene til alle spillere i rett rekkefølge.
 #### Krav brukerhistorien oppfyller
 
 <a name="logic12"></a>
-### 21:
+### 12:
 #### Brukerhistorie
 Hvis roboten min går på et felt med en robot, så vil eg dytte den vekk.
 #### Akseptansekrav
@@ -333,7 +333,7 @@ At roboter dytter vekk andre roboter i samme retning hvis det er mulig.
 #### Krav brukerhistorien oppfyller
 
 <a name="logic13"></a>
-### 22:
+### 13:
 #### Brukerhistorie
 Hvis roboten min står på/går over et felt med spesielle attributter så skjer det noe.
 #### Akseptansekrav
@@ -350,7 +350,7 @@ At spesialfelt sine oppgaver blir utført på roboter.
 #### Krav brukerhistorien oppfyller
 
 <a name="logic14"></a>
-### 23:
+### 14:
 #### Brukerhistorie
 Roboten min skal ta skade hvis den blir truffet av laser
 #### Akseptansekrav
@@ -365,7 +365,7 @@ At roboter tar skade av lasere når laserene skyter.
 ## Multiplayer
 
 <a name="multi1"></a>
-### 6:
+### 1:
 #### Brukerhistorie
 Som bruker vil jeg kunne spille med andre spillere på forskjellige maskiner
 #### Akseptansekrav
@@ -374,10 +374,11 @@ Som bruker vil jeg kunne spille med andre spillere på forskjellige maskiner
 #### Arbeidsoppgaver
 - Lese seg opp på relevant kunnskap om klient/server
 - Utvikle nødvendige klasser for mulitplayer funksjonalitet.
+- Integrere mulitplayer klassene med den eksisterende game logikken
 #### Krav brukerhistorien oppfyller
 
 <a name="multi2"></a>
-### 7:
+### 2:
 #### Brukerhistorie
 Når jeg starter spillet, vil jeg ha mulighet til å velge mellom å bli med i et
 eksisterende spill, eller starte et nytt.
@@ -388,7 +389,7 @@ eksisterende spill, eller starte et nytt.
 #### Krav brukerhistorien oppfyller
 
 <a name="multi3"></a>
-### 8:
+### 3:
 #### Brukerhistorie
 Når jeg befinner meg i en lobby vil jeg kunne se hvem som er med i spillet.
 #### Akseptansekrav
