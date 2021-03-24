@@ -11,6 +11,7 @@ public class Client {
 
     Game game;
     com.esotericsoftware.kryonet.Client client;
+    private Integer id;
 
     public Client(String IpAddress, int port) {
         client = new com.esotericsoftware.kryonet.Client();
@@ -26,6 +27,9 @@ public class Client {
                 if (object instanceof GameStateModel) {
                     GameStateModel response = (GameStateModel) object;
                     //TODO Handle incoming updated GameState
+                } else if (object instanceof Integer){
+                    id = (Integer) object;
+                    System.out.println("Connected to server with id: " + id);
                 }
             }
         });
@@ -33,6 +37,10 @@ public class Client {
 
     public void disconnect(){
         client.close();
+    }
+
+    public Integer getId(){
+        return id;
     }
 
     public void setGame(Game game) {

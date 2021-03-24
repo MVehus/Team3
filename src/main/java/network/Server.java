@@ -1,6 +1,8 @@
 package network;
 
 import Models.GameStateModel;
+import Models.PlayerModel;
+import app.Tile;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 
@@ -29,14 +31,17 @@ public class Server {
                 if (object instanceof GameStateModel) {
                     GameStateModel newGameState = (GameStateModel) object;
                     System.out.println("New GameState received from connection : " + connection);
-                    currentGameState = newGameState;
-                    sendToAllClients(newGameState, connection);
+                    if (!newGameState.equals(currentGameState)) {
+                        currentGameState = newGameState;
+                        sendToAllClients(newGameState, connection);
+                    }
                 }
             }
 
             public void connected(Connection connection) {
                 if (!clients.contains(connection)) {
                     clients.add(connection);
+                    sendId(connection);
                 }
                 if (!clientIdTable.containsValue(connection)) {
                     clientIdTable.put(connection.getID(), connection);
@@ -55,6 +60,14 @@ public class Server {
 
     public HashMap<Integer, Connection> getClientIdTable() {
         return clientIdTable;
+    }
+
+    public void sendId(Connection connection){
+        try {
+            server.sendToTCP(connection.getID(), connection.getID());
+        } catch (Exception e){
+            System.out.println("Could not send id to client with exception: \n" + e.toString());
+        }
     }
 
     public void sendToAllClients(Object obj, Connection sender) {
