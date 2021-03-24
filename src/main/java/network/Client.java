@@ -13,9 +13,10 @@ import java.util.ArrayList;
 
 public class Client {
 
-    Game game;
+    private Game game;
     com.esotericsoftware.kryonet.Client client;
     private Integer id;
+    private Boolean gameStarted;
 
     public Client(String IpAddress, int port) {
         client = new com.esotericsoftware.kryonet.Client();
@@ -33,7 +34,8 @@ public class Client {
                     PlayerModel updatedPlayerModel = (PlayerModel) object;
                     System.out.println("Player " + connection.getID() + " updated");
                     if (game != null) {
-                        Gdx.app.postRunnable(() -> game.updatePlayer(updatedPlayerModel));
+                        //Gdx.app.postRunnable(() -> game.updatePlayer(updatedPlayerModel));
+                        game.updatePlayer(updatedPlayerModel);
                     }
 
                 } else if (object instanceof Integer) {
@@ -45,6 +47,8 @@ public class Client {
                         //Gdx.app.postRunnable(() -> game.setPlayerList((ArrayList<Player>) object));
                         game.setPlayerList((ArrayList<Player>) object);
                     }
+                } else if (object instanceof Boolean) {
+                    gameStarted = (Boolean) object;
                 }
             }
         });
@@ -65,6 +69,8 @@ public class Client {
     public Integer getId() {
         return id;
     }
+
+    public Boolean getGameStarted(){return gameStarted;}
 
     public void setGame(Game game) {
         this.game = game;

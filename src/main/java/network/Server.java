@@ -16,6 +16,7 @@ public class Server {
     private ArrayList<Connection> clients;
     private HashMap<Integer, Connection> clientIdTable;
     private ArrayList<Player> players;
+    private Boolean gameStarted;
 
     public Server(int port) {
         server = new com.esotericsoftware.kryonet.Server();
@@ -38,6 +39,9 @@ public class Server {
                     System.out.println("Received updated PlayerModel from connection : " + connection);
                     players.get(connection.getID()-1).setNewPlayerState(updatedPlayerModel);
                     sendToAllClients(updatedPlayerModel);
+                } else if (object instanceof Boolean) {
+                    gameStarted = (Boolean) object;
+                    sendToAllClients(object);
                 }
             }
 

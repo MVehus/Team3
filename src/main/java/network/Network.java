@@ -59,6 +59,10 @@ public class Network {
         server.sendPlayerListToClients();
     }
 
+    public static Boolean gameStarted(){
+        return client.getGameStarted();
+    }
+
     public static int getMyId(){
         return client.getId();
     }

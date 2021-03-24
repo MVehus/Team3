@@ -71,6 +71,7 @@ public class CreateGameScreen extends AbstractScreen{
         startGameButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent changeEvent, Actor actor) {
+                Network.sendToServer(Boolean.TRUE);
                 parent.changeScreen(ScreenOrchestrator.APPLICATION);
             }
         });

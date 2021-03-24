@@ -15,5 +15,6 @@ public class NetworkUtilities {
         kryo.register(ArrayList.class, new JavaSerializer());
         kryo.register(player.Player.class, new JavaSerializer());
         kryo.register(Direction.class, new JavaSerializer());
+        kryo.register(Boolean.class);
     }
 }
