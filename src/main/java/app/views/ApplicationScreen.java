@@ -46,6 +46,9 @@ public class ApplicationScreen extends AbstractScreen {
 
         initCardSlots();
         initButtons();
+        initDamageTokens();
+        initFlags();
+        initLifeTokens();
 
         Gdx.input.setInputProcessor(stage);
     }
@@ -61,7 +64,7 @@ public class ApplicationScreen extends AbstractScreen {
 
         //UI side of screen
         Gdx.gl.glViewport( 0,0,width,Gdx.graphics.getHeight() );
-        stage.setDebugAll(true);
+        //stage.setDebugAll(true);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
     }
@@ -92,13 +95,13 @@ public class ApplicationScreen extends AbstractScreen {
 
     private void initButtons() {
         TextButton lockInButton = new TextButton("Lock in Cards", skin);
-        lockInButton.setPosition(width-320, 10);
-        lockInButton.setWidth(300);
+        lockInButton.setPosition(width-((width-gameWidth)/3), 10);
+        lockInButton.setWidth((width-gameWidth)/3);
         lockInButton.setHeight(60);
 
         TextButton powerDownButton = new TextButton("Power Down", skin);
         powerDownButton.setPosition(gameWidth+20, 10);
-        powerDownButton.setWidth(300);
+        powerDownButton.setWidth((width-gameWidth)/3);
         powerDownButton.setHeight(60);
 
         lockInButton.addListener(new ChangeListener() {
@@ -120,7 +123,33 @@ public class ApplicationScreen extends AbstractScreen {
     }
 
     private void initDamageTokens() {
+        Sprite texture = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens0.png"));
+        Image damageTokens = new Image(new SpriteDrawable(texture));
+        damageTokens.setPosition(gameWidth, height-150);
+        damageTokens.setWidth(width-gameWidth);
+        damageTokens.setHeight((width-gameWidth)/10);
 
+        stage.addActor(damageTokens);
+    }
+
+    private void initFlags() {
+        Sprite texture = new Sprite(new Texture("src/assets/playerGUI/flags/flags0.png"));
+        Image flags = new Image(new SpriteDrawable(texture));
+        flags.setPosition(gameWidth, height-(200+(width-gameWidth)/10));
+        flags.setWidth((width-gameWidth)/2);
+        flags.setHeight((width-gameWidth)/6);
+
+        stage.addActor(flags);
+    }
+
+    private void initLifeTokens() {
+        Sprite texture = new Sprite(new Texture("src/assets/playerGUI/lifeTokens/lifeTokens0.png"));
+        Image flags = new Image(new SpriteDrawable(texture));
+        flags.setPosition(gameWidth+((width-gameWidth)/2), height-(200+(width-gameWidth)/10));
+        flags.setWidth((width-gameWidth)/2);
+        flags.setHeight((width-gameWidth)/6);
+
+        stage.addActor(flags);
     }
 
     @Override
