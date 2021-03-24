@@ -24,12 +24,10 @@ public class Server {
         server.addListener(new Listener() {
             public void received(Connection connection, Object object) {
                 if (object instanceof GameStateModel) {
-                    GameStateModel request = (GameStateModel) object;
-                    System.out.println(request.toString());
-
-                    //TODO Handle and notify all clients of updated GameState
+                    GameStateModel newGameState = (GameStateModel) object;
+                    System.out.println("New GameState received from connection : " + connection);
+                    sendToAllClients(newGameState);
                 }
-
             }
 
             public void connected(Connection connection){
@@ -50,7 +48,12 @@ public class Server {
 
     public void sendToAllClients(Object obj){
         for(Connection client : clients){
-            client.sendTCP(obj);
+            try{
+                client.sendTCP(obj);
+            } catch (Exception e){
+                System.out.println("Could not send message to client: " + client);
+            }
+
         }
     }
 }
