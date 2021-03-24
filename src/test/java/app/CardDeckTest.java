@@ -42,15 +42,4 @@ public class CardDeckTest {
         }
         assertEquals(18, count);
     }
-
-    @Test
-    public void RestockDeck(){
-        ArrayList<ProgramCard> cards = new ArrayList<>();
-        DECK.drawCards(30);
-        DECK.restock();
-        assertEquals(84, DECK.getDeckSize());
-    }
-
-
-
 }

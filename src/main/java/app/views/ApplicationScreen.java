@@ -40,7 +40,7 @@ public class ApplicationScreen extends AbstractScreen {
         super(screenOrchestrator);
         width = Gdx.graphics.getWidth();
         height = Gdx.graphics.getHeight();
-        player = Network.getPlayersOnServer().get(Network.getMyId());
+        player = Network.getPlayersOnServer().get(Network.getMyId()-1);
     }
 
     @Override
