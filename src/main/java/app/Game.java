@@ -44,7 +44,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     @Override
     public boolean keyUp(int keycode) {
-        Player currentPlayer = players.get(Network.getMyId());
+        Player currentPlayer = players.get(0);
         Vector2 playerPos = currentPlayer.getPosition();
         Vector2 nextPos = currentPlayer.getNextCell();
 
@@ -64,7 +64,7 @@ public class Game extends InputAdapter implements ApplicationListener {
             }
             else {
                 currentPlayer.move();
-                Network.sendToServer(currentPlayer.getModel());
+                //Network.sendToServer(currentPlayer.getModel());
             }
         }
         else if (keycode == Input.Keys.DOWN) {
@@ -81,7 +81,7 @@ public class Game extends InputAdapter implements ApplicationListener {
             }
             else {
                 currentPlayer.move();
-                Network.sendToServer(currentPlayer.getModel());
+                //Network.sendToServer(currentPlayer.getModel());
             }
         }
         else if (keycode == Input.Keys.LEFT) {
@@ -98,7 +98,7 @@ public class Game extends InputAdapter implements ApplicationListener {
             }
             else{
                 currentPlayer.move();
-                Network.sendToServer(currentPlayer.getModel());
+                //Network.sendToServer(currentPlayer.getModel());
             }
 
         }
@@ -117,7 +117,7 @@ public class Game extends InputAdapter implements ApplicationListener {
             }
             else {
                 currentPlayer.move();
-                Network.sendToServer(currentPlayer.getModel());
+                //Network.sendToServer(currentPlayer.getModel());
             }
         }
         System.out.println(currentPlayer.getName() + " at " + gameBoard.getTilesOnCell(playerPos.x, playerPos.y));
@@ -144,9 +144,9 @@ public class Game extends InputAdapter implements ApplicationListener {
         System.out.println(startPositions);
 
         // SET UP CLIENT
-        Network.setGameReferenceForClient(this);
+        //Network.setGameReferenceForClient(this);
 
-        /*
+
         // TEST SPILLERE
         Player player1 = new Player(1, "André", startPositions.get(0));
         players.add(player1);
@@ -162,14 +162,11 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         Player player5 = new Player(5, "Jørgen", startPositions.get(4));
         players.add(player5);
-         */
-        if (Network.hostingServer()){
-            Network.sendPlayerListToClients();
-        }
 
-        for(Player player : players){
-            player.setPosition((int) startPositions.get(player.getId()).x, (int) startPositions.get(player.getId()).y);
-        }
+        //if (Network.hostingServer()){ Network.sendPlayerListToClients(); }
+
+        //for(Player player : players) player.setPosition((int) startPositions.get(player.getId()).x, (int) startPositions.get(player.getId()).y);
+
 
         loadTextures(players);
 
@@ -481,6 +478,29 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     private TiledMapTileLayer.Cell getPlayerTexture(Player player){
         List<TiledMapTileLayer.Cell> textures = playerTextures.get(player.getId());
+
+        if(player.getDirection() == Direction.UP){
+            for(TiledMapTileLayer.Cell texture : textures){
+                texture.setRotation(1);
+            }
+        }
+        else if(player.getDirection() == Direction.DOWN){
+            for(TiledMapTileLayer.Cell texture : textures){
+                texture.setRotation(3);
+            }
+        }
+        else if(player.getDirection() == Direction.LEFT){
+            for(TiledMapTileLayer.Cell texture : textures){
+                texture.setRotation(2);
+            }
+        }
+        else {
+            // Keep texture as it is
+            for(TiledMapTileLayer.Cell texture : textures){
+                texture.setRotation(0);
+            }
+        }
+
         if(player.getFlagScore() == 3)
             return textures.get(1);
         else if(!player.isAlive())
