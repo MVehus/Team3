@@ -35,10 +35,6 @@ public class Network {
         return server != null ? server.getClients() : new ArrayList<>();
     }
 
-    public static HashMap<Integer, Connection> getClientIdTable(){
-        return server != null ? server.getClientIdTable() : new HashMap<>();
-    }
-
     public static ArrayList<Player> getPlayersOnServer(){
         return server.getPlayers();
     }
@@ -60,7 +56,7 @@ public class Network {
     }
 
     public static Boolean gameStarted(){
-        return client.getGameStarted();
+        return client.getGameStarted() != null;
     }
 
     public static int getMyId(){

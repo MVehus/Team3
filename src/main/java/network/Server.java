@@ -14,7 +14,6 @@ import java.util.HashMap;
 public class Server {
     private com.esotericsoftware.kryonet.Server server;
     private ArrayList<Connection> clients;
-    private HashMap<Integer, Connection> clientIdTable;
     private ArrayList<Player> players;
     private Boolean gameStarted;
 
@@ -30,7 +29,6 @@ public class Server {
 
         clients = new ArrayList<>();
         players = new ArrayList<>();
-        clientIdTable = new HashMap<>();
 
         server.addListener(new Listener() {
             public void received(Connection connection, Object object) {
@@ -61,10 +59,6 @@ public class Server {
 
     public ArrayList<Connection> getClients() {
         return clients;
-    }
-
-    public HashMap<Integer, Connection> getClientIdTable() {
-        return clientIdTable;
     }
 
     public ArrayList<Player> getPlayers(){
