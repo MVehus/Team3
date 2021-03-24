@@ -32,7 +32,7 @@ public class Game extends InputAdapter implements ApplicationListener {
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
 
-    private HashMap<Integer, List<TiledMapTileLayer.Cell>> playerTextures = new HashMap<>();
+    private final HashMap<Integer, List<TiledMapTileLayer.Cell>> playerTextures = new HashMap<>();
     private List<Player> players = new ArrayList<>();
 
     private boolean game = true;    // game = true så lenge ingen har vunnet, når en vinner setter vi game = false og avslutter spillet.
@@ -44,7 +44,7 @@ public class Game extends InputAdapter implements ApplicationListener {
     public boolean keyUp(int keycode) {
         Player currentPlayer = players.get(0);
         Vector2 playerPos = currentPlayer.getPosition();
-        Vector2 nextPos = currentPlayer.getNextCells(1);
+        Vector2 nextPos = currentPlayer.getNextCell();
 
         playerLayer.setCell((int) playerPos.x, (int) playerPos.y, null);
 
@@ -61,8 +61,12 @@ public class Game extends InputAdapter implements ApplicationListener {
                 System.out.println(currentPlayer.getName() + "has neighbor");
             }
             else {
-                currentPlayer.move();
-                //Network.sendToServer(currentPlayer.getModel());
+                if(nextCellAvailable(currentPlayer)){
+                    currentPlayer.move();
+                    //Network.sendToServer(currentPlayer.getModel());
+                } else {
+                    System.out.println("PUSH");
+                }
             }
         }
         else if (keycode == Input.Keys.DOWN) {
@@ -78,8 +82,10 @@ public class Game extends InputAdapter implements ApplicationListener {
                 System.out.println(currentPlayer.getName() + "has neighbor");
             }
             else {
-                currentPlayer.move();
-                //Network.sendToServer(currentPlayer.getModel());
+                if(nextCellAvailable(currentPlayer)){
+                    currentPlayer.move();
+                    //Network.sendToServer(currentPlayer.getModel());
+                }
             }
         }
         else if (keycode == Input.Keys.LEFT) {
@@ -95,8 +101,12 @@ public class Game extends InputAdapter implements ApplicationListener {
                 System.out.println(currentPlayer.getName() + "has neighbor");
             }
             else{
-                currentPlayer.move();
-                //Network.sendToServer(currentPlayer.getModel());
+                if(nextCellAvailable(currentPlayer)){
+                    currentPlayer.move();
+                    //Network.sendToServer(currentPlayer.getModel());
+                } else {
+                    System.out.println("PUSH");
+                }
             }
 
         }
@@ -114,18 +124,28 @@ public class Game extends InputAdapter implements ApplicationListener {
                 System.out.println(currentPlayer.getName() + "has neighbor");
             }
             else {
-                currentPlayer.move();
-                //Network.sendToServer(currentPlayer.getModel());
+                if(nextCellAvailable(currentPlayer)){
+                    currentPlayer.move();
+                    //Network.sendToServer(currentPlayer.getModel());
+                } else {
+                    System.out.println("PUSH");
+                }
             }
         }
 
         updatePlayerState(currentPlayer);
         System.out.println(currentPlayer.toString());
-        System.out.println(currentPlayer.getName() + " at " + gameBoard.getTilesOnCell(playerPos.x, playerPos.y));
-        System.out.println(playerOnNextCell(currentPlayer));
+        System.out.println("Next cell available: " + nextCellAvailable(currentPlayer));
+        System.out.println(currentPlayer.getPosition() + " | " + getNextCells(currentPlayer, 2));
+        for(Vector2 v : getNextCells(currentPlayer, 2)){
+            if(getPlayerOnCell(v) == null){
+            } else{
+                System.out.println("Neighbour: " + getPlayerOnCell(v).getName());
+            }
+
+        }
+
         System.out.println(" ");
-
-
 
         return super.keyUp(keycode);
     }
@@ -137,6 +157,15 @@ public class Game extends InputAdapter implements ApplicationListener {
         font.setColor(Color.RED);
         Gdx.input.setInputProcessor(this);
 
+        // TEST SPILLERE
+        Player player1 = new Player(1, "André", new Vector2(1,1));
+        players.add(player1);
+
+        Player player2 = new Player(2, "Test-1", new Vector2(2,3));
+        players.add(player2);
+        Player player3 = new Player(3, "Test-2", new Vector2(2,4));
+        players.add(player3);
+
         // Setup map and layers
         map = new TmxMapLoader().load("src/assets/VaultMap.tmx");
 
@@ -145,24 +174,11 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         setupCameraAndRenderer();
 
-        startPositions = gameBoard.getTileLocations(Tile.RobotStart);
-        System.out.println(startPositions);
-
         // SET UP CLIENT
         //Network.setGameReferenceForClient(this);
 
-        // TEST SPILLERE
-        Player player1 = new Player(1, "André", new Vector2(1,1));
-        players.add(player1);
-
-        Player player2 = new Player(2, "Test1", new Vector2(2,3));
-        players.add(player2);
-
-        Player player3 = new Player(2, "Test2", new Vector2(3,0));
-        players.add(player3);
-
-
-        //if (Network.hostingServer()){ Network.sendPlayerListToClients(); }
+        //if (Network.hostingServer())
+        // { Network.sendPlayerListToClients(); }
 
         //for(Player player : players) player.setPosition((int) startPositions.get(player.getId()).x, (int) startPositions.get(player.getId()).y);
 
@@ -170,13 +186,12 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         // CARDS
         deck = new CardDeck();
-
     }
 
     private boolean canMove(Player player){
         Vector2 currentPos = player.getPosition();
         List<Tile> currentTile = gameBoard.getTilesOnCell(currentPos.x, currentPos.y);
-        Vector2 newPos = player.getNextCells(1);
+        Vector2 newPos = player.getNextCell();
         List<Tile> newTile = gameBoard.getTilesOnCell(newPos.x, newPos.y);
 
         if(currentPos.y < newPos.y){
@@ -206,17 +221,74 @@ public class Game extends InputAdapter implements ApplicationListener {
         return true;
     }
 
-    private boolean playerOnNextCell(Player player){
-        Vector2 currentPos = player.getPosition();
-        List<Tile> currentTile = gameBoard.getTilesOnCell(currentPos.x, currentPos.y);
-        Vector2 newPos = player.getNextCells(1);
-        List<Tile> newTile = gameBoard.getTilesOnCell(newPos.x, newPos.y);
+    private boolean cellIsAvailable(Vector2 position){
+        List<Tile> cell = gameBoard.getTilesOnCell(position.x, position.y);
+        return !cell.contains(Tile.Player);
+    }
 
-        if(newTile.contains(Tile.Player)){
+    private boolean nextCellAvailable(Player player){
+        Vector2 newPos = player.getNextCell();
+
+       List<Tile> newTile = gameBoard.getTilesOnCell(newPos.x, newPos.y);
+       if(newTile.contains(Tile.Player)){
             System.out.println(player.getName() + " has a neigbour " + player.getDirection());
-            return true;
+            return false;
+       }
+
+       return true;
+    }
+
+    public List<Vector2> getNextCells(Player player, int distance) {
+        int xPos = (int) player.getPosition().x;
+        int yPos = (int) player.getPosition().y;
+
+        List<Vector2> cells = new ArrayList<>();
+
+        for(int i = 1; i <= distance; i++){
+            Vector2 nextCell = new Vector2();
+            switch (player.getDirection()) {
+                case UP:
+                    nextCell.x = xPos;
+                    nextCell.y = yPos + i;
+                    break;
+                case DOWN:
+                    nextCell.x = xPos;
+                    nextCell.y = yPos - i;
+                    break;
+                case LEFT:
+                    nextCell.x = xPos - i;
+                    nextCell.y = yPos;
+                    break;
+                case RIGHT:
+                    nextCell.x = xPos + i;
+                    nextCell.y = yPos;
+                    break;
+            }
+            if(!(nextCell.x >= boardWidth || nextCell.x < 0 || nextCell.y >= boardHeight || nextCell.y < 0)){
+                cells.add(nextCell);
+            }
         }
+
+        return cells;
+    }
+
+    public boolean canPush(Player player){
+        List<Player> neigbours = new ArrayList<>();
+
         return false;
+    }
+
+    public void push(Player player){
+        Vector2 neigbour = player.getNextCell();
+    }
+
+    public Player getPlayerOnCell(Vector2 cell){
+        for(Player player : players){
+            if (player.getPosition().equals(cell)){
+                return player;
+            }
+        }
+        return null;
     }
 
     @Override
@@ -425,11 +497,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         renderer.setView(camera);
     }
 
-    /**
-     * Jeg vet denne koden er rotete.. skal få ryddet opp senere
-     *
-     * @param players
-     */
     private void loadTextures(List<Player> players) {
         TiledMapTileLayer.Cell player1_cell = new TiledMapTileLayer.Cell();
         TiledMapTileLayer.Cell player1_wonCell = new TiledMapTileLayer.Cell();
