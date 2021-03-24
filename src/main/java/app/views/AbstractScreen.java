@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
 public abstract class AbstractScreen implements Screen {
-    protected final Stage stage;
+    protected Stage stage;
     protected ScreenOrchestrator parent;
 
     public AbstractScreen(ScreenOrchestrator screenOrchestrator) {
