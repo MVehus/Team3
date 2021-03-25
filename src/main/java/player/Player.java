@@ -9,6 +9,7 @@ import projectCard.ProgramCard;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Player {
     private final int id;
@@ -17,12 +18,14 @@ public class Player {
     private Vector2 backupPosision;
     private Direction direction;
     public ArrayList<ProgramCard> cards = new ArrayList<ProgramCard>();
+    public ArrayList<ProgramCard> programCards = new ArrayList<ProgramCard>(5);
     private int lifeTokens;
     private int damageTokens;
     private int flagsTaken;
     private List<Tile> currentLayers;
     private boolean isAlive;
     private boolean powerDown;
+    private boolean programCardDone;
 
     private Vector2 checkPointPosition;
 
@@ -39,15 +42,73 @@ public class Player {
         this.flagsTaken = 0;
         this.currentLayers = null;
         this.powerDown = false;
+        this.programCardDone = false;
     }
+
+    // PLAYERINFO
 
     public int getId() {
         return id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setNewPlayerState(PlayerModel playerModel) {
+        this.position = playerModel.getPosition();
+        this.lifeTokens = playerModel.getLifeTokens();
+        this.damageTokens = playerModel.getDamageTokens();
+        this.flagsTaken = playerModel.getFlagsTaken();
+        this.direction = playerModel.getDirection();
+    }
+
+    public PlayerModel getModel() {
+        return new PlayerModel(id, position, lifeTokens, damageTokens, flagsTaken, direction, getCurrentCard());
+    }
+
+    public String toString() {
+        return name + " on (x: " + position.x + ", y: " + position.y + ") with " + lifeTokens + " HP and "
+                + damageTokens + " damage tokens. Has " + flagsTaken + " flags.";
+    }
+
+    // LIFE
+
     public boolean isAlive() {
         return isAlive;
     }
+
+    public int getHealth() {
+        return lifeTokens;
+    }
+
+    public void takeDamage() {
+        damageTokens += 1;
+        if (damageTokens == 10) {
+            //reset position
+            loseLifeToken();
+            //check for more life tokens
+        }
+    }
+
+    public int getNumDamageTokens() {
+        return damageTokens;
+    }
+
+    public void loseLifeToken() {
+        if (lifeTokens > 1) {
+            lifeTokens -= 1;
+            damageTokens = 0;
+            System.out.println("Lost life");
+            setPosition((int) backupPosision.x,(int) backupPosision.y);
+        }
+        else {
+            lifeTokens -= 1;
+            isAlive = false;
+        }
+    }
+
+    // MOVEMENT AND POSITION
 
     public Vector2 getNextCell(){
         int xPos = (int) position.x;
@@ -133,69 +194,6 @@ public class Player {
         this.direction = newDirection;
     }
 
-    public void registerFlag() {
-        flagsTaken++;
-    }
-
-    public int getFlagScore() {
-        return flagsTaken;
-    }
-
-    public int getHealth() {
-        return lifeTokens;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void takeDamage() {
-        damageTokens += 1;
-        if (damageTokens == 10) {
-            //reset position
-            loseLifeToken();
-            //check for more life tokens
-        }
-    }
-
-    public int getNumDamageTokens() {
-        return damageTokens;
-    }
-
-    public void loseLifeToken() {
-        if (lifeTokens > 1) {
-            lifeTokens -= 1;
-            damageTokens = 0;
-            System.out.println("Lost life");
-            setPosition((int) backupPosision.x,(int) backupPosision.y);
-        }
-        else {
-            lifeTokens -= 1;
-            isAlive = false;
-        }
-    }
-
-    public void drawProgramCards(CardDeck deck) {
-        int numCards = 9 - damageTokens;
-        cards = deck.drawCards(numCards);
-    }
-
-    public ProgramCard getCurrentCard() {
-        // Gjøre dette på en annen måte? Queue?
-        return cards.get(0);
-    }
-
-    public List<ProgramCard> getCards() {
-        return cards;
-    }
-
-    public int numLockedProgramCards() {
-        if (getNumDamageTokens() <= 9 && getNumDamageTokens() >= 5) {
-            return getNumDamageTokens() - 4;
-        }
-        return 0;
-    }
-
     public void markPosAsCheckpoint(){
         checkPointPosition = this.getPosition();
     }
@@ -236,21 +234,14 @@ public class Player {
         }
     }
 
-    public void setNewPlayerState(PlayerModel playerModel) {
-        this.position = playerModel.getPosition();
-        this.lifeTokens = playerModel.getLifeTokens();
-        this.damageTokens = playerModel.getDamageTokens();
-        this.flagsTaken = playerModel.getFlagsTaken();
-        this.direction = playerModel.getDirection();
+    // GAMESTATUS
+
+    public int getFlagScore() {
+        return flagsTaken;
     }
 
-    public PlayerModel getModel() {
-        return new PlayerModel(id, position, lifeTokens, damageTokens, flagsTaken, direction, getCurrentCard());
-    }
-
-    public String toString() {
-        return name + " on (x: " + position.x + ", y: " + position.y + ") with " + lifeTokens + " HP and "
-                + damageTokens + " damage tokens. Has " + flagsTaken + " flags.";
+    public void registerFlag() {
+        flagsTaken++;
     }
 
     public boolean inPowerDown(){
@@ -265,4 +256,56 @@ public class Player {
         damageTokens = 0;
         powerDown = false;
     }
+
+    // CARDS
+
+    public ProgramCard getCurrentCard() {
+        // Gjøre dette på en annen måte? Queue?
+        return cards.get(0);
+    }
+
+    public List<ProgramCard> getCards() {
+        return cards;
+    }
+
+    public int numLockedProgramCards() {
+        if (getNumDamageTokens() <= 9 && getNumDamageTokens() >= 5) {
+            return getNumDamageTokens() - 4;
+        }
+        return 0;
+    }
+
+    public void setProgramCardDone(){
+        programCardDone = true;
+    }
+
+    public void resetProgramCardDone(){
+        programCardDone = false;
+    }
+
+    public boolean getProgramCardStatus() {
+        return programCardDone;
+    }
+
+    public void selectCardForSlot(ProgramCard card, int slot) {
+        programCards.add(slot, card);
+        cards.remove(card);
+    }
+
+    public void removeCardFromSlot(ProgramCard card) {
+        cards.add(card);
+        programCards.remove(card);
+    }
+
+    public void clearAllSlots() {
+        programCards.clear();
+    }
+
+    public void assignRandomCards() {
+        Random rand = new Random();
+        for (int i = 0; i < programCards.size()-numLockedProgramCards(); i++) {
+            programCards.add(i, cards.remove(rand.nextInt(cards.size())));
+        }
+    }
+
 }

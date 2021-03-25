@@ -100,15 +100,22 @@ public class CardDeck {
         return availableCards.size();
     }
 
+    public int getUsedCardsSize(){
+        return usedCards.size();
+    }
+
     public void restock(){
         availableCards.addAll(usedCards);
+        usedCards.clear();
     }
 
 
     public void dealCards(List<Player> players) {
+        Collections.shuffle(availableCards);
         for(Player p : players) {
             if(!p.inPowerDown())
-                drawCards(9- p.getNumDamageTokens());
+                p.cards = drawCards(9- p.getNumDamageTokens());
         }
     }
+
 }
