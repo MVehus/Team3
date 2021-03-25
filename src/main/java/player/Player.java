@@ -170,6 +170,7 @@ public class Player {
             setPosition((int) backupPosision.x,(int) backupPosision.y);
         }
         else {
+            lifeTokens -= 1;
             isAlive = false;
         }
     }
@@ -260,4 +261,8 @@ public class Player {
         powerDown = true;
     }
 
+    public void powerDownComplete() {
+        damageTokens = 0;
+        powerDown = false;
+    }
 }

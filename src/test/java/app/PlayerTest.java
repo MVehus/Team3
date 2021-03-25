@@ -203,4 +203,13 @@ public class PlayerTest {
         }
         assertEquals(5, player.numLockedProgramCards());
     }
+
+    @Test
+    public void PowerDownRepairsAllDamage() {
+        for(int i = 0; i < 9; i++) {
+            player.takeDamage();
+        }
+        player.powerDownComplete();
+        assertEquals(0, player.getNumDamageTokens());
+    }
 }

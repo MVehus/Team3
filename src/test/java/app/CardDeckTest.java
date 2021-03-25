@@ -58,9 +58,7 @@ public class CardDeckTest {
     @Test
     public void PlayerInPowerDownGetsNoCard() {
         Player player1 = new Player(1, "test1", new Vector2(1,1));
-        //Player player2 = new Player(2, "test2", new Vector2(2,2));
         players.add(player1);
-        //players.add(player2);
         players.get(0).setPowerDown();
         DECK.dealCards(players);
         assertEquals(84, DECK.getAvailableCards().size());
