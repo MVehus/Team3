@@ -191,6 +191,10 @@ public class Player {
         checkPointPosition = this.getPosition();
     }
 
+    public Vector2 getCheckPointPosition(){
+        return checkPointPosition;
+    }
+
     public void reset() {
         if(lifeTokens <= 0){
             isAlive = true;
