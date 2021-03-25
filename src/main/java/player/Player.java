@@ -22,6 +22,7 @@ public class Player {
     private int flagsTaken;
     private List<Tile> currentLayers;
     private boolean isAlive;
+    private boolean powerDown;
 
     private Vector2 checkPointPosition;
 
@@ -37,6 +38,7 @@ public class Player {
         this.damageTokens = 0;
         this.flagsTaken = 0;
         this.currentLayers = null;
+        this.powerDown = false;
     }
 
     public int getId() {
@@ -248,6 +250,14 @@ public class Player {
     public String toString() {
         return name + " on (x: " + position.x + ", y: " + position.y + ") with " + lifeTokens + " HP and "
                 + damageTokens + " damage tokens. Has " + flagsTaken + " flags.";
+    }
+
+    public boolean inPowerDown(){
+        return powerDown;
+    }
+
+    public void setPowerDown() {
+        powerDown = true;
     }
 
 }

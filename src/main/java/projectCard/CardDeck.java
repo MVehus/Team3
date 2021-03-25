@@ -1,11 +1,9 @@
 package projectCard;
 
 import org.lwjgl.system.CallbackI;
+import player.Player;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 /**
  * card deck
@@ -107,4 +105,10 @@ public class CardDeck {
     }
 
 
+    public void dealCards(List<Player> players) {
+        for(Player p : players) {
+            if(!p.inPowerDown())
+                drawCards(9- p.getNumDamageTokens());
+        }
+    }
 }
