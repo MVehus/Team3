@@ -422,18 +422,6 @@ public class Game extends InputAdapter implements ApplicationListener {
                 System.out.println(player.getName() + " took one damage.");
                 player.takeDamage();
             } else if (layer.equals(Tile.FlagOne)) {
-                if (player.getFlagScore() == 0)
-                    System.out.println(player.getName() + " captured flag one!");
-                player.registerFlag();
-            } else if (layer.equals(Tile.FlagTwo)) {
-                if (player.getFlagScore() == 1)
-                    System.out.println(player.getName() + " captured flag two!");
-                player.registerFlag();
-            } else if (layer.equals(Tile.FlagThree)) {
-                if (player.getFlagScore() == 2)
-                    System.out.println(player.getName() + " captured flag three!");
-                player.registerFlag();
-            } else if (layer.equals(Tile.FlagOne)) {
                 if (player.getFlagScore() == 0) {
                     System.out.println(player.getName() + " captured flag one!");
                     player.registerFlag();
@@ -449,6 +437,17 @@ public class Game extends InputAdapter implements ApplicationListener {
                     System.out.println(player.getName() + " captured flag three!");
                     player.registerFlag();
                 }
+            } else if (layer.equals(Tile.PushWallBottom)){
+                player.setPosition((int) xPos, (int) yPos + 1);
+
+            } else if (layer.equals(Tile.PushWallTop)){
+                player.setPosition((int) xPos, (int) yPos - 1);
+
+            } else if (layer.equals(Tile.PushWallLeft)){
+                player.setPosition((int) xPos + 1, (int) yPos);
+
+            } else if (layer.equals(Tile.PushWallRight)){
+                player.setPosition((int) xPos - 1, (int) yPos);
             }
         }
     }

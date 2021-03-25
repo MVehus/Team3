@@ -115,6 +115,7 @@ public class Board {
                     player.setPosition((int) newXPos, (int) newYPos + 1);
                 }
             }
+
             /*
             else if(tilesOnPos.contains(Tile.DoubleConveyorRight)){
 
@@ -147,4 +148,5 @@ public class Board {
 
         }
     }
+
 }
