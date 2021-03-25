@@ -30,7 +30,6 @@ public class Board {
         initialize();
     }
 
-
     public List<Vector2> getTileLocations(Tile tile){
         return tileLocations.get(tile);
     }
@@ -79,18 +78,73 @@ public class Board {
 
     public void conveyorBeltMove(List<Player> players) {
         for (Player player : players) {
-            if (getTilesOnCell(player.getPosition().x, player.getPosition().y).contains(Tile.SingleConveyorDown)) {
-                player.setPosition((int)(player.getPosition().x), (int)player.getPosition().y-1);
+            float xPos = player.getPosition().x;
+            float yPos = player.getPosition().y;
+            List<Tile> tilesOnPos = getTilesOnCell(xPos, yPos);
+
+            if (tilesOnPos.contains(Tile.SingleConveyorDown)){
+                player.setPosition((int) xPos, (int) yPos - 1);
             }
-            else if (getTilesOnCell(player.getPosition().x, player.getPosition().y).contains(Tile.SingleConveyorUp)) {
-                player.setPosition((int)player.getPosition().x, (int)player.getPosition().y+1);
+            else if (tilesOnPos.contains(Tile.SingleConveyorUp)){
+                player.setPosition((int) xPos, (int) yPos + 1);
             }
-            else if (getTilesOnCell(player.getPosition().x, player.getPosition().y).contains(Tile.SingleConveyorLeft)) {
-                player.setPosition((int)player.getPosition().x-1, (int)player.getPosition().y);
+            else if (tilesOnPos.contains(Tile.SingleConveyorLeft)){
+                player.setPosition((int) xPos - 1, (int) yPos);
             }
-            else if (getTilesOnCell(player.getPosition().x, player.getPosition().y).contains(Tile.SingleConveyorRight)) {
-                player.setPosition((int)player.getPosition().x+1, (int)player.getPosition().y);
+            else if (tilesOnPos.contains(Tile.SingleConveyorRight)){
+                player.setPosition((int) xPos + 1, (int) yPos);
             }
+
+            else if(tilesOnPos.contains(Tile.DoubleConveyorRight) || tilesOnPos.contains(Tile.DoubleConveyorUp)){
+                boolean onDoubleUp = tilesOnPos.contains(Tile.DoubleConveyorUp);
+                boolean onDoubleRight = tilesOnPos.contains(Tile.DoubleConveyorRight);
+
+                if(onDoubleUp){
+                    player.setPosition((int) xPos, (int) yPos + 1);
+                }
+                else if(onDoubleRight){
+                    player.setPosition((int) xPos + 1, (int) yPos);
+                }
+                float newXPos = player.getPosition().x;
+                float newYPos = player.getPosition().y;
+                tilesOnPos = getTilesOnCell(newXPos, newYPos);
+                if(tilesOnPos.contains(Tile.DoubleConveyorRight)){
+                    player.setPosition((int) newXPos + 1, (int) newYPos);
+                }
+                else if(tilesOnPos.contains(Tile.DoubleConveyorUp)){
+                    player.setPosition((int) newXPos, (int) newYPos + 1);
+                }
+            }
+            /*
+            else if(tilesOnPos.contains(Tile.DoubleConveyorRight)){
+
+                player.setPosition((int) xPos + 1, (int) yPos);
+                float newXPos = player.getPosition().x;
+                float newYPos = player.getPosition().y;
+                tilesOnPos = getTilesOnCell(newXPos, newYPos);
+                if(tilesOnPos.contains(Tile.DoubleConveyorRight)){
+                    player.setPosition((int) newXPos + 1, (int) newYPos);
+                }
+                else if(tilesOnPos.contains(Tile.DoubleConveyorUp)){
+                    player.setPosition((int) newXPos, (int) newYPos + 1);
+                }
+            }
+
+            else if(tilesOnPos.contains(Tile.DoubleConveyorUp)){
+                player.setPosition((int) xPos, (int) yPos + 1);
+                float newXPos = player.getPosition().x;
+                float newYPos = player.getPosition().y;
+                tilesOnPos = getTilesOnCell(newXPos, newYPos);
+
+                if(tilesOnPos.contains(Tile.DoubleConveyorRight)){
+                    player.setPosition((int) newXPos + 1, (int) newYPos);
+                }
+                else if(tilesOnPos.contains(Tile.DoubleConveyorUp)){
+                    player.setPosition((int) newXPos, (int) newYPos + 1);
+                }
+            }
+            */
+
         }
     }
 }
