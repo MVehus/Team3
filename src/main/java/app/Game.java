@@ -39,7 +39,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     @Override
     public boolean keyUp(int keycode) {
-
+        
         Player currentPlayer = players.get(Network.getMyId() - 1);
 
         //Player currentPlayer = players.get(0);
@@ -193,7 +193,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         if (Network.hostingServer()) {
             Network.sendPlayerListToClients();
         }
-        time(2000);
+
         // SET UP CLIENT
         Network.setGameReferenceForClient(this);
 

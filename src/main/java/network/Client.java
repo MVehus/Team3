@@ -4,12 +4,16 @@ import Models.GameStateModel;
 import Models.PlayerModel;
 import app.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Interpolation;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import player.Player;
+import projectCard.ProgramCard;
 
+import javax.crypto.spec.PSource;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class Client {
 
@@ -17,6 +21,7 @@ public class Client {
     com.esotericsoftware.kryonet.Client client;
     private Integer id;
     private Boolean gameStarted;
+    private ArrayList<ProgramCard> currentProgramCards;
 
     public Client(String IpAddress, int port) {
         client = new com.esotericsoftware.kryonet.Client();
@@ -34,19 +39,26 @@ public class Client {
                     PlayerModel updatedPlayerModel = (PlayerModel) object;
                     System.out.println("Player " + connection.getID() + " updated");
                     if (game != null) {
-                        //Gdx.app.postRunnable(() -> game.updatePlayer(updatedPlayerModel));
                         game.updatePlayer(updatedPlayerModel);
+                    } else {
+                        System.out.println("Game is not initialized in Client class.");
                     }
 
                 } else if (object instanceof Integer) {
                     id = (Integer) object;
-                    System.out.println("Connected to server with id: " + id);
+                    //System.out.println("Connected to server with id: " + id);
 
-                } else if (object instanceof ArrayList) {
-                    if (game != null) {
-                        //Gdx.app.postRunnable(() -> game.setPlayerList((ArrayList<Player>) object));
-                        game.setPlayerList((ArrayList<Player>) object);
+                } else if (object instanceof ArrayList<?>) {
+                    if (((ArrayList<?>) object).get(0) instanceof Player) {
+                        if (game != null) {
+                            game.setPlayerList((ArrayList<Player>) object);
+                        } else {
+                            System.out.println("Game is not initialized in Client class.");
+                        }
+                    } else if (((ArrayList<?>) object).get(0) instanceof ProgramCard) {
+                        currentProgramCards = (ArrayList<ProgramCard>) object;
                     }
+
                 } else if (object instanceof Boolean) {
                     gameStarted = (Boolean) object;
                 }
@@ -61,6 +73,7 @@ public class Client {
     public void sendTCP(Object obj) {
         try {
             client.sendTCP(obj);
+            System.out.println("Sent " + obj.toString() + " to server.");
         } catch (Exception e) {
             System.out.println("Could not send object to server with excpetion: \n" + e.toString());
         }
@@ -70,9 +83,15 @@ public class Client {
         return id;
     }
 
-    public Boolean getGameStarted(){return gameStarted;}
+    public Boolean getGameStarted() {
+        return gameStarted;
+    }
 
     public void setGame(Game game) {
         this.game = game;
+    }
+
+    public ArrayList<ProgramCard> getCurrentProgramCards() {
+        return currentProgramCards;
     }
 }

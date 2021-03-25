@@ -1,8 +1,10 @@
 package network;
 
 import app.Game;
+import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Connection;
 import player.Player;
+import projectCard.ProgramCard;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,32 +37,36 @@ public class Network {
         return server != null ? server.getClients() : new ArrayList<>();
     }
 
-    public static ArrayList<Player> getPlayersOnServer(){
+    public static ArrayList<Player> getPlayersOnServer() {
         return server.getPlayers();
     }
 
-    public static void setGameReferenceForClient(Game game){
+    public static void setGameReferenceForClient(Game game) {
         client.setGame(game);
     }
 
-    public static void sendToServer(Object obj){
+    public static void sendToServer(Object obj) {
         client.sendTCP(obj);
     }
 
-    public static Boolean hostingServer(){
+    public static Boolean hostingServer() {
         return server != null;
     }
 
-    public static void sendPlayerListToClients(){
+    public static void sendPlayerListToClients() {
         server.sendPlayerListToClients();
     }
 
-    public static Boolean gameStarted(){
+    public static Boolean gameStarted() {
         return client.getGameStarted() != null;
     }
 
-    public static int getMyId(){
+    public static int getMyId() {
         return client.getId();
+    }
+
+    public static ArrayList<ProgramCard> getCurrentProgramCards() {
+        return client.getCurrentProgramCards();
     }
 
     /*

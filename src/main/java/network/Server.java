@@ -2,20 +2,21 @@ package network;
 
 import Models.PlayerModel;
 import Utilities.StartPositionUtility;
-import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import player.Player;
+import projectCard.CardDeck;
 
+import javax.sound.midi.Soundbank;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Server {
     private com.esotericsoftware.kryonet.Server server;
     private ArrayList<Connection> clients;
     private ArrayList<Player> players;
     private Boolean gameStarted;
+    private CardDeck cardDeck;
 
     public Server(int port) {
         server = new com.esotericsoftware.kryonet.Server();
@@ -29,18 +30,29 @@ public class Server {
 
         clients = new ArrayList<>();
         players = new ArrayList<>();
+        cardDeck = new CardDeck();
 
         server.addListener(new Listener() {
             public void received(Connection connection, Object object) {
                 if (object instanceof PlayerModel) {
                     PlayerModel updatedPlayerModel = (PlayerModel) object;
                     System.out.println("Received updated PlayerModel from connection : " + connection);
-                    players.get(connection.getID()-1).setNewPlayerState(updatedPlayerModel);
+                    players.get(connection.getID() - 1).setNewPlayerState(updatedPlayerModel);
                     sendToAllClients(updatedPlayerModel);
                 } else if (object instanceof Boolean) {
                     gameStarted = (Boolean) object;
                     sendToAllClients(object);
+                } else if (object instanceof String) {
+                    if (isCardRequest(object)) {
+                        String lastChar = ((String) object).substring(((String) object).length() - 1);
+                        sendToClient(connection, cardDeck.drawCards(Integer.parseInt(lastChar)));
+                    } else if (resetDeckRequest(object)) {
+                        cardDeck = new CardDeck();
+                    }
+                } else {
+                    System.out.println(object.toString() + " from " + connection + " not handled by server");
                 }
+
             }
 
             public void connected(Connection connection) {
@@ -61,8 +73,12 @@ public class Server {
         return clients;
     }
 
-    public ArrayList<Player> getPlayers(){
+    public ArrayList<Player> getPlayers() {
         return players;
+    }
+
+    public CardDeck getCardDeck() {
+        return cardDeck;
     }
 
     public void sendId(Connection connection) {
@@ -78,14 +94,36 @@ public class Server {
         sendToAllClients(players);
     }
 
+    public void sendToClient(Connection connection, Object obj) {
+        try {
+            connection.sendTCP(obj);
+        } catch (Exception e) {
+            System.out.println("Could not send message: " + obj.toString() + " to client: " + connection + "\n" + e.toString());
+        }
+    }
+
     public void sendToAllClients(Object obj) {
         for (Connection client : clients) {
-            try {
-                client.sendTCP(obj);
-            } catch (Exception e) {
-                System.out.println("Could not send message: " + obj.toString() + " to client: " + client + "\n" + e.toString());
-            }
-
+            sendToClient(client, obj);
         }
+    }
+
+    private Boolean isCardRequest(Object obj) {
+        if (((String) obj).substring(0, ((String) obj).length() - 1).equalsIgnoreCase("CARDREQUEST")) {
+            String lastChar = ((String) obj).substring(((String) obj).length() - 1);
+            try {
+                Integer.parseInt(lastChar);
+                return true;
+            } catch (NumberFormatException e) {
+                System.out.println("Cardrequest needs a specified number of cards at the end of the string" +
+                        " Thrown with exception: " + e.toString());
+                return false;
+            }
+        }
+        return false;
+    }
+
+    private Boolean resetDeckRequest(Object obj) {
+        return ((String) obj).equalsIgnoreCase("RESETDECK");
     }
 }
