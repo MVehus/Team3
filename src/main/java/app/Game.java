@@ -35,7 +35,7 @@ public class Game extends InputAdapter implements ApplicationListener {
     private final HashMap<Integer, List<TiledMapTileLayer.Cell>> playerTextures = new HashMap<>();
     private List<Player> players = new ArrayList<>();
 
-    private boolean game = true;    // game = true så lenge ingen har vunnet, når en vinner setter vi game = false og avslutter spillet.
+    private boolean game = true;
 
     private int boardWidth;
     private int boardHeight;
@@ -44,109 +44,125 @@ public class Game extends InputAdapter implements ApplicationListener {
     public boolean keyUp(int keycode) {
         Player currentPlayer = players.get(0);
         Vector2 playerPos = currentPlayer.getPosition();
-        Vector2 nextPos = currentPlayer.getNextCell();
 
         playerLayer.setCell((int) playerPos.x, (int) playerPos.y, null);
 
-        if (keycode == Input.Keys.UP) {
-            currentPlayer.setDirection(Direction.UP);
+        System.out.println(currentPlayer.toString());
+        //System.out.println("Next cell available: " + playerOnNextCell(currentPlayer));
+        //System.out.println(currentPlayer.getPosition() + " | " + getNextCells(currentPlayer, 2));
+        System.out.println("All neighbours : " + getAllPlayersInLine(currentPlayer));
+        for (Player p : players){
+            updatePlayerState(p);
+            System.out.println(p.getName() + " on " + p.getPosition());
+        }
 
-            if (!canMove(currentPlayer)) {
-                System.out.println("Wall");
+        if (keycode == Input.Keys.UP) {
+            if(currentPlayer.getDirection() != Direction.UP){
+                currentPlayer.setDirection(Direction.UP);
+                System.out.println(currentPlayer.getName() + " new direction " + currentPlayer.getDirection());
             }
-            else if (playerPos.y == boardHeight-1) {
-                currentPlayer.loseLifeToken();
-            }
-            else if(gameBoard.getTilesOnCell(nextPos.x, nextPos.y).contains(Tile.Player)){
-                System.out.println(currentPlayer.getName() + "has neighbor");
-            }
+
             else {
-                if(nextCellAvailable(currentPlayer)){
+                if(playerOnNextCell(currentPlayer)){
+                    System.out.println("Player on next cell: " + getPlayerOnCell(currentPlayer.getNextCell()));
+                    if(canPush(currentPlayer, getAllPlayersInLine(currentPlayer))){
+                        push(currentPlayer, getAllPlayersInLine(currentPlayer));
+
+                    } else {
+                        System.out.println("Cannot push");
+                    }
+                    //push(currentPlayer, getAllPlayersInLine(currentPlayer));
+                }
+                else if(!canMove(currentPlayer)) {
+                    System.out.println("Wall");
+                }
+                else {
+                    System.out.println("MOVE");
                     currentPlayer.move();
-                    //Network.sendToServer(currentPlayer.getModel());
-                } else {
-                    System.out.println("PUSH");
                 }
             }
         }
+
         else if (keycode == Input.Keys.DOWN) {
-            currentPlayer.setDirection(Direction.DOWN);
-            if (!canMove(currentPlayer)) {
-                System.out.println("Wall");
-            }
-            else if (playerPos.y == 0) {
-                System.out.println("Test");
-                currentPlayer.loseLifeToken();
-            }
-            else if(gameBoard.getTilesOnCell(nextPos.x, nextPos.y).contains(Tile.Player)){
-                System.out.println(currentPlayer.getName() + "has neighbor");
+
+            if(currentPlayer.getDirection() != Direction.DOWN){
+                currentPlayer.setDirection(Direction.DOWN);
             }
             else {
-                if(nextCellAvailable(currentPlayer)){
+                if(playerOnNextCell(currentPlayer)){
+                    System.out.println("Player on next cell: " + getPlayerOnCell(currentPlayer.getNextCell()));
+                    if(canPush(currentPlayer, getAllPlayersInLine(currentPlayer))){
+                        push(currentPlayer, getAllPlayersInLine(currentPlayer));
+
+                    } else {
+                        System.out.println("Cannot push");
+                    }
+
+                }
+                else if(!canMove(currentPlayer)) {
+                    System.out.println("Wall");
+                }
+                else {
+                    System.out.println("MOVE");
                     currentPlayer.move();
-                    //Network.sendToServer(currentPlayer.getModel());
                 }
             }
+
         }
         else if (keycode == Input.Keys.LEFT) {
-            currentPlayer.setDirection(Direction.LEFT);
-            if (!canMove(currentPlayer)) {
-                System.out.println("Wall");
-            }
-            else if (playerPos.x == 0) {
-                System.out.println("Test");
-                currentPlayer.loseLifeToken();
-            }
-            else if(gameBoard.getTilesOnCell(nextPos.x, nextPos.y).contains(Tile.Player)){
-                System.out.println(currentPlayer.getName() + "has neighbor");
-            }
-            else{
-                if(nextCellAvailable(currentPlayer)){
-                    currentPlayer.move();
-                    //Network.sendToServer(currentPlayer.getModel());
-                } else {
-                    System.out.println("PUSH");
-                }
-            }
-
-        }
-        else if (keycode == Input.Keys.RIGHT) {
-            currentPlayer.setDirection(Direction.RIGHT);
-            if (!canMove(currentPlayer)) {
-                System.out.println("Wall");
-                //Do nothing
-            }
-            else if (playerPos.x == boardWidth-1) {
-                System.out.println("Test");
-                currentPlayer.loseLifeToken();
-            }
-            else if(gameBoard.getTilesOnCell(nextPos.x, nextPos.y).contains(Tile.Player)){
-                System.out.println(currentPlayer.getName() + "has neighbor");
+            if(currentPlayer.getDirection() != Direction.LEFT){
+                currentPlayer.setDirection(Direction.LEFT);
             }
             else {
-                if(nextCellAvailable(currentPlayer)){
+                if(playerOnNextCell(currentPlayer)){
+                    System.out.println("Player on next cell: " + getPlayerOnCell(currentPlayer.getNextCell()));
+                    if(canPush(currentPlayer, getAllPlayersInLine(currentPlayer))){
+                        push(currentPlayer, getAllPlayersInLine(currentPlayer));
+
+                    } else {
+                        System.out.println("Cannot push");
+                    }
+                    //push(currentPlayer, getAllPlayersInLine(currentPlayer));
+                }
+                else if(!canMove(currentPlayer)) {
+                    System.out.println("Wall");
+                }
+                else {
+                    System.out.println("MOVE");
                     currentPlayer.move();
-                    //Network.sendToServer(currentPlayer.getModel());
-                } else {
-                    System.out.println("PUSH");
+                }
+            }
+        }
+        else if (keycode == Input.Keys.RIGHT) {
+
+            if(currentPlayer.getDirection() != Direction.RIGHT){
+                currentPlayer.setDirection(Direction.RIGHT);
+            }
+            else {
+                if(playerOnNextCell(currentPlayer)){
+                    System.out.println("Player on next cell: " + getPlayerOnCell(currentPlayer.getNextCell()));
+                    if(canPush(currentPlayer, getAllPlayersInLine(currentPlayer))){
+                        push(currentPlayer, getAllPlayersInLine(currentPlayer));
+
+                    } else {
+                        System.out.println("Cannot push");
+                    }
+                    //push(currentPlayer, getAllPlayersInLine(currentPlayer));
+                }
+                else if(!canMove(currentPlayer)) {
+                    System.out.println("Wall");
+                }
+                else {
+                    System.out.println("MOVE");
+                    currentPlayer.move();
                 }
             }
         }
 
-        updatePlayerState(currentPlayer);
-        System.out.println(currentPlayer.toString());
-        System.out.println("Next cell available: " + nextCellAvailable(currentPlayer));
-        System.out.println(currentPlayer.getPosition() + " | " + getNextCells(currentPlayer, 2));
-        for(Vector2 v : getNextCells(currentPlayer, 2)){
-            if(getPlayerOnCell(v) == null){
-            } else{
-                System.out.println("Neighbour: " + getPlayerOnCell(v).getName());
-            }
-
-        }
-
+        render();
         System.out.println(" ");
-
+        System.out.println(" ");
+        System.out.println(" ");
         return super.keyUp(keycode);
     }
 
@@ -161,10 +177,12 @@ public class Game extends InputAdapter implements ApplicationListener {
         Player player1 = new Player(1, "André", new Vector2(1,1));
         players.add(player1);
 
-        Player player2 = new Player(2, "Test-1", new Vector2(2,3));
+        Player player2 = new Player(2, "Test-1", new Vector2(2,9));
         players.add(player2);
-        Player player3 = new Player(3, "Test-2", new Vector2(2,4));
+        Player player3 = new Player(3, "Test-2", new Vector2(3,9));
         players.add(player3);
+        Player player4 = new Player(4, "Test-3", new Vector2(1,9));
+        players.add(player4);
 
         // Setup map and layers
         map = new TmxMapLoader().load("src/assets/VaultMap.tmx");
@@ -221,21 +239,10 @@ public class Game extends InputAdapter implements ApplicationListener {
         return true;
     }
 
-    private boolean cellIsAvailable(Vector2 position){
-        List<Tile> cell = gameBoard.getTilesOnCell(position.x, position.y);
-        return !cell.contains(Tile.Player);
-    }
+    private boolean playerOnNextCell(Player player){
+        Vector2 nextCell = player.getNextCell();
 
-    private boolean nextCellAvailable(Player player){
-        Vector2 newPos = player.getNextCell();
-
-       List<Tile> newTile = gameBoard.getTilesOnCell(newPos.x, newPos.y);
-       if(newTile.contains(Tile.Player)){
-            System.out.println(player.getName() + " has a neigbour " + player.getDirection());
-            return false;
-       }
-
-       return true;
+        return (getPlayerOnCell(nextCell) != null);
     }
 
     public List<Vector2> getNextCells(Player player, int distance) {
@@ -272,14 +279,44 @@ public class Game extends InputAdapter implements ApplicationListener {
         return cells;
     }
 
-    public boolean canPush(Player player){
+    public List<Player> getAllPlayersInLine(Player player){
         List<Player> neigbours = new ArrayList<>();
 
-        return false;
+        List<Vector2> nextCells = getNextCells(player, players.size());
+        for(Vector2 v : nextCells){
+            if(getPlayerOnCell(v) != null){
+                neigbours.add(getPlayerOnCell(v));
+            }
+        }
+
+        return neigbours;
     }
 
-    public void push(Player player){
-        Vector2 neigbour = player.getNextCell();
+    public void push(Player player, List<Player> allPlayers){
+
+        Collections.reverse(allPlayers);
+
+        for(Player p : allPlayers){
+            p.moveDirection(player.getDirection());
+        }
+        player.move();
+    }
+
+    public boolean canPush(Player player, List<Player> playersOnLine){
+        if(playersOnLine.size() > 0){
+            Player lastPlayer = playersOnLine.get(playersOnLine.size() - 1);
+            Direction lastPlayerDirection = lastPlayer.getDirection();
+            lastPlayer.setDirection(player.getDirection());
+            if(canMove(lastPlayer)){
+                lastPlayer.setDirection(lastPlayerDirection);
+                return true;
+            }
+            else{
+                lastPlayer.setDirection(lastPlayerDirection);
+                return false;
+            }
+        }
+        return false;
     }
 
     public Player getPlayerOnCell(Vector2 cell){
@@ -360,6 +397,14 @@ public class Game extends InputAdapter implements ApplicationListener {
     }
 
     public void updatePlayerState(Player player){
+
+        float xPos = player.getPosition().x;
+        float yPos = player.getPosition().y;
+        if(xPos < 0 || xPos > boardWidth || yPos < 0 || yPos > boardHeight){
+            player.loseLifeToken();
+            System.out.println("Lost LIFE");
+        }
+
         // Loop through layers player is on
         List<Tile> tilesOnPos = gameBoard.getTilesOnCell(player.getPosition().x, player.getPosition().y);
         for(Tile layer : tilesOnPos){
