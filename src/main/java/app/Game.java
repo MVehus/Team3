@@ -15,6 +15,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Vector2;
+import network.Network;
 import player.Player;
 import projectCard.CardDeck;
 import projectCard.Value;
@@ -31,18 +32,18 @@ public class Game extends InputAdapter implements ApplicationListener {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
-
     private final HashMap<Integer, List<TiledMapTileLayer.Cell>> playerTextures = new HashMap<>();
     private List<Player> players = new ArrayList<>();
-
-    private boolean game = true;
-
     private int boardWidth;
     private int boardHeight;
 
     @Override
     public boolean keyUp(int keycode) {
+
+        //Player currentPlayer = players.get(Network.getMyId() - 1);
+
         Player currentPlayer = players.get(0);
+
         Vector2 playerPos = currentPlayer.getPosition();
 
         playerLayer.setCell((int) playerPos.x, (int) playerPos.y, null);
@@ -51,110 +52,98 @@ public class Game extends InputAdapter implements ApplicationListener {
         //System.out.println("Next cell available: " + playerOnNextCell(currentPlayer));
         //System.out.println(currentPlayer.getPosition() + " | " + getNextCells(currentPlayer, 2));
         System.out.println("All neighbours : " + getAllPlayersInLine(currentPlayer));
-        for (Player p : players){
+        for (Player p : players) {
             updatePlayerState(p);
             System.out.println(p.getName() + " on " + p.getPosition());
         }
 
         if (keycode == Input.Keys.UP) {
-            if(currentPlayer.getDirection() != Direction.UP){
+            if (currentPlayer.getDirection() != Direction.UP) {
                 currentPlayer.setDirection(Direction.UP);
                 System.out.println(currentPlayer.getName() + " new direction " + currentPlayer.getDirection());
-            }
-
-            else {
-                if(playerOnNextCell(currentPlayer)){
+            } else {
+                if (playerOnNextCell(currentPlayer)) {
                     System.out.println("Player on next cell: " + getPlayerOnCell(currentPlayer.getNextCell()));
-                    if(canPush(currentPlayer, getAllPlayersInLine(currentPlayer))){
+                    if (canPush(currentPlayer, getAllPlayersInLine(currentPlayer))) {
                         push(currentPlayer, getAllPlayersInLine(currentPlayer));
-
+                        //Network.sendToServer(currentPlayer.getModel());
                     } else {
                         System.out.println("Cannot push");
                     }
-                    //push(currentPlayer, getAllPlayersInLine(currentPlayer));
-                }
-                else if(!canMove(currentPlayer)) {
+                } else if (!canMove(currentPlayer)) {
                     System.out.println("Wall");
-                }
-                else {
+                } else {
                     System.out.println("MOVE");
                     currentPlayer.move();
+                    //Network.sendToServer(currentPlayer.getModel());
                 }
             }
-        }
+        } else if (keycode == Input.Keys.DOWN) {
 
-        else if (keycode == Input.Keys.DOWN) {
-
-            if(currentPlayer.getDirection() != Direction.DOWN){
+            if (currentPlayer.getDirection() != Direction.DOWN) {
                 currentPlayer.setDirection(Direction.DOWN);
-            }
-            else {
-                if(playerOnNextCell(currentPlayer)){
+            } else {
+                if (playerOnNextCell(currentPlayer)) {
                     System.out.println("Player on next cell: " + getPlayerOnCell(currentPlayer.getNextCell()));
-                    if(canPush(currentPlayer, getAllPlayersInLine(currentPlayer))){
+                    if (canPush(currentPlayer, getAllPlayersInLine(currentPlayer))) {
                         push(currentPlayer, getAllPlayersInLine(currentPlayer));
+                        //Network.sendToServer(currentPlayer.getModel());
 
                     } else {
                         System.out.println("Cannot push");
                     }
 
-                }
-                else if(!canMove(currentPlayer)) {
+                } else if (!canMove(currentPlayer)) {
                     System.out.println("Wall");
-                }
-                else {
+                } else {
                     System.out.println("MOVE");
                     currentPlayer.move();
+                    //Network.sendToServer(currentPlayer.getModel());
                 }
             }
 
-        }
-        else if (keycode == Input.Keys.LEFT) {
-            if(currentPlayer.getDirection() != Direction.LEFT){
+        } else if (keycode == Input.Keys.LEFT) {
+            if (currentPlayer.getDirection() != Direction.LEFT) {
                 currentPlayer.setDirection(Direction.LEFT);
-            }
-            else {
-                if(playerOnNextCell(currentPlayer)){
+            } else {
+                if (playerOnNextCell(currentPlayer)) {
                     System.out.println("Player on next cell: " + getPlayerOnCell(currentPlayer.getNextCell()));
-                    if(canPush(currentPlayer, getAllPlayersInLine(currentPlayer))){
+                    if (canPush(currentPlayer, getAllPlayersInLine(currentPlayer))) {
                         push(currentPlayer, getAllPlayersInLine(currentPlayer));
+                        //Network.sendToServer(currentPlayer.getModel());
 
                     } else {
                         System.out.println("Cannot push");
                     }
                     //push(currentPlayer, getAllPlayersInLine(currentPlayer));
-                }
-                else if(!canMove(currentPlayer)) {
+                } else if (!canMove(currentPlayer)) {
                     System.out.println("Wall");
-                }
-                else {
+                } else {
                     System.out.println("MOVE");
                     currentPlayer.move();
+                    //Network.sendToServer(currentPlayer.getModel());
                 }
             }
-        }
-        else if (keycode == Input.Keys.RIGHT) {
+        } else if (keycode == Input.Keys.RIGHT) {
 
-            if(currentPlayer.getDirection() != Direction.RIGHT){
+            if (currentPlayer.getDirection() != Direction.RIGHT) {
                 currentPlayer.setDirection(Direction.RIGHT);
-            }
-            else {
-                if(playerOnNextCell(currentPlayer)){
+            } else {
+                if (playerOnNextCell(currentPlayer)) {
                     System.out.println("Player on next cell: " + getPlayerOnCell(currentPlayer.getNextCell()));
-                    if(canPush(currentPlayer, getAllPlayersInLine(currentPlayer))){
+                    if (canPush(currentPlayer, getAllPlayersInLine(currentPlayer))) {
                         push(currentPlayer, getAllPlayersInLine(currentPlayer));
+                        //Network.sendToServer(currentPlayer.getModel());
 
                     } else {
                         System.out.println("Cannot push");
                     }
-                    //push(currentPlayer, getAllPlayersInLine(currentPlayer));
-                }
-                else if(!canMove(currentPlayer)) {
+                } else if (!canMove(currentPlayer)) {
                     System.out.println("Wall");
-                }
-                else {
+                } else {
                     System.out.println("MOVE");
                     currentPlayer.move();
+                    //Network.sendToServer(currentPlayer.getModel());
                 }
             }
         }
@@ -174,14 +163,14 @@ public class Game extends InputAdapter implements ApplicationListener {
         Gdx.input.setInputProcessor(this);
 
         // TEST SPILLERE
-        Player player1 = new Player(1, "André", new Vector2(1,1));
+        Player player1 = new Player(1, "André", new Vector2(1, 1));
         players.add(player1);
 
-        Player player2 = new Player(2, "Test-1", new Vector2(2,9));
+        Player player2 = new Player(2, "Test-1", new Vector2(2, 9));
         players.add(player2);
-        Player player3 = new Player(3, "Test-2", new Vector2(3,9));
+        Player player3 = new Player(3, "Test-2", new Vector2(3, 9));
         players.add(player3);
-        Player player4 = new Player(4, "Test-3", new Vector2(1,9));
+        Player player4 = new Player(4, "Test-3", new Vector2(1, 9));
         players.add(player4);
 
         // Setup map and layers
@@ -192,11 +181,23 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         setupCameraAndRenderer();
 
+        startPositions = gameBoard.getTileLocations(Tile.RobotStart);
+        //System.out.println(startPositions);
+
         // SET UP CLIENT
         //Network.setGameReferenceForClient(this);
 
-        //if (Network.hostingServer())
-        // { Network.sendPlayerListToClients(); }
+
+        //if (Network.hostingServer()) {
+           // Network.sendPlayerListToClients();
+        //}
+        //time(2000);
+        // SET UP CLIENT
+        //Network.setGameReferenceForClient(this);
+
+        //if (Network.hostingServer()) {
+        //    Network.sendPlayerListToClients();
+        //}
 
         //for(Player player : players) player.setPosition((int) startPositions.get(player.getId()).x, (int) startPositions.get(player.getId()).y);
 
@@ -206,40 +207,37 @@ public class Game extends InputAdapter implements ApplicationListener {
         deck = new CardDeck();
     }
 
-    private boolean canMove(Player player){
+    private boolean canMove(Player player) {
         Vector2 currentPos = player.getPosition();
         List<Tile> currentTile = gameBoard.getTilesOnCell(currentPos.x, currentPos.y);
         Vector2 newPos = player.getNextCell();
         List<Tile> newTile = gameBoard.getTilesOnCell(newPos.x, newPos.y);
 
-        if(currentPos.y < newPos.y){
+        if (currentPos.y < newPos.y) {
             if (currentTile.contains(Tile.WallTop) || currentTile.contains(Tile.WallTopRight) || currentTile.contains(Tile.WallTopLeft) ||
-                    newTile.contains(Tile.WallBottom)  || newTile.contains(Tile.WallBottomRight)  || newTile.contains(Tile.WallBottomLeft) ||
+                    newTile.contains(Tile.WallBottom) || newTile.contains(Tile.WallBottomRight) || newTile.contains(Tile.WallBottomLeft) ||
                     currentTile.contains(Tile.PushWallTop) || newTile.contains(Tile.PushWallBottom))
                 return false;
-        }
-        else if (currentPos.y > newPos.y) {
+        } else if (currentPos.y > newPos.y) {
             if (currentTile.contains(Tile.WallBottom) || currentTile.contains(Tile.WallBottomRight) || currentTile.contains(Tile.WallBottomLeft) ||
-                    newTile.contains(Tile.WallTop)  || newTile.contains(Tile.WallTopRight)  || newTile.contains(Tile.WallTopLeft) ||
+                    newTile.contains(Tile.WallTop) || newTile.contains(Tile.WallTopRight) || newTile.contains(Tile.WallTopLeft) ||
                     currentTile.contains(Tile.PushWallBottom) || newTile.contains(Tile.PushWallTop))
                 return false;
-        }
-        else if (currentPos.x < newPos.x) {
+        } else if (currentPos.x < newPos.x) {
             if (currentTile.contains(Tile.WallRight) || currentTile.contains(Tile.WallTopRight) || currentTile.contains(Tile.WallBottomRight) ||
-                    newTile.contains(Tile.WallLeft)  || newTile.contains(Tile.WallTopLeft)  || newTile.contains(Tile.WallBottomLeft) ||
+                    newTile.contains(Tile.WallLeft) || newTile.contains(Tile.WallTopLeft) || newTile.contains(Tile.WallBottomLeft) ||
                     currentTile.contains(Tile.PushWallRight) || newTile.contains(Tile.PushWallLeft))
                 return false;
-        }
-        else if (currentPos.x > newPos.x) {
+        } else if (currentPos.x > newPos.x) {
             if (currentTile.contains(Tile.WallLeft) || currentTile.contains(Tile.WallBottomLeft) || currentTile.contains(Tile.WallTopLeft) ||
-                    newTile.contains(Tile.WallRight)  || newTile.contains(Tile.WallTopRight)  || newTile.contains(Tile.WallBottomRight) ||
+                    newTile.contains(Tile.WallRight) || newTile.contains(Tile.WallTopRight) || newTile.contains(Tile.WallBottomRight) ||
                     currentTile.contains(Tile.PushWallLeft) || newTile.contains(Tile.PushWallRight))
                 return false;
         }
         return true;
     }
 
-    private boolean playerOnNextCell(Player player){
+    private boolean playerOnNextCell(Player player) {
         Vector2 nextCell = player.getNextCell();
 
         return (getPlayerOnCell(nextCell) != null);
@@ -251,7 +249,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         List<Vector2> cells = new ArrayList<>();
 
-        for(int i = 1; i <= distance; i++){
+        for (int i = 1; i <= distance; i++) {
             Vector2 nextCell = new Vector2();
             switch (player.getDirection()) {
                 case UP:
@@ -271,7 +269,7 @@ public class Game extends InputAdapter implements ApplicationListener {
                     nextCell.y = yPos;
                     break;
             }
-            if(!(nextCell.x >= boardWidth || nextCell.x < 0 || nextCell.y >= boardHeight || nextCell.y < 0)){
+            if (!(nextCell.x >= boardWidth || nextCell.x < 0 || nextCell.y >= boardHeight || nextCell.y < 0)) {
                 cells.add(nextCell);
             }
         }
@@ -279,12 +277,12 @@ public class Game extends InputAdapter implements ApplicationListener {
         return cells;
     }
 
-    public List<Player> getAllPlayersInLine(Player player){
+    public List<Player> getAllPlayersInLine(Player player) {
         List<Player> neigbours = new ArrayList<>();
 
         List<Vector2> nextCells = getNextCells(player, players.size());
-        for(Vector2 v : nextCells){
-            if(getPlayerOnCell(v) != null){
+        for (Vector2 v : nextCells) {
+            if (getPlayerOnCell(v) != null) {
                 neigbours.add(getPlayerOnCell(v));
             }
         }
@@ -292,26 +290,25 @@ public class Game extends InputAdapter implements ApplicationListener {
         return neigbours;
     }
 
-    public void push(Player player, List<Player> allPlayers){
+    public void push(Player player, List<Player> allPlayers) {
 
         Collections.reverse(allPlayers);
 
-        for(Player p : allPlayers){
+        for (Player p : allPlayers) {
             p.moveDirection(player.getDirection());
         }
         player.move();
     }
 
-    public boolean canPush(Player player, List<Player> playersOnLine){
-        if(playersOnLine.size() > 0){
+    public boolean canPush(Player player, List<Player> playersOnLine) {
+        if (playersOnLine.size() > 0) {
             Player lastPlayer = playersOnLine.get(playersOnLine.size() - 1);
             Direction lastPlayerDirection = lastPlayer.getDirection();
             lastPlayer.setDirection(player.getDirection());
-            if(canMove(lastPlayer)){
+            if (canMove(lastPlayer)) {
                 lastPlayer.setDirection(lastPlayerDirection);
                 return true;
-            }
-            else{
+            } else {
                 lastPlayer.setDirection(lastPlayerDirection);
                 return false;
             }
@@ -319,9 +316,9 @@ public class Game extends InputAdapter implements ApplicationListener {
         return false;
     }
 
-    public Player getPlayerOnCell(Vector2 cell){
-        for(Player player : players){
-            if (player.getPosition().equals(cell)){
+    public Player getPlayerOnCell(Vector2 cell) {
+        for (Player player : players) {
+            if (player.getPosition().equals(cell)) {
                 return player;
             }
         }
@@ -334,16 +331,24 @@ public class Game extends InputAdapter implements ApplicationListener {
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
         renderer.render();
 
-        for(Player p : players){
-            playerLayer.setCell((int) p.getPosition().x, (int) p.getPosition().y, getPlayerTexture(p));
+        // SPILLERE VELGER KORT I DENNE FASEN
+        //chooseCards();
+
+        // RUNDE: BEVEG KORT FRA CURRENTCARD
+        //round();
+
+        if (!players.isEmpty()) {
+            for (Player p : players) {
+                playerLayer.setCell((int) p.getPosition().x, (int) p.getPosition().y, getPlayerTexture(p));
+            }
         }
     }
 
-    public void updatePlayer(PlayerModel playerModel){
+    public void updatePlayer(PlayerModel playerModel) {
         players.get(playerModel.getId()).setNewPlayerState(playerModel);
     }
 
-    public void setPlayerList(ArrayList<Player> players){
+    public void setPlayerList(ArrayList<Player> players) {
         this.players = players;
     }
 
@@ -358,7 +363,7 @@ public class Game extends InputAdapter implements ApplicationListener {
      * D. Lasers Fire
      * E. Touch Checkpoints
      */
-    public void round(){
+    public void round() {
 
         // Move players based on current card
         // Sort players by priority
@@ -373,7 +378,7 @@ public class Game extends InputAdapter implements ApplicationListener {
             }
         });
 
-        for(Player p : players){
+        for (Player p : players) {
             playerTurn(p);
             playerLayer.setCell((int) p.getPosition().x, (int) p.getPosition().y, getPlayerTexture(p));
         }
@@ -391,100 +396,101 @@ public class Game extends InputAdapter implements ApplicationListener {
     private void time(int n) {
         try {
             Thread.sleep(n);                 //1000 milliseconds is one second.
-        } catch(InterruptedException ex) {
+        } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
     }
 
-    public void updatePlayerState(Player player){
+    public void updatePlayerState(Player player) {
 
         float xPos = player.getPosition().x;
         float yPos = player.getPosition().y;
-        if(xPos < 0 || xPos > boardWidth || yPos < 0 || yPos > boardHeight){
+        if (xPos < 0 || xPos > boardWidth || yPos < 0 || yPos > boardHeight) {
             player.loseLifeToken();
             System.out.println("Lost LIFE");
         }
 
         // Loop through layers player is on
         List<Tile> tilesOnPos = gameBoard.getTilesOnCell(player.getPosition().x, player.getPosition().y);
-        for(Tile layer : tilesOnPos){
-            if(layer.equals(Tile.Hole)){
+        for (Tile layer : tilesOnPos) {
+            if (layer.equals(Tile.Hole)) {
                 System.out.println(player.getName() + " is on hole, lost one token. ");
                 player.loseLifeToken();
-            }
-            else if (layer.equals(Tile.LaserHorizontal) || layer.equals(Tile.LaserVertical)){
+            } else if (layer.equals(Tile.LaserHorizontal) || layer.equals(Tile.LaserVertical)) {
                 System.out.println(player.getName() + " took one damage.");
                 player.takeDamage();
-            }
-            else if (layer.equals(Tile.FlagOne)){
-                if(player.getFlagScore() == 0) {
+            } else if (layer.equals(Tile.FlagOne)) {
+                if (player.getFlagScore() == 0) {
                     System.out.println(player.getName() + " captured flag one!");
                     player.registerFlag();
                 }
-            }
-            else if (layer.equals(Tile.FlagTwo)){
-                if(player.getFlagScore() == 1){
+            } else if (layer.equals(Tile.FlagTwo)) {
+                if (player.getFlagScore() == 1) {
                     System.out.println(player.getName() + " captured flag two!");
                     player.registerFlag();
                 }
 
-            }
-            else if (layer.equals(Tile.FlagThree)){
-                if(player.getFlagScore() == 2){
+            } else if (layer.equals(Tile.FlagThree)) {
+                if (player.getFlagScore() == 2) {
                     System.out.println(player.getName() + " captured flag three!");
                     player.registerFlag();
                 }
+            } else if (layer.equals(Tile.PushWallBottom)){
+                player.setPosition((int) xPos, (int) yPos + 1);
+
+            } else if (layer.equals(Tile.PushWallTop)){
+                player.setPosition((int) xPos, (int) yPos - 1);
+
+            } else if (layer.equals(Tile.PushWallLeft)){
+                player.setPosition((int) xPos + 1, (int) yPos);
+
+            } else if (layer.equals(Tile.PushWallRight)){
+                player.setPosition((int) xPos - 1, (int) yPos);
             }
         }
     }
 
-    public void playerTurn(Player player){
+    public void playerTurn(Player player) {
 
         Value cardValue = player.getCurrentCard().getValue();
         System.out.println(player.getName() + " " + cardValue);
 
-        if(cardValue == Value.U_TURN){
+        if (cardValue == Value.U_TURN) {
             time(1000);
             player.rotate(Direction.RIGHT);
             player.rotate(Direction.RIGHT);
             updatePlayerState(player);
-        }
-        else if(cardValue == Value.ROTATE_RIGHT){
+        } else if (cardValue == Value.ROTATE_RIGHT) {
             time(1000);
             player.rotate(Direction.RIGHT);
             updatePlayerState(player);
-        }
-        else if(cardValue == Value.ROTATE_LEFT){
+        } else if (cardValue == Value.ROTATE_LEFT) {
             time(1000);
             player.rotate(Direction.LEFT);
             updatePlayerState(player);
-        }
-        else if(cardValue == Value.MOVE_ONE){
-            if(canMove(player))
+        } else if (cardValue == Value.MOVE_ONE) {
+            if (canMove(player))
                 time(1000);
-                player.move();
-                updatePlayerState(player);
-        }
-        else if(cardValue == Value.MOVE_TWO){
+            player.move();
+            updatePlayerState(player);
+        } else if (cardValue == Value.MOVE_TWO) {
 
-            for(int step = 0; step < 2 ; step++){
-                if(canMove(player)){
+            for (int step = 0; step < 2; step++) {
+                if (canMove(player)) {
                     time(1000);
                     player.move();
                     updatePlayerState(player);
                 }
             }
-        }
-        else if(cardValue == Value.MOVE_THREE){
-            for(int step = 0; step < 3 ; step++){
-                if(canMove(player)){
+        } else if (cardValue == Value.MOVE_THREE) {
+            for (int step = 0; step < 3; step++) {
+                if (canMove(player)) {
                     time(1000);
                     player.move();
                     updatePlayerState(player);
                 }
             }
-        }
-        else if(cardValue == Value.BACK_UP){
+        } else if (cardValue == Value.BACK_UP) {
             time(1000);
             System.out.println("BACKUP NOT IMPLEMENTED");
         }
@@ -493,35 +499,32 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     }
 
-    private TiledMapTileLayer.Cell getPlayerTexture(Player player){
+    private TiledMapTileLayer.Cell getPlayerTexture(Player player) {
 
         List<TiledMapTileLayer.Cell> textures = playerTextures.get(player.getId());
 
-        if(player.getDirection() == Direction.UP){
-            for(TiledMapTileLayer.Cell texture : textures){
+        if (player.getDirection() == Direction.UP) {
+            for (TiledMapTileLayer.Cell texture : textures) {
                 texture.setRotation(1);
             }
-        }
-        else if(player.getDirection() == Direction.DOWN){
-            for(TiledMapTileLayer.Cell texture : textures){
+        } else if (player.getDirection() == Direction.DOWN) {
+            for (TiledMapTileLayer.Cell texture : textures) {
                 texture.setRotation(3);
             }
-        }
-        else if(player.getDirection() == Direction.LEFT){
-            for(TiledMapTileLayer.Cell texture : textures){
+        } else if (player.getDirection() == Direction.LEFT) {
+            for (TiledMapTileLayer.Cell texture : textures) {
                 texture.setRotation(2);
             }
-        }
-        else {
+        } else {
             // Keep texture as it is
-            for(TiledMapTileLayer.Cell texture : textures){
+            for (TiledMapTileLayer.Cell texture : textures) {
                 texture.setRotation(0);
             }
         }
 
-        if(player.getFlagScore() == 3)
+        if (player.getFlagScore() == 3)
             return textures.get(1);
-        else if(!player.isAlive())
+        else if (!player.isAlive())
             return textures.get(2);
         else {
             return textures.get(0);
@@ -538,7 +541,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         camera.setToOrtho(false, boardWidth, boardHeight);
         camera.position.x = (float) boardWidth / 2;
         camera.update();
-        renderer = new OrthogonalTiledMapRenderer(map, 1/ boardLayer.getTileHeight());
+        renderer = new OrthogonalTiledMapRenderer(map, 1 / boardLayer.getTileHeight());
         renderer.setView(camera);
     }
 
@@ -641,7 +644,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         allTextures.add(player5Textures);
         allTextures.add(player6Textures);
 
-        for(Player player : players){
+        for (Player player : players) {
             playerTextures.put(player.getId(), allTextures.get(player.getId() - 1));
             System.out.println(player.getId() + " " + allTextures.get(player.getId() - 1));
         }
@@ -654,11 +657,14 @@ public class Game extends InputAdapter implements ApplicationListener {
     }
 
     @Override
-    public void pause() { }
+    public void pause() {
+    }
 
     @Override
-    public void resume() { }
+    public void resume() {
+    }
 
     @Override
-    public void resize(int i, int i1) { }
+    public void resize(int i, int i1) {
+    }
 }
