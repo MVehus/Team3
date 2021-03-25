@@ -43,6 +43,10 @@ public class ApplicationScreen extends AbstractScreen {
     private int gameWidth;
     private final Player player;
 
+    private Image cardSlotsTop;
+    private Image cardSlotsMiddle;
+    private Image cardSlotsBottom;
+
     private ArrayList<ProgramCard> chosenCards;
     private HashMap<Image, ProgramCard> cardImageProgramMap;
     private ArrayList<Point> chooseCardPos;
@@ -222,33 +226,39 @@ public class ApplicationScreen extends AbstractScreen {
 
     private void dragDropCard(Image cardImage) {
         float cardX = cardImage.getX() + cardImage.getWidth() / 2;
+        float cardY = cardImage.getY() + cardImage.getHeight() / 2;
         ProgramCard programCard = cardImageProgramMap.get(cardImage);
 
+        if ((cardY > cardSlotsMiddle.getY() && cardY < height && cardX > gameWidth && cardX < width) || cardX < gameWidth) {
+            cardImage.setPosition(cardImage.getOriginX(), cardImage.getOriginY());
+            return;
+        }
+
         for (int i = 0; i < 5; i++) {
-            if (cardX > chooseCardPos.get(i).getX() - cardImage.getWidth() / 2 && cardX < chooseCardPos.get(i).getX() + cardImage.getWidth()) {
+            if (cardX > chooseCardPos.get(i).getX() - cardImage.getWidth() / 2 && cardX < chooseCardPos.get(i).getX() + cardImage.getWidth()
+            && cardY > 0 && cardY < cardSlotsMiddle.getY()) {
                 cardImage.setPosition(chooseCardPos.get(i).x, chooseCardPos.get(i).y);
                 chosenCards.add(i, programCard);
                 return;
             }
         }
-        cardImage.setPosition(cardImage.getOriginX(), cardImage.getOriginY());
     }
 
     private void initCardSlots() {
         Sprite texture = new Sprite(new Texture("src/assets/playerGUI/cardSlots.jpg"));
-        Image cardSlotsTop = new Image(new SpriteDrawable(texture));
+        cardSlotsTop = new Image(new SpriteDrawable(texture));
         cardSlotsTop.setWidth(width-gameWidth);
         cardSlotsTop.setHeight((float) ((width-gameWidth)/5*4/3));
         cardSlotsTop.setPosition(gameWidth, (float) ((width-gameWidth)/5*4/3)*2+80);
         cardSlotsTop.setColor(Color.LIGHT_GRAY);
 
-        Image cardSlotsMiddle = new Image(new SpriteDrawable(texture));
+        cardSlotsMiddle = new Image(new SpriteDrawable(texture));
         cardSlotsMiddle.setWidth(width-gameWidth);
         cardSlotsMiddle.setHeight((float) ((width-gameWidth)/5*4/3));
         cardSlotsMiddle.setPosition(gameWidth, (float) ((width-gameWidth)/5*4/3)+80);
         cardSlotsMiddle.setColor(Color.LIGHT_GRAY);
 
-        Image cardSlotsBottom = new Image(new SpriteDrawable(texture));
+        cardSlotsBottom = new Image(new SpriteDrawable(texture));
         cardSlotsBottom.setWidth(width-gameWidth);
         cardSlotsBottom.setHeight((float) ((width-gameWidth)/5*4/3));
         cardSlotsBottom.setPosition(gameWidth, 80);
