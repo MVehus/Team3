@@ -13,6 +13,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -20,21 +21,31 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import network.Network;
 import player.Player;
+import projectCard.CardDeck;
+import projectCard.ProgramCard;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ApplicationScreen extends AbstractScreen {
     private final Game game = new Game();
-    private int width;
-    private int height;
-    private int gameWidth;
-    private Player player;
-
     private final Skin skin = new Skin(Gdx.files.internal("src/assets/skin/plain-james/plain-james-ui.json"));
+    private final int width;
+    private final int height;
+    private int gameWidth;
+    private final Player player;
+
+    private ArrayList<ProgramCard> chosenCards;
+    private HashMap<Image, ProgramCard> cardImageProgramMap;
+    private ArrayList<Point> chooseCardPos;
 
     public ApplicationScreen(ScreenOrchestrator screenOrchestrator) {
         super(screenOrchestrator);
@@ -47,12 +58,19 @@ public class ApplicationScreen extends AbstractScreen {
     public void show() {
         game.create();
         gameWidth = Gdx.graphics.getWidth()*2/3;
+        chosenCards = new ArrayList<>(5);
+        for (int i = 0; i < 5; i++) {
+            chosenCards.add(null);
+        }
+        cardImageProgramMap = new HashMap<>(84);
+        chooseCardPos = new ArrayList<>(5);
 
         initCardSlots();
         initButtons();
         initDamageTokens();
         initFlags();
         initLifeTokens();
+        placeCards();
 
         Gdx.input.setInputProcessor(stage);
     }
@@ -166,6 +184,56 @@ public class ApplicationScreen extends AbstractScreen {
         stage.addActor(damageTokens);
     }
 
+    private void placeCards() {
+        int cardWidth = (width-gameWidth)/5;
+        int cardHeight = cardWidth*4/3;
+        CardDeck cardDeck = new CardDeck();
+        for (int i = 0; i < 9-player.getNumDamageTokens(); i++) {
+            ProgramCard card = cardDeck.drawCards(1).get(0);
+            Sprite sprite = new Sprite(new Texture(card.getCardImagePath()));
+            final Image cardImage = new Image(new SpriteDrawable(sprite));
+            cardImage.setWidth(cardWidth);
+            cardImage.setHeight(cardHeight);
+
+            if (i < 5) {
+                cardImage.setPosition(gameWidth+(cardWidth*i), cardHeight*2+80);
+                cardImage.setOrigin(gameWidth+(cardWidth*i), cardHeight*2+80);
+            }
+            else {
+                cardImage.setPosition(gameWidth+(cardWidth*(i-5)), cardHeight+80);
+                cardImage.setOrigin(gameWidth+(cardWidth*(i-5)), cardHeight+80);
+            }
+            cardImage.addListener(new DragListener() {
+                @Override
+                public void drag(InputEvent event, float x, float y, int pointer) {
+                    cardImage.moveBy(x - cardImage.getWidth() / 2, y - cardImage.getHeight() / 2);
+                    cardImage.toFront();
+                }
+                @Override
+                public void dragStop(InputEvent event, float x, float y, int pointer) {
+                    super.dragStop(event, x, y, pointer);
+                    dragDropCard(cardImage);
+                }
+            });
+            stage.addActor(cardImage);
+            cardImageProgramMap.put(cardImage, card);
+        }
+    }
+
+    private void dragDropCard(Image cardImage) {
+        float cardX = cardImage.getX() + cardImage.getWidth() / 2;
+        ProgramCard programCard = cardImageProgramMap.get(cardImage);
+
+        for (int i = 0; i < 5; i++) {
+            if (cardX > chooseCardPos.get(i).getX() - cardImage.getWidth() / 2 && cardX < chooseCardPos.get(i).getX() + cardImage.getWidth()) {
+                cardImage.setPosition(chooseCardPos.get(i).x, chooseCardPos.get(i).y);
+                chosenCards.add(i, programCard);
+                return;
+            }
+        }
+        cardImage.setPosition(cardImage.getOriginX(), cardImage.getOriginY());
+    }
+
     private void initCardSlots() {
         Sprite texture = new Sprite(new Texture("src/assets/playerGUI/cardSlots.jpg"));
         Image cardSlotsTop = new Image(new SpriteDrawable(texture));
@@ -184,6 +252,10 @@ public class ApplicationScreen extends AbstractScreen {
         cardSlotsBottom.setWidth(width-gameWidth);
         cardSlotsBottom.setHeight((float) ((width-gameWidth)/5*4/3));
         cardSlotsBottom.setPosition(gameWidth, 80);
+
+        for (int i = 0; i < 5; i++) {
+            chooseCardPos.add(new Point(gameWidth+((width-gameWidth)/5*i),80)); //Disse posisjonene er garantert feil, finpuss senere
+        }
 
         stage.addActor(cardSlotsTop);
         stage.addActor(cardSlotsMiddle);
