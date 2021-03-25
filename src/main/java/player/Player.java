@@ -14,6 +14,7 @@ public class Player {
     private final int id;
     private final String name;
     private Vector2 position;
+    private Vector2 backupPosision;
     private Direction direction;
     public ArrayList<ProgramCard> cards = new ArrayList<ProgramCard>();
     private int lifeTokens;
@@ -29,6 +30,7 @@ public class Player {
         this.name = name;
         this.isAlive = true;
         this.position = position;
+        this.backupPosision = new Vector2(position.x, position.y);
         this.checkPointPosition = position; // Checkpoint position as startposition until flag taken
         this.direction = Direction.RIGHT;
         this.lifeTokens = 3;
@@ -159,10 +161,14 @@ public class Player {
     }
 
     public void loseLifeToken() {
-        isAlive = false;
-        lifeTokens -= 1;
-        if (lifeTokens != 0) {
+        if (lifeTokens > 1) {
+            lifeTokens -= 1;
             damageTokens = 0;
+            System.out.println("Lost life");
+            setPosition((int) backupPosision.x,(int) backupPosision.y);
+        }
+        else {
+            isAlive = false;
         }
     }
 
