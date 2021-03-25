@@ -28,7 +28,6 @@ public class Board {
         this.numColumns = layers.get(Tile.Board).getWidth();
 
         initialize();
-
     }
 
 

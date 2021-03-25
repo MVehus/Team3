@@ -32,12 +32,8 @@ public class Game extends InputAdapter implements ApplicationListener {
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
-
     private final HashMap<Integer, List<TiledMapTileLayer.Cell>> playerTextures = new HashMap<>();
     private List<Player> players = new ArrayList<>();
-
-    private boolean game = true;
-
     private int boardWidth;
     private int boardHeight;
 
