@@ -18,6 +18,33 @@ public class PlayerTest {
     }
 
     @Test
+    public void GetPosition(){
+        Vector2 pos = new Vector2(1,6);
+        assertEquals(pos, player.getPosition());
+    }
+
+    @Test
+    public void StartDirectionIsRight(){
+        assertEquals(Direction.RIGHT, player.getDirection());
+    }
+
+    @Test
+    public void RespawnAtStartPosIfNoCheckpointRegistered(){
+        Vector2 startPos = new Vector2(1,6);
+        player.reset();
+        assertEquals(startPos, player.getCheckPointPosition());
+    }
+
+    @Test
+    public void RespawnAtCheckpoint(){
+        Vector2 checkPointPos = new Vector2(10, 10);
+        player.setPosition((int) checkPointPos.x, (int) checkPointPos.y);
+        player.markPosAsCheckpoint();
+        player.reset();
+        assertEquals(checkPointPos, player.getCheckPointPosition());
+    }
+
+    @Test
     public void PlayerStartsWithNoDamageTokens(){
         assertEquals(0,player.getNumDamageTokens());
     }

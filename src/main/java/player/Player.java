@@ -24,11 +24,14 @@ public class Player implements Serializable {
     private List<Tile> currentLayers;
     private boolean isAlive;
 
+    private Vector2 checkPointPosition;
+
     public Player(int id, String name, Vector2 position) {
         this.id = id;
         this.name = name;
         this.isAlive = true;
         this.position = position;
+        this.checkPointPosition = position; // Checkpoint position as startposition until flag taken
         this.direction = Direction.RIGHT;
         this.lifeTokens = 3;
         this.damageTokens = 0;
@@ -44,7 +47,7 @@ public class Player implements Serializable {
         return isAlive;
     }
 
-    public Vector2 getNextCell() {
+    public Vector2 getNextCell(){
         int xPos = (int) position.x;
         int yPos = (int) position.y;
         Vector2 nextCell = new Vector2();
@@ -66,8 +69,8 @@ public class Player implements Serializable {
                 nextCell.y = yPos;
                 break;
         }
-
         return nextCell;
+
     }
 
     public void move() {
@@ -89,21 +92,34 @@ public class Player implements Serializable {
         }
     }
 
-    public void setLayers(List<Tile> layers) {
-        currentLayers = layers;
-    }
-
-    public List<Tile> getLayers() {
-        return currentLayers;
+    public void moveDirection(Direction dir){
+        int xPos = (int) position.x;
+        int yPos = (int) position.y;
+        switch (dir) {
+            case UP:
+                setPosition(xPos, yPos + 1);
+                break;
+            case DOWN:
+                setPosition(xPos, yPos - 1);
+                break;
+            case LEFT:
+                setPosition(xPos - 1, yPos);
+                break;
+            case RIGHT:
+                setPosition(xPos + 1, yPos);
+                break;
+        }
     }
 
     public void setPosition(int x, int y) {
         position.x = x;
         position.y = y;
-
     }
 
     public Vector2 getPosition() {
+        if (lifeTokens == 0){
+            return checkPointPosition;
+        }
         return position;
     }
 
@@ -148,7 +164,6 @@ public class Player implements Serializable {
         isAlive = false;
         lifeTokens -= 1;
         if (lifeTokens != 0) {
-            resetPosition();
             damageTokens = 0;
         }
     }
@@ -174,8 +189,8 @@ public class Player implements Serializable {
         return 0;
     }
 
-    private void resetPosition() {
-        //TODO
+    public void markPosAsCheckpoint(){
+        checkPointPosition = this.getPosition();
     }
 
     public String toString() {
@@ -184,6 +199,17 @@ public class Player implements Serializable {
 
          */
         return Integer.toString(getId());
+    }
+
+    public Vector2 getCheckPointPosition(){
+        return checkPointPosition;
+    }
+
+    public void reset() {
+        if(lifeTokens <= 0){
+            isAlive = true;
+            position = checkPointPosition;
+        }
     }
 
     public void rotate(Direction dir) {
@@ -219,7 +245,7 @@ public class Player implements Serializable {
         this.direction = playerModel.getDirection();
     }
 
-    public PlayerModel getModel() {
+    public PlayerModel getModel(){
         return new PlayerModel(id, position, lifeTokens, damageTokens, flagsTaken, direction, getCurrentCard());
     }
 
