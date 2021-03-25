@@ -1,8 +1,10 @@
 package network;
 
+import app.Game;
 import com.esotericsoftware.kryonet.Connection;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Network {
 
@@ -18,24 +20,50 @@ public class Network {
             client = new Client(IpAddress, port);
             return true;
         } catch (Exception e) {
-            System.out.println("Could not connnect new client to server with exception: \n" + e.toString());
+            System.out.println("Could not connect new client to server with exception: \n" + e.toString());
             return false;
         }
     }
 
-    public static Client getClient() {
-        return client;
-    }
-
     public static void disconnectClient() {
+        client.disconnect();
         client = null;
     }
 
-    public static Server getServer() {
-        return server;
+    public static ArrayList<Connection> getAllClientsOnServer() {
+        return server != null ? server.getClients() : new ArrayList<>();
     }
 
-    public static ArrayList<Connection> getAllClientsOnServer() {
-        return server != null ? server.getClients() : null;
+    public static HashMap<Integer, Connection> getClientIdTable(){
+        return server != null ? server.getClientIdTable() : new HashMap<>();
     }
+
+    public static void setGameReferenceForClient(Game game){
+        client.setGame(game);
+    }
+
+    public static void sendToServer(Object obj){
+        client.sendTCP(obj);
+    }
+
+    public static Boolean hostingServer(){
+        return server != null;
+    }
+
+    public static void sendPlayerListToClients(){
+        server.sendPlayerListToClients();
+    }
+
+    public static int getMyId(){
+        return client.getId();
+    }
+
+    /*
+    public static Client getClient() {
+        return client;
+    }
+     public static Server getServer() {
+        return server;
+    }
+     */
 }

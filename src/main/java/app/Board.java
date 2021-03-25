@@ -16,8 +16,7 @@ public class Board {
     private HashMap<Tile, List<Vector2>> tileLocations;
 
     public Board(TiledMap map){
-
-        layers = new HashMap<>();
+        this.layers = new HashMap<>();
 
         // Load layers
         for( MapLayer l : map.getLayers()) {
@@ -31,6 +30,7 @@ public class Board {
         initialize();
 
     }
+
 
     public List<Vector2> getTileLocations(Tile tile){
         return tileLocations.get(tile);

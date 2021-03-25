@@ -1,6 +1,6 @@
 package player;
 
-
+import Models.PlayerModel;
 import app.Direction;
 import app.Tile;
 import com.badlogic.gdx.math.Vector2;
@@ -11,21 +11,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Player {
-
+    private final int id;
     private final String name;
     private Vector2 position;
     private Direction direction;
-    public ArrayList<ProgramCard> programCards = new ArrayList<ProgramCard>();
+    public ArrayList<ProgramCard> cards = new ArrayList<ProgramCard>();
     private int lifeTokens;
     private int damageTokens;
     private int flagsTaken;
     private List<Tile> currentLayers;
     private boolean isAlive;
 
-    public Player(String nameID, Vector2 position) {
-        this.name = nameID;
+    private Vector2 checkPointPosition;
+
+    public Player(int id, String name, Vector2 position) {
+        this.id = id;
+        this.name = name;
         this.isAlive = true;
         this.position = position;
+        this.checkPointPosition = position; // Checkpoint position as startposition until flag taken
         this.direction = Direction.RIGHT;
         this.lifeTokens = 3;
         this.damageTokens = 0;
@@ -33,7 +37,11 @@ public class Player {
         this.currentLayers = null;
     }
 
-    public boolean isAlive(){
+    public int getId() {
+        return id;
+    }
+
+    public boolean isAlive() {
         return isAlive;
     }
 
@@ -41,7 +49,7 @@ public class Player {
         int xPos = (int) position.x;
         int yPos = (int) position.y;
         Vector2 nextCell = new Vector2();
-        switch (this.direction){
+        switch (this.direction) {
             case UP:
                 nextCell.x = xPos;
                 nextCell.y = yPos + 1;
@@ -59,14 +67,14 @@ public class Player {
                 nextCell.y = yPos;
                 break;
         }
-
         return nextCell;
+
     }
 
-    public void move(){
+    public void move() {
         int xPos = (int) position.x;
         int yPos = (int) position.y;
-        switch (this.direction){
+        switch (this.direction) {
             case UP:
                 setPosition(xPos, yPos + 1);
                 break;
@@ -82,37 +90,50 @@ public class Player {
         }
     }
 
-    public void setLayers(List<Tile> layers){
-        currentLayers = layers;
+    public void moveDirection(Direction dir){
+        int xPos = (int) position.x;
+        int yPos = (int) position.y;
+        switch (dir) {
+            case UP:
+                setPosition(xPos, yPos + 1);
+                break;
+            case DOWN:
+                setPosition(xPos, yPos - 1);
+                break;
+            case LEFT:
+                setPosition(xPos - 1, yPos);
+                break;
+            case RIGHT:
+                setPosition(xPos + 1, yPos);
+                break;
+        }
     }
 
-    public List<Tile> getLayers(){
-        return currentLayers;
+    public void setPosition(int x, int y) {
+        position.x = x;
+        position.y = y;
     }
 
-    public void setPosition(int x, int y){
-        position.x = x ;
-        position.y = y ;
-
-    }
-
-    public Vector2 getPosition(){
+    public Vector2 getPosition() {
+        if (lifeTokens == 0){
+            return checkPointPosition;
+        }
         return position;
     }
 
-    public Direction getDirection(){
+    public Direction getDirection() {
         return direction;
     }
 
-    public void setDirection(Direction newDirection){
+    public void setDirection(Direction newDirection) {
         this.direction = newDirection;
     }
 
-    public void registerFlag(){
+    public void registerFlag() {
         flagsTaken++;
     }
 
-    public int getFlagScore(){
+    public int getFlagScore() {
         return flagsTaken;
     }
 
@@ -120,7 +141,7 @@ public class Player {
         return lifeTokens;
     }
 
-    public String getName(){
+    public String getName() {
         return name;
     }
 
@@ -141,39 +162,86 @@ public class Player {
         isAlive = false;
         lifeTokens -= 1;
         if (lifeTokens != 0) {
-            resetPosition();
             damageTokens = 0;
         }
     }
 
     public void drawProgramCards(CardDeck deck) {
         int numCards = 9 - damageTokens;
-        programCards = deck.drawCards(numCards);
+        cards = deck.drawCards(numCards);
     }
 
-    public ProgramCard getCurrentCard(){
+    public ProgramCard getCurrentCard() {
         // Gjøre dette på en annen måte? Queue?
-        return programCards.get(0);
+        return cards.get(0);
     }
 
-    public List<ProgramCard> getProgramCards(){
-        return programCards;
+    public List<ProgramCard> getCards() {
+        return cards;
     }
 
     public int numLockedProgramCards() {
-            if(getNumDamageTokens() <= 9 && getNumDamageTokens() >= 5){
-                return getNumDamageTokens() - 4;
-            }
-            return 0;
+        if (getNumDamageTokens() <= 9 && getNumDamageTokens() >= 5) {
+            return getNumDamageTokens() - 4;
+        }
+        return 0;
     }
 
-    private void resetPosition() {
-        //TODO
+    public void markPosAsCheckpoint(){
+        checkPointPosition = this.getPosition();
     }
 
-    public String toString(){
-        return "Player: " + name + " on position (x: " + position.x + ", y: " + position.y + ") with " + lifeTokens + " lifetokens and "
-                + damageTokens + " damage tokens. Has taken " + flagsTaken + " flags.";
+    public Vector2 getCheckPointPosition(){
+        return checkPointPosition;
+    }
+
+    public void reset() {
+        if(lifeTokens <= 0){
+            isAlive = true;
+            position = checkPointPosition;
+        }
+    }
+
+    public void rotate(Direction dir) {
+        switch (dir) {
+            case RIGHT:
+                if (direction == Direction.UP)
+                    setDirection(Direction.RIGHT);
+                else if (direction == Direction.RIGHT)
+                    setDirection(Direction.DOWN);
+                else if (direction == Direction.DOWN)
+                    setDirection(Direction.LEFT);
+                else if (direction == Direction.LEFT)
+                    setDirection(Direction.UP);
+
+            case LEFT:
+                if (direction == Direction.UP)
+                    setDirection(Direction.LEFT);
+                else if (direction == Direction.RIGHT)
+                    setDirection(Direction.UP);
+                else if (direction == Direction.DOWN)
+                    setDirection(Direction.RIGHT);
+                else if (direction == Direction.LEFT)
+                    setDirection(Direction.DOWN);
+
+        }
+    }
+
+    public void setNewPlayerState(PlayerModel playerModel) {
+        this.position = playerModel.getPosition();
+        this.lifeTokens = playerModel.getLifeTokens();
+        this.damageTokens = playerModel.getDamageTokens();
+        this.flagsTaken = playerModel.getFlagsTaken();
+        this.direction = playerModel.getDirection();
+    }
+
+    public PlayerModel getModel() {
+        return new PlayerModel(id, position, lifeTokens, damageTokens, flagsTaken, direction, getCurrentCard());
+    }
+
+    public String toString() {
+        return name + " on (x: " + position.x + ", y: " + position.y + ") with " + lifeTokens + " HP and "
+                + damageTokens + " damage tokens. Has " + flagsTaken + " flags.";
     }
 
 }
