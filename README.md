@@ -10,6 +10,7 @@
 - [User Stories](https://github.com/MVehus/Team3/blob/main/Deliverables/Spesifikasjoner.md)
 - [Meetings](https://github.com/MVehus/Team3/blob/main/Deliverables/M%C3%B8teReferat.md)
 - [Manual Tests](https://github.com/MVehus/Team3/blob/main/Deliverables/ManuelleTester.md)
+- [UML DIAGRAM](https://app.creately.com/diagram/E4uRJsPIcEz/edit)
 - Exercises
     - [Obligatorisk oppgave 1](https://github.com/MVehus/Team3/blob/main/Deliverables/ObligatoriskOppgave1.md)
     - [Obligatorisk oppgave 2](https://github.com/MVehus/Team3/blob/main/Deliverables/ObligatoriskOppgave2.md)
