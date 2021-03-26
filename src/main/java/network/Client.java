@@ -42,7 +42,6 @@ public class Client {
 
                 } else if (object instanceof Integer) {
                     id = (Integer) object;
-                    //System.out.println("Connected to server with id: " + id);
 
                 } else if (object instanceof ArrayList) {
                     if (game != null) {

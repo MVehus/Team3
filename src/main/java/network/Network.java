@@ -79,5 +79,9 @@ public class Network {
     public static ArrayList<Player> getPlayersOnServer() {
         return server.getPlayers();
     }
+
+    public static void shutdownServer(){
+        server.shutdown();
+    }
     //endregion
 }
