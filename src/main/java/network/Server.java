@@ -120,6 +120,10 @@ public class Server {
         cardDeck = new CardDeck();
     }
 
+    public void startGame(){
+        sendToAllClients(Boolean.TRUE);
+    }
+
     private Boolean isCardRequest(Object obj) {
         if (((String) obj).substring(0, ((String) obj).length() - 1).equalsIgnoreCase("CARDREQUEST")) {
             String lastChar = ((String) obj).substring(((String) obj).length() - 1);

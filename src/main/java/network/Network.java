@@ -43,10 +43,6 @@ public class Network {
         client.setGame(game);
     }
 
-    public static void sendToServer(Object obj) {
-        client.sendTCP(obj);
-    }
-
     public static Boolean hostingServer() {
         return server != null;
     }
@@ -57,6 +53,10 @@ public class Network {
 
     public static Boolean gameStarted() {
         return client.getGameStarted();
+    }
+
+    public static void startGame(){
+        server.startGame();
     }
 
     public static int getMyId() {
@@ -81,6 +81,10 @@ public class Network {
     }
      public static Server getServer() {
         return server;
+    }
+
+    public static void sendToServer(Object obj) {
+        client.sendTCP(obj);
     }
      */
 }
