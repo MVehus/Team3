@@ -41,7 +41,7 @@ public class Board {
             List<Vector2> locations = new ArrayList<>();
             for (int row = 0; row < numRows; row++) {
                 for (int column = 0; column < numColumns; column++) {
-                    if (layers.get(tile).getCell((int) column, (int) row) != null)
+                    if (layers.get(tile).getCell(column, row) != null)
                         locations.add(new Vector2(column, row));
                 }
             }

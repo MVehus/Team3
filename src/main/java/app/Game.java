@@ -184,7 +184,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         setupCameraAndRenderer();
 
         startPositions = gameBoard.getTileLocations(Tile.RobotStart);
-        //System.out.println(startPositions);
 
         // SET UP CLIENT
         Network.setGameReferenceForClient(this);
@@ -200,8 +199,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         if (Network.hostingServer()) {
             Network.sendPlayerListToClients();
         }
-
-        //for(Player player : players) player.setPosition((int) startPositions.get(player.getId()).x, (int) startPositions.get(player.getId()).y);
 
         loadTextures(players);
 
@@ -366,7 +363,7 @@ public class Game extends InputAdapter implements ApplicationListener {
      * E. Touch Checkpoints
      */
     public void round() {
-
+        //TODO
         // Move players based on current card
         // Sort players by priority
         players.sort(new Comparator<Player>() {
@@ -548,6 +545,8 @@ public class Game extends InputAdapter implements ApplicationListener {
     }
 
     private void loadTextures(List<Player> players) {
+        //TODO
+        // Find better way to load textures
         TiledMapTileLayer.Cell player1_cell = new TiledMapTileLayer.Cell();
         TiledMapTileLayer.Cell player1_wonCell = new TiledMapTileLayer.Cell();
         TiledMapTileLayer.Cell player1_diedCell = new TiledMapTileLayer.Cell();

@@ -12,9 +12,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Server {
-    private com.esotericsoftware.kryonet.Server server;
-    private ArrayList<Connection> clients;
-    private ArrayList<Player> players;
+    private final com.esotericsoftware.kryonet.Server server;
+    private final ArrayList<Connection> clients;
+    private final ArrayList<Player> players;
     private Boolean gameStarted;
     private CardDeck cardDeck;
 

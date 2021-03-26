@@ -47,8 +47,9 @@ public class ApplicationScreen extends AbstractScreen {
     private Image cardSlotsMiddle;
     private Image cardSlotsBottom;
 
-    private ArrayList<ProgramCard> chosenCards;
+    private ProgramCard[] chosenCards;
     private HashMap<Image, ProgramCard> cardImageProgramMap;
+    private HashMap<ProgramCard, Image> cardProgramImageMap;
     private ArrayList<Point> chooseCardPos;
 
     public ApplicationScreen(ScreenOrchestrator screenOrchestrator) {
@@ -62,11 +63,9 @@ public class ApplicationScreen extends AbstractScreen {
     public void show() {
         game.create();
         gameWidth = Gdx.graphics.getWidth()*2/3;
-        chosenCards = new ArrayList<>(5);
-        for (int i = 0; i < 5; i++) {
-            chosenCards.add(null);
-        }
+        chosenCards = new ProgramCard[5];
         cardImageProgramMap = new HashMap<>(84);
+        cardProgramImageMap = new HashMap<>(84);
         chooseCardPos = new ArrayList<>(5);
 
         initCardSlots();
@@ -191,6 +190,7 @@ public class ApplicationScreen extends AbstractScreen {
     private void placeCards() {
         int cardWidth = (width-gameWidth)/5;
         int cardHeight = cardWidth*4/3;
+        //ArrayList<ProgramCard> programCards = Network.getCurrentProgramCards();
         CardDeck cardDeck = new CardDeck();
         for (int i = 0; i < 9-player.getNumDamageTokens(); i++) {
             ProgramCard card = cardDeck.drawCards(1).get(0);
@@ -221,6 +221,7 @@ public class ApplicationScreen extends AbstractScreen {
             });
             stage.addActor(cardImage);
             cardImageProgramMap.put(cardImage, card);
+            cardProgramImageMap.put(card, cardImage);
         }
     }
 
@@ -237,8 +238,13 @@ public class ApplicationScreen extends AbstractScreen {
         for (int i = 0; i < 5; i++) {
             if (cardX > chooseCardPos.get(i).getX() - cardImage.getWidth() / 2 && cardX < chooseCardPos.get(i).getX() + cardImage.getWidth()
             && cardY > 0 && cardY < cardSlotsMiddle.getY()) {
+                if (chosenCards[i] != null) {
+                    Image prevImage = cardProgramImageMap.get(chosenCards[i]);
+                    prevImage.setPosition(prevImage.getOriginX(), prevImage.getOriginY());
+                }
+
                 cardImage.setPosition(chooseCardPos.get(i).x, chooseCardPos.get(i).y);
-                chosenCards.add(i, programCard);
+                chosenCards[i] = programCard;
                 return;
             }
         }

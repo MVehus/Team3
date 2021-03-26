@@ -12,7 +12,7 @@ import static org.junit.Assert.assertEquals;
 
 public class CardDeckTest {
 
-    private CardDeck DECK = new CardDeck();
+    private final CardDeck DECK = new CardDeck();
 
     @Test
     public void FullDeckContains84Cards(){
@@ -21,7 +21,7 @@ public class CardDeckTest {
 
     @Test
     public void DrawFiveCards(){
-        ArrayList<ProgramCard> cards = new ArrayList<>();
+        ArrayList<ProgramCard> cards;
         cards = DECK.drawCards(5);
         assertEquals(5, cards.size());
     }

@@ -2,11 +2,9 @@ package player;
 
 import Models.PlayerModel;
 import app.Direction;
-import app.Tile;
 import com.badlogic.gdx.math.Vector2;
 import projectCard.CardDeck;
 import projectCard.ProgramCard;
-import projectCard.Value;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -16,13 +14,12 @@ public class Player implements Serializable {
     private final int id;
     private final String name;
     private Vector2 position;
-    private Vector2 backupPosition;
+    private final Vector2 backupPosition;
     private Direction direction;
-    public ArrayList<ProgramCard> cards = new ArrayList<ProgramCard>();
+    public ArrayList<ProgramCard> cards = new ArrayList<>();
     private int lifeTokens;
     private int damageTokens;
     private int flagsTaken;
-    private List<Tile> currentLayers;
     private boolean isAlive;
 
     private Vector2 checkPointPosition;
@@ -38,7 +35,6 @@ public class Player implements Serializable {
         this.lifeTokens = 3;
         this.damageTokens = 0;
         this.flagsTaken = 0;
-        this.currentLayers = null;
     }
 
     public int getId() {
@@ -180,8 +176,7 @@ public class Player implements Serializable {
     }
 
     public ProgramCard getCurrentCard() {
-        // Gjøre dette på en annen måte? Queue?
-        return cards.get(0).equals(null) ? new ProgramCard(0, Value.U_TURN) : cards.get(0);
+        return cards.get(0);
     }
 
     public List<ProgramCard> getCards() {
@@ -200,10 +195,6 @@ public class Player implements Serializable {
     }
 
     public String toString() {
-        /*return "Player: " + name + " on position (x: " + position.x + ", y: " + position.y + ") with " + lifeTokens + " lifetokens and "
-                + damageTokens + " damage tokens. Has taken " + flagsTaken + " flags.";
-
-         */
         return Integer.toString(getId());
     }
 
