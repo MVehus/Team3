@@ -55,9 +55,11 @@ public class JoinGameScreen extends AbstractScreen{
                     connectedTable.row().padTop(10);
                     connectedTable.add(mainMenu);
                     stage.addActor(connectedTable);
-                    while (!Network.gameStarted()) {
+                    while (true) {
                         try {
                             Thread.sleep(100);
+                            if(Network.gameStarted())
+                                break;
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }

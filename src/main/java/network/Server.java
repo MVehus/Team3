@@ -35,7 +35,6 @@ public class Server {
 
         server.addListener(new Listener() {
             public void received(Connection connection, Object object) {
-                System.out.println("Received " + object.toString() + " from " + connection);
                 if (object instanceof PlayerModel) {
                     PlayerModel updatedPlayerModel = (PlayerModel) object;
                     System.out.println("Received updated PlayerModel from connection : " + connection);

@@ -36,7 +36,6 @@ public class Client {
 
         client.addListener(new Listener() {
             public void received(Connection connection, Object object) {
-                System.out.println("Received object: " + object.toString() + " from server");
                 if (object instanceof PlayerModel) {
                     PlayerModel updatedPlayerModel = (PlayerModel) object;
                     System.out.println("Player " + connection.getID() + " updated");

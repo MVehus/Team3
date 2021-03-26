@@ -42,7 +42,7 @@ public class ApplicationScreen extends AbstractScreen {
     private final int width;
     private final int height;
     private int gameWidth;
-    private final Player player;
+    private Player player;
 
     private Image cardSlotsTop;
     private Image cardSlotsMiddle;
@@ -57,12 +57,12 @@ public class ApplicationScreen extends AbstractScreen {
         super(screenOrchestrator);
         width = Gdx.graphics.getWidth();
         height = Gdx.graphics.getHeight();
-        player = Network.getPlayersOnServer().get(Network.getMyId()-1);
     }
 
     @Override
     public void show() {
         game.create();
+        player = game.getPlayers().get(Network.getMyId()-1);
         gameWidth = Gdx.graphics.getWidth()*2/3;
         chosenCards = new ProgramCard[5];
         cardImageProgramMap = new HashMap<>(84);

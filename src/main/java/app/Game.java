@@ -116,14 +116,6 @@ public class Game extends InputAdapter implements ApplicationListener {
             Network.sendPlayerListToClients();
         }
 
-        // SET UP CLIENT
-        Network.setGameReferenceForClient(this);
-
-        if (Network.hostingServer()) {
-            Network.sendPlayerListToClients();
-        }
-
-
         // CARDS
         deck = new CardDeck();
 
@@ -270,6 +262,10 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     public void setPlayerList(ArrayList<Player> players) {
         this.players = players;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
     }
 
     private void chooseCards() {
