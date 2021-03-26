@@ -370,6 +370,9 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         Value cardValue = player.getCurrentCard().getValue();
         System.out.println(player.getName() + " " + cardValue);
+        Player currentPlayer = players.get(Network.getMyId() - 1);
+        Vector2 playerPos = currentPlayer.getPosition();
+        playerLayer.setCell((int) playerPos.x, (int) playerPos.y, null);
 
         if (cardValue == Value.U_TURN) {
             time(1000);

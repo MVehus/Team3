@@ -3,33 +3,21 @@ package app.views;
 import app.Game;
 import app.ScreenOrchestrator;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Net;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import network.Network;
 import player.Player;
-import projectCard.CardDeck;
 import projectCard.ProgramCard;
 
 import java.awt.*;
@@ -37,7 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ApplicationScreen extends AbstractScreen {
-    private final Game game = new Game();
+    private Game game;
     private final Skin skin = new Skin(Gdx.files.internal("src/assets/skin/plain-james/plain-james-ui.json"));
     private final int width;
     private final int height;
@@ -61,6 +49,7 @@ public class ApplicationScreen extends AbstractScreen {
 
     @Override
     public void show() {
+        game = new Game();
         game.create();
         player = game.getPlayers().get(Network.getMyId()-1);
         gameWidth = Gdx.graphics.getWidth()*2/3;
@@ -75,6 +64,7 @@ public class ApplicationScreen extends AbstractScreen {
         initFlags();
         initLifeTokens();
         placeCards();
+        initCurrentPlayer();
 
         Gdx.input.setInputProcessor(stage);
     }
@@ -260,6 +250,12 @@ public class ApplicationScreen extends AbstractScreen {
         }
     }
 
+    private void initCurrentPlayer() {
+        Label label = new Label("Player: " + player.getId(), skin);
+        label.setPosition(gameWidth+(width-gameWidth)/2-label.getWidth()/2, height-30);
+        stage.addActor(label);
+    }
+
     private void initCardSlots() {
         Sprite texture = new Sprite(new Texture("src/assets/playerGUI/cardSlots.jpg"));
         cardSlotsTop = new Image(new SpriteDrawable(texture));
@@ -294,7 +290,7 @@ public class ApplicationScreen extends AbstractScreen {
         lockInButton.setWidth((width-gameWidth)/3);
         lockInButton.setHeight(60);
 
-        TextButton powerDownButton = new TextButton("Power Down", skin);
+        TextButton powerDownButton = new TextButton("Run card one", skin);
         powerDownButton.setPosition(gameWidth+20, 10);
         powerDownButton.setWidth((width-gameWidth)/3);
         powerDownButton.setHeight(60);
@@ -302,14 +298,16 @@ public class ApplicationScreen extends AbstractScreen {
         lockInButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("Lock in");
+                player.addProgramCard(chosenCards[0]);
+                player.setProgramCardDone();
+                game.playerTurn(player);
             }
         });
 
         powerDownButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                System.out.println("Power down");
+                player.setPowerDown();
             }
         });
 

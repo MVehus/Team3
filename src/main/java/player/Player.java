@@ -288,6 +288,10 @@ public class Player implements Serializable {
         cards.remove(card);
     }
 
+    public void addProgramCard(ProgramCard card) {
+        cards.add(card);
+    }
+
     public void removeCardFromSlot(ProgramCard card) {
         cards.add(card);
         programCards.remove(card);
