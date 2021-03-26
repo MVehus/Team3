@@ -12,6 +12,7 @@ public class Network {
     private static Server server;
     private static Client client;
 
+    //region START METHODS
     public static void startServer(int port) {
         server = new Server(port);
     }
@@ -25,18 +26,12 @@ public class Network {
             return false;
         }
     }
+    //endregion
 
+    //region CLIENT METHODS
     public static void disconnectClient() {
         client.disconnect();
         client = null;
-    }
-
-    public static ArrayList<Connection> getAllClientsOnServer() {
-        return server != null ? server.getClients() : new ArrayList<>();
-    }
-
-    public static ArrayList<Player> getPlayersOnServer() {
-        return server.getPlayers();
     }
 
     public static void setGameReferenceForClient(Game game) {
@@ -47,24 +42,12 @@ public class Network {
         return server != null;
     }
 
-    public static void sendPlayerListToClients() {
-        server.sendPlayerListToClients();
-    }
-
     public static Boolean gameStarted() {
         return client.getGameStarted();
     }
 
-    public static void startGame(){
-        server.startGame();
-    }
-
     public static int getMyId() {
         return client.getId();
-    }
-
-    public static void dealCardsToPlayers(){
-        server.dealCardsToPlayers();
     }
 
     public static ArrayList<ProgramCard> getCurrentProgramCards() {
@@ -74,17 +57,27 @@ public class Network {
         }
         return client.getCurrentHand().getCards();
     }
+    //endregion
 
-    /*
-    public static Client getClient() {
-        return client;
-    }
-     public static Server getServer() {
-        return server;
+    //region SERVER METHODS
+    public static void sendPlayerListToClients() {
+        server.sendPlayerListToClients();
     }
 
-    public static void sendToServer(Object obj) {
-        client.sendTCP(obj);
+    public static void startGame(){
+        server.startGame();
     }
-     */
+
+    public static void dealCardsToPlayers(){
+        server.dealCardsToPlayers();
+    }
+
+    public static ArrayList<Connection> getAllClientsOnServer() {
+        return server != null ? server.getClients() : new ArrayList<>();
+    }
+
+    public static ArrayList<Player> getPlayersOnServer() {
+        return server.getPlayers();
+    }
+    //endregion
 }
