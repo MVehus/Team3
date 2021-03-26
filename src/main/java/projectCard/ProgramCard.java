@@ -1,6 +1,7 @@
 package projectCard;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Card object,
@@ -30,6 +31,19 @@ public class ProgramCard implements Serializable {
 
     public String toString(){
         return (this.priority + " priority for " + this.value);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ProgramCard that = (ProgramCard) o;
+        return priority == that.priority && value == that.value;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(priority, value);
     }
 }
 
