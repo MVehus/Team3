@@ -8,13 +8,13 @@ import java.io.Serializable;
 
 public class PlayerModel implements Serializable {
 
-    private int id;
-    private Vector2 position;
-    private int lifeTokens;
-    private int damageTokens;
-    private int flagsTaken;
-    private Direction direction;
-    private ProgramCard currentCard;
+    private final int id;
+    private final Vector2 position;
+    private final int lifeTokens;
+    private final int damageTokens;
+    private final int flagsTaken;
+    private final Direction direction;
+    private final ProgramCard currentCard;
 
     public PlayerModel(int id, Vector2 position, int lifeTokens, int damageTokens, int flagsTaken, Direction direction, ProgramCard currentCard) {
         this.id = id;

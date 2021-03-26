@@ -40,7 +40,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     @Override
     public boolean keyUp(int keycode) {
-        
+
         Player currentPlayer = players.get(Network.getMyId() - 1);
 
         //Player currentPlayer = players.get(0);
@@ -49,112 +49,48 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         playerLayer.setCell((int) playerPos.x, (int) playerPos.y, null);
 
-        System.out.println(currentPlayer.toString());
-        //System.out.println("Next cell available: " + playerOnNextCell(currentPlayer));
-        //System.out.println(currentPlayer.getPosition() + " | " + getNextCells(currentPlayer, 2));
-        System.out.println("All neighbours : " + getAllPlayersInLine(currentPlayer));
-        for (Player p : players) {
-            updatePlayerState(p);
-            System.out.println(p.getName() + " on " + p.getPosition());
-        }
-
         if (keycode == Input.Keys.UP) {
             if (currentPlayer.getDirection() != Direction.UP) {
                 currentPlayer.setDirection(Direction.UP);
-                System.out.println(currentPlayer.getName() + " new direction " + currentPlayer.getDirection());
-            } else {
-                if (playerOnNextCell(currentPlayer)) {
-                    System.out.println("Player on next cell: " + getPlayerOnCell(currentPlayer.getNextCell()));
-                    if (canPush(currentPlayer, getAllPlayersInLine(currentPlayer))) {
-                        push(currentPlayer, getAllPlayersInLine(currentPlayer));
-                        Network.sendToServer(currentPlayer.getModel());
-                    } else {
-                        System.out.println("Cannot push");
-                    }
-                    //push(currentPlayer, getAllPlayersInLine(currentPlayer));
-                } else if (!canMove(currentPlayer)) {
-                    System.out.println("Wall");
-                } else {
-                    System.out.println("MOVE");
-                    currentPlayer.move();
-                    Network.sendToServer(currentPlayer.getModel());
-                }
+                return super.keyUp(keycode);
             }
         } else if (keycode == Input.Keys.DOWN) {
-
             if (currentPlayer.getDirection() != Direction.DOWN) {
                 currentPlayer.setDirection(Direction.DOWN);
-            } else {
-                if (playerOnNextCell(currentPlayer)) {
-                    System.out.println("Player on next cell: " + getPlayerOnCell(currentPlayer.getNextCell()));
-                    if (canPush(currentPlayer, getAllPlayersInLine(currentPlayer))) {
-                        push(currentPlayer, getAllPlayersInLine(currentPlayer));
-                        Network.sendToServer(currentPlayer.getModel());
-
-                    } else {
-                        System.out.println("Cannot push");
-                    }
-
-                } else if (!canMove(currentPlayer)) {
-                    System.out.println("Wall");
-                } else {
-                    System.out.println("MOVE");
-                    currentPlayer.move();
-                    Network.sendToServer(currentPlayer.getModel());
-                }
+                return super.keyUp(keycode);
             }
-
         } else if (keycode == Input.Keys.LEFT) {
             if (currentPlayer.getDirection() != Direction.LEFT) {
                 currentPlayer.setDirection(Direction.LEFT);
-            } else {
-                if (playerOnNextCell(currentPlayer)) {
-                    System.out.println("Player on next cell: " + getPlayerOnCell(currentPlayer.getNextCell()));
-                    if (canPush(currentPlayer, getAllPlayersInLine(currentPlayer))) {
-                        push(currentPlayer, getAllPlayersInLine(currentPlayer));
-                        Network.sendToServer(currentPlayer.getModel());
-
-                    } else {
-                        System.out.println("Cannot push");
-                    }
-                    //push(currentPlayer, getAllPlayersInLine(currentPlayer));
-                } else if (!canMove(currentPlayer)) {
-                    System.out.println("Wall");
-                } else {
-                    System.out.println("MOVE");
-                    currentPlayer.move();
-                    Network.sendToServer(currentPlayer.getModel());
-                }
+                return super.keyUp(keycode);
             }
         } else if (keycode == Input.Keys.RIGHT) {
-
             if (currentPlayer.getDirection() != Direction.RIGHT) {
                 currentPlayer.setDirection(Direction.RIGHT);
-            } else {
-                if (playerOnNextCell(currentPlayer)) {
-                    System.out.println("Player on next cell: " + getPlayerOnCell(currentPlayer.getNextCell()));
-                    if (canPush(currentPlayer, getAllPlayersInLine(currentPlayer))) {
-                        push(currentPlayer, getAllPlayersInLine(currentPlayer));
-                        Network.sendToServer(currentPlayer.getModel());
-
-                    } else {
-                        System.out.println("Cannot push");
-                    }
-                    //push(currentPlayer, getAllPlayersInLine(currentPlayer));
-                } else if (!canMove(currentPlayer)) {
-                    System.out.println("Wall");
-                } else {
-                    System.out.println("MOVE");
-                    currentPlayer.move();
-                    Network.sendToServer(currentPlayer.getModel());
-                }
+                return super.keyUp(keycode);
             }
+
+        }
+
+        // IF NO ROTATION
+        if (playerOnNextCell(currentPlayer)) {
+            if (canPush(currentPlayer, getAllPlayersInLine(currentPlayer))) {
+                push(currentPlayer, getAllPlayersInLine(currentPlayer));
+            } else {
+                System.out.println("Cannot push");
+            }
+        } else if (canMove(currentPlayer)) {
+            currentPlayer.move();
+        }
+
+
+        // UPDATE ALLE PLAYERS
+        for (Player p : players) {
+            updatePlayerState(p);
         }
 
         render();
-        System.out.println(" ");
-        System.out.println(" ");
-        System.out.println(" ");
+
         return super.keyUp(keycode);
     }
 
@@ -165,17 +101,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         font.setColor(Color.RED);
         Gdx.input.setInputProcessor(this);
 
-        // TEST SPILLERE
-        Player player1 = new Player(1, "André", new Vector2(1, 1));
-        players.add(player1);
-
-        Player player2 = new Player(2, "Test-1", new Vector2(2, 9));
-        players.add(player2);
-        Player player3 = new Player(3, "Test-2", new Vector2(3, 9));
-        players.add(player3);
-        Player player4 = new Player(4, "Test-3", new Vector2(1, 9));
-        players.add(player4);
-
         // Setup map and layers
         map = new TmxMapLoader().load("src/assets/VaultMap.tmx");
 
@@ -184,12 +109,8 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         setupCameraAndRenderer();
 
-        startPositions = gameBoard.getTileLocations(Tile.RobotStart);
-        //System.out.println(startPositions);
-
         // SET UP CLIENT
         Network.setGameReferenceForClient(this);
-
 
         if (Network.hostingServer()) {
             Network.sendPlayerListToClients();
@@ -202,12 +123,14 @@ public class Game extends InputAdapter implements ApplicationListener {
             Network.sendPlayerListToClients();
         }
 
-        //for(Player player : players) player.setPosition((int) startPositions.get(player.getId()).x, (int) startPositions.get(player.getId()).y);
-
-        loadTextures(players);
 
         // CARDS
         deck = new CardDeck();
+
+
+        System.out.println("LOADING TEXTURES...");
+        time(7000); // Må vente på at spillere skal connecte før den laster inn.
+        loadTextures(players);
     }
 
     private boolean canMove(Player player) {
@@ -334,12 +257,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
         renderer.render();
 
-        // SPILLERE VELGER KORT I DENNE FASEN
-        //chooseCards();
-
-        // RUNDE: BEVEG KORT FRA CURRENTCARD
-        //round();
-
         if (!players.isEmpty()) {
             for (Player p : players) {
                 playerLayer.setCell((int) p.getPosition().x, (int) p.getPosition().y, getPlayerTexture(p));
@@ -367,7 +284,7 @@ public class Game extends InputAdapter implements ApplicationListener {
      * E. Touch Checkpoints
      */
     public void round() {
-
+        //TODO (Oblig 4)
         // Move players based on current card
         // Sort players by priority
         players.sort(new Comparator<Player>() {
@@ -383,7 +300,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         for (Player p : players) {
             playerTurn(p);
-            playerLayer.setCell((int) p.getPosition().x, (int) p.getPosition().y, getPlayerTexture(p));
+            render();
         }
 
         // Move board elements
@@ -398,7 +315,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     private void time(int n) {
         try {
-            Thread.sleep(n);                 //1000 milliseconds is one second.
+            Thread.sleep(n);
         } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
@@ -549,6 +466,8 @@ public class Game extends InputAdapter implements ApplicationListener {
     }
 
     private void loadTextures(List<Player> players) {
+        //TODO
+        // Find better way to load textures
         TiledMapTileLayer.Cell player1_cell = new TiledMapTileLayer.Cell();
         TiledMapTileLayer.Cell player1_wonCell = new TiledMapTileLayer.Cell();
         TiledMapTileLayer.Cell player1_diedCell = new TiledMapTileLayer.Cell();
