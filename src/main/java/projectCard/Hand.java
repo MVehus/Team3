@@ -16,7 +16,7 @@ public class Hand implements Serializable {
         }
     }
 
-    public ArrayList<ProgramCard> getHand() {
+    public ArrayList<ProgramCard> getCards() {
         return hand == null ? new ArrayList<ProgramCard>() : hand;
     }
 }

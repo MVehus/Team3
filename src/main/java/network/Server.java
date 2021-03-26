@@ -56,11 +56,12 @@ public class Server {
 
 
                 }
-                 */
+
                 else {
                     System.out.println(object.toString() + " from " + connection + " not handled by server");
                 }
 
+                 */
             }
 
             public void connected(Connection connection) {
