@@ -8,7 +8,7 @@
 
 ## Shortcuts  
 - [User Stories](https://github.com/MVehus/Team3/blob/main/Deliverables/Spesifikasjoner.md)
-- [Meetings](https://github.com/MVehus/Team3/blob/main/Deliverables/M%C3%B8teReferat.md)
+- [Meetings](https://github.com/MVehus/Team3/tree/main/Deliverables/m%C3%B8tereferat)
 - [Manual Tests](https://github.com/MVehus/Team3/blob/main/Deliverables/ManuelleTester.md)
 - [UML DIAGRAM](https://app.creately.com/diagram/E4uRJsPIcEz/edit)
 - Exercises
