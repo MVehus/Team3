@@ -44,23 +44,6 @@ public class Server {
                     gameStarted = (Boolean) object;
                     sendToAllClients(object);
                 }
-                /*
-                else if (object instanceof String) {
-                    if (isCardRequest(object)) {
-                        String lastChar = ((String) object).substring(((String) object).length() - 1);
-                        sendToClient(connection, cardDeck.drawCards(Integer.parseInt(lastChar)));
-                    } else if (resetDeckRequest(object)) {
-                        cardDeck = new CardDeck();
-                    }
-
-
-                }
-
-                else {
-                    System.out.println(object.toString() + " from " + connection + " not handled by server");
-                }
-
-                 */
             }
 
             public void connected(Connection connection) {
@@ -94,7 +77,6 @@ public class Server {
     }
 
     public void sendPlayerListToClients() {
-        //Gdx.app.postRunnable(() -> sendToAllClients(players));
         sendToAllClients(players);
     }
 
@@ -122,6 +104,10 @@ public class Server {
 
     public void startGame(){
         sendToAllClients(Boolean.TRUE);
+    }
+
+    public void shutdown(){
+        server.close();
     }
 
     private Boolean isCardRequest(Object obj) {
