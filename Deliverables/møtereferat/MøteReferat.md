@@ -106,11 +106,12 @@ multiplayer-funksjonalitet, mens de andre andre arbeider med spillogikk.
 
 **Innhold:** Sett på hvordan vi ligger inn før innlevering av oblig 3. Bør kunne
 begynne å integrere multiplayer i spillogikken på neste møte 24.03. Har også sett
-etter bilder til kortene i spillet.
+etter bilder til kortene i spillet. Sammen har vi oppdatert UML-diagrammet og gått igjennom ProjectBoard.
+
 
 
 ### Onsdag 24.03.2021
-**Varighet:** 2 timer,
+**Varighet:** 1 time,
 **Sted:** Discord,
 **Oppmøte:** Alle
 
