@@ -65,8 +65,16 @@ public class Network {
         return client.getId();
     }
 
+    public static void dealCardsToPlayers(){
+        server.dealCardsToPlayers();
+    }
+
     public static ArrayList<ProgramCard> getCurrentProgramCards() {
-        return client.getCurrentProgramCards();
+        while(true){
+            if(!client.getCurrentHand().getHand().equals(new ArrayList<ProgramCard>()))
+                break;
+        }
+        return client.getCurrentHand().getHand();
     }
 
     /*
