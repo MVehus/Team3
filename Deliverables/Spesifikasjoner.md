@@ -330,6 +330,7 @@ At roboter dytter vekk andre roboter i samme retning hvis det er mulig.
 - Sjekke om robot står på et felt som en robot flytter til.
 - Sjekke om feltet ved siden av er ledig.
 - Stoppe roboten om dytting ikke er mulig.
+- Dytte på flere roboter dersom den siste roboten kan bevege seg utifra riktig retning. 
 #### Krav brukerhistorien oppfyller
 
 <a name="logic13"></a>
@@ -347,6 +348,7 @@ At spesialfelt sine oppgaver blir utført på roboter.
   skade når en programrunde er ferdig.
 - Sjekk om robot står på flagg, og om det er det neste flagget roboten skal nå.
 - Sjekk at roboten dør hvis den er utenfor brettet.
+- Sjekk at roboten blir dyttet riktig retning om den står på PushWall felt
 #### Krav brukerhistorien oppfyller
 
 <a name="logic14"></a>
