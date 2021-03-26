@@ -116,14 +116,6 @@ public class Game extends InputAdapter implements ApplicationListener {
             Network.sendPlayerListToClients();
         }
 
-        // SET UP CLIENT
-        Network.setGameReferenceForClient(this);
-
-        if (Network.hostingServer()) {
-            Network.sendPlayerListToClients();
-        }
-
-
         // CARDS
         deck = new CardDeck();
 
