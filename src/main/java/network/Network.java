@@ -1,13 +1,11 @@
 package network;
 
 import app.Game;
-import com.badlogic.gdx.Gdx;
 import com.esotericsoftware.kryonet.Connection;
 import player.Player;
 import projectCard.ProgramCard;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class Network {
 
@@ -65,8 +63,16 @@ public class Network {
         return client.getId();
     }
 
+    public static void dealCardsToPlayers(){
+        server.dealCardsToPlayers();
+    }
+
     public static ArrayList<ProgramCard> getCurrentProgramCards() {
-        return client.getCurrentProgramCards();
+        while(true){
+            if(!client.getCurrentHand().getCards().equals(new ArrayList<ProgramCard>()))
+                break;
+        }
+        return client.getCurrentHand().getCards();
     }
 
     /*

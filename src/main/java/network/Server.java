@@ -6,6 +6,7 @@ import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import player.Player;
 import projectCard.CardDeck;
+import projectCard.Hand;
 
 import javax.sound.midi.Soundbank;
 import java.io.IOException;
@@ -34,6 +35,7 @@ public class Server {
 
         server.addListener(new Listener() {
             public void received(Connection connection, Object object) {
+                System.out.println("Received " + object.toString() + " from " + connection);
                 if (object instanceof PlayerModel) {
                     PlayerModel updatedPlayerModel = (PlayerModel) object;
                     System.out.println("Received updated PlayerModel from connection : " + connection);
@@ -42,17 +44,24 @@ public class Server {
                 } else if (object instanceof Boolean) {
                     gameStarted = (Boolean) object;
                     sendToAllClients(object);
-                } else if (object instanceof String) {
+                }
+                /*
+                else if (object instanceof String) {
                     if (isCardRequest(object)) {
                         String lastChar = ((String) object).substring(((String) object).length() - 1);
                         sendToClient(connection, cardDeck.drawCards(Integer.parseInt(lastChar)));
                     } else if (resetDeckRequest(object)) {
                         cardDeck = new CardDeck();
                     }
-                } else {
+
+
+                }
+
+                else {
                     System.out.println(object.toString() + " from " + connection + " not handled by server");
                 }
 
+                 */
             }
 
             public void connected(Connection connection) {
@@ -77,10 +86,6 @@ public class Server {
         return players;
     }
 
-    public CardDeck getCardDeck() {
-        return cardDeck;
-    }
-
     public void sendId(Connection connection) {
         try {
             connection.sendTCP(connection.getID());
@@ -98,7 +103,7 @@ public class Server {
         try {
             connection.sendTCP(obj);
         } catch (Exception e) {
-            System.out.println("Could not send message: " + obj.toString() + " to client: " + connection + "\n" + e.toString());
+            System.out.println("Could not send message: " + obj.toString() + " to client: " + connection + "with exception:\n" + e.toString());
         }
     }
 
@@ -106,6 +111,14 @@ public class Server {
         for (Connection client : clients) {
             sendToClient(client, obj);
         }
+    }
+
+    public void dealCardsToPlayers(){
+        for (Player player : players) {
+            sendToClient(clients.get(player.getId()-1), new Hand(cardDeck.drawCards(9-player.getNumDamageTokens())));
+        }
+
+        cardDeck = new CardDeck();
     }
 
     private Boolean isCardRequest(Object obj) {

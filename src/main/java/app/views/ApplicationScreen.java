@@ -23,6 +23,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -190,10 +191,12 @@ public class ApplicationScreen extends AbstractScreen {
     private void placeCards() {
         int cardWidth = (width-gameWidth)/5;
         int cardHeight = cardWidth*4/3;
-        //ArrayList<ProgramCard> programCards = Network.getCurrentProgramCards();
-        CardDeck cardDeck = new CardDeck();
+        if(Network.hostingServer()){
+            Network.dealCardsToPlayers();
+        }
+        ArrayList<ProgramCard> cardsOnHand = Network.getCurrentProgramCards();
         for (int i = 0; i < 9-player.getNumDamageTokens(); i++) {
-            ProgramCard card = cardDeck.drawCards(1).get(0);
+            ProgramCard card = cardsOnHand.get(i);
             Sprite sprite = new Sprite(new Texture(card.getCardImagePath()));
             final Image cardImage = new Image(new SpriteDrawable(sprite));
             cardImage.setWidth(cardWidth);
@@ -241,6 +244,13 @@ public class ApplicationScreen extends AbstractScreen {
                 if (chosenCards[i] != null) {
                     Image prevImage = cardProgramImageMap.get(chosenCards[i]);
                     prevImage.setPosition(prevImage.getOriginX(), prevImage.getOriginY());
+                    for (int j = 0; j < 5; j++) {
+                        if (chosenCards[j] == programCard) {
+                            prevImage.setPosition(chooseCardPos.get(j).x, chooseCardPos.get(j).y);
+                            chosenCards[j] = chosenCards[i];
+                            break;
+                        }
+                    }
                 }
 
                 cardImage.setPosition(chooseCardPos.get(i).x, chooseCardPos.get(i).y);
@@ -270,7 +280,7 @@ public class ApplicationScreen extends AbstractScreen {
         cardSlotsBottom.setPosition(gameWidth, 80);
 
         for (int i = 0; i < 5; i++) {
-            chooseCardPos.add(new Point(gameWidth+((width-gameWidth)/5*i),80)); //Disse posisjonene er garantert feil, finpuss senere
+            chooseCardPos.add(new Point(gameWidth+((width-gameWidth)/5*i),80));
         }
 
         stage.addActor(cardSlotsTop);

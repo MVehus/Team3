@@ -1,10 +1,12 @@
 package projectCard;
 
+import java.io.Serializable;
+
 /**
  * Card object,
  * Each Program card contains a priority and a value.
  */
-public class ProgramCard {
+public class ProgramCard implements Serializable {
 
     private final int priority;
     public final Value value;
