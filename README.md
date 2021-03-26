@@ -10,7 +10,7 @@
 - [User Stories](https://github.com/MVehus/Team3/blob/main/Deliverables/Spesifikasjoner.md)
 - [Meetings](https://github.com/MVehus/Team3/tree/main/Deliverables/m%C3%B8tereferat)
 - [Manual Tests](https://github.com/MVehus/Team3/blob/main/Deliverables/ManuelleTester.md)
-- [UML DIAGRAM](https://app.creately.com/diagram/E4uRJsPIcEz/edit)
+- [UML DIAGRAM](https://imgur.com/35PeYM3)
 - Exercises
     - [Obligatorisk oppgave 1](https://github.com/MVehus/Team3/blob/main/Deliverables/ObligatoriskOppgave1.md)
     - [Obligatorisk oppgave 2](https://github.com/MVehus/Team3/blob/main/Deliverables/ObligatoriskOppgave2.md)
@@ -25,6 +25,8 @@ Clone this repository to your local machine.
   - Join an existing game 
 
 *If you want to play in fullscreen, go to preferences in Main Menu and select fullscreen.*
+
+In order to play multiplayer, you must port forward the port of your own choosing.
 
 ## Testing 
 
