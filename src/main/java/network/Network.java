@@ -56,7 +56,7 @@ public class Network {
     }
 
     public static Boolean gameStarted() {
-        return client.getGameStarted() != null;
+        return client.getGameStarted();
     }
 
     public static int getMyId() {

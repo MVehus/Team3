@@ -21,7 +21,7 @@ public class Client {
     private Game game;
     com.esotericsoftware.kryonet.Client client;
     private Integer id;
-    private Boolean gameStarted;
+    private Boolean gameStarted = false;
     private Hand currentHand;
 
     public Client(String IpAddress, int port) {
