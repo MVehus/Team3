@@ -28,15 +28,15 @@ strekke oss mot ved å yte vårt beste individuelt, og utnytte eksisterende retn
 |[11](#gui11)  | Kjøre programkort   | Gui         |<ul><li>- [ ] </li></ul> |
 |[12](#gui12)  | Laser               | Gui         |<ul><li>- [ ] </li></ul> |
 |[ 1](#logic1) | Flaggindikasjon     | Logic       |<ul><li>- [x] </li></ul> |
-|[ 2](#logic2) | Win-condition       | Logic       |<ul><li>- [ ] </li></ul> |
-|[ 3](#logic3) | Utdeling av kort    | Logic       |<ul><li>- [ ] </li></ul> |
+|[ 2](#logic2) | Win-condition       | Logic       |<ul><li>- [x] </li></ul> |
+|[ 3](#logic3) | Utdeling av kort    | Logic       |<ul><li>- [x] </li></ul> |
 |[ 4](#logic4) | Velge kort          | Logic       |<ul><li>- [ ] </li></ul> |
-|[ 5](#logic5) | Skadekonsekvens     | Logic       |<ul><li>- [ ] </li></ul> |
+|[ 5](#logic5) | Skadekonsekvens     | Logic       |<ul><li>- [x] </li></ul> |
 |[ 6](#logic6) | Kjøre runde         | Logic       |<ul><li>- [ ] </li></ul> |
-|[ 7](#logic7) | Stokke kortstokk    | Logic       |<ul><li>- [ ] </li></ul> |
+|[ 7](#logic7) | Stokke kortstokk    | Logic       |<ul><li>- [x] </li></ul> |
 |[ 8](#logic8) | Programkort         | Logic       |<ul><li>- [ ] </li></ul> |
 |[ 9](#logic9) | Timer               | Logic       |<ul><li>- [ ] </li></ul> |
-|[10](#logic10)| Power down          | Logic       |<ul><li>- [ ] </li></ul> |
+|[10](#logic10)| Power down          | Logic       |<ul><li>- [x] </li></ul> |
 |[11](#logic11)| Kjøre programkort   | Logic       |<ul><li>- [ ] </li></ul> |
 |[12](#logic12)| Dytting             | Logic       |<ul><li>- [x] </li></ul> |
 |[13](#logic13)| Spesialtfelt        | Logic       |<ul><li>- [ ] </li></ul> |
