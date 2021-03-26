@@ -39,7 +39,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     @Override
     public boolean keyUp(int keycode) {
-        
+
         Player currentPlayer = players.get(Network.getMyId() - 1);
 
         //Player currentPlayer = players.get(0);
@@ -100,17 +100,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         font.setColor(Color.RED);
         Gdx.input.setInputProcessor(this);
 
-        // TEST SPILLERE
-        Player player1 = new Player(1, "André", new Vector2(1, 1));
-        players.add(player1);
-
-        Player player2 = new Player(2, "Test-1", new Vector2(2, 9));
-        players.add(player2);
-        Player player3 = new Player(3, "Test-2", new Vector2(3, 9));
-        players.add(player3);
-        Player player4 = new Player(4, "Test-3", new Vector2(1, 9));
-        players.add(player4);
-
         // Setup map and layers
         map = new TmxMapLoader().load("src/assets/VaultMap.tmx");
 
@@ -119,8 +108,6 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         setupCameraAndRenderer();
 
-        startPositions = gameBoard.getTileLocations(Tile.RobotStart);
-
         // SET UP CLIENT
         Network.setGameReferenceForClient(this);
 
@@ -135,10 +122,14 @@ public class Game extends InputAdapter implements ApplicationListener {
             Network.sendPlayerListToClients();
         }
 
-        loadTextures(players);
 
         // CARDS
         deck = new CardDeck();
+
+
+        System.out.println("LOADING TEXTURES...");
+        time(7000); // Må vente på at spillere skal connecte før den laster inn.
+        loadTextures(players);
     }
 
     private boolean canMove(Player player) {
@@ -308,7 +299,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         for (Player p : players) {
             playerTurn(p);
-            playerLayer.setCell((int) p.getPosition().x, (int) p.getPosition().y, getPlayerTexture(p));
+            render();
         }
 
         // Move board elements
@@ -323,7 +314,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     private void time(int n) {
         try {
-            Thread.sleep(n);                 //1000 milliseconds is one second.
+            Thread.sleep(n);
         } catch (InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
