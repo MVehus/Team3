@@ -87,6 +87,10 @@ public class Player implements Serializable {
         }
     }
 
+    public String information(){
+        return id + " on " + position + " looking " + direction;
+    }
+
     public int getNumDamageTokens() {
         return damageTokens;
     }

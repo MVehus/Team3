@@ -77,6 +77,7 @@ public class CardDeckTest {
         players.add(player4);
         players.add(player5);
         DECK.dealCards(players);
+        System.out.println(DECK.getAvailableCards().size());
         assertEquals(39, DECK.getAvailableCards().size());
         assertEquals(45, DECK.getUsedCardsSize());
     }
