@@ -1,10 +1,12 @@
 package projectCard;
 
-import org.lwjgl.system.CallbackI;
+
+
+import player.Player;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -13,9 +15,11 @@ import java.util.Random;
 public class CardDeck {
 
     private final ArrayList<ProgramCard> availableCards;
+    private final ArrayList<ProgramCard> usedCards;
 
     public CardDeck(){
         this.availableCards = new ArrayList<>();
+        this.usedCards = new ArrayList<>();
         createDeck();
     }
 
@@ -79,5 +83,21 @@ public class CardDeck {
      */
     public int getDeckSize(){
         return availableCards.size();
+    }
+
+    public int getUsedCardsSize(){
+        return usedCards.size();
+    }
+
+    public void restock(){
+        availableCards.addAll(usedCards);
+        usedCards.clear();
+    }
+
+    public void dealCards(ArrayList<Player> players) {
+        for(Player p : players) {
+            if(!p.inPowerDown())
+                p.cards = drawCards(9- p.getNumDamageTokens());
+        }
     }
 }
