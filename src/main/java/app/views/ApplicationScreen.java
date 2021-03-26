@@ -285,12 +285,12 @@ public class ApplicationScreen extends AbstractScreen {
     }
 
     private void initButtons() {
-        TextButton lockInButton = new TextButton("Lock in Cards", skin);
+        TextButton lockInButton = new TextButton("Run card one", skin);
         lockInButton.setPosition(width-((width-gameWidth)/3), 10);
         lockInButton.setWidth((width-gameWidth)/3);
         lockInButton.setHeight(60);
 
-        TextButton powerDownButton = new TextButton("Run card one", skin);
+        TextButton powerDownButton = new TextButton("Power down", skin);
         powerDownButton.setPosition(gameWidth+20, 10);
         powerDownButton.setWidth((width-gameWidth)/3);
         powerDownButton.setHeight(60);

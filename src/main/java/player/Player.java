@@ -30,7 +30,7 @@ public class Player implements Serializable {
 
     public Player(int id, String name, Vector2 position) {
         this.id = id;
-        this.name = name;
+        this.name = "Player: " + id;
         this.isAlive = true;
         this.position = position;
         this.backupPosision = new Vector2(position.x, position.y);
