@@ -414,6 +414,7 @@ public class Game extends InputAdapter implements ApplicationListener {
             System.out.println("BACKUP NOT IMPLEMENTED");
         }
 
+        System.out.println(player.information());
         player.getCards().remove(player.getCurrentCard());
 
     }

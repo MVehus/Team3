@@ -67,6 +67,7 @@ public class CardDeck {
             ProgramCard card = availableCards.get(index);
             cards.add(card);
             availableCards.remove(card);
+            usedCards.add(card);
         }
         return cards;
     }
