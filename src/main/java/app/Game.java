@@ -272,6 +272,10 @@ public class Game extends InputAdapter implements ApplicationListener {
         this.players = players;
     }
 
+    public List<Player> getPlayers() {
+        return players;
+    }
+
     private void chooseCards() {
         //TODO
     }
