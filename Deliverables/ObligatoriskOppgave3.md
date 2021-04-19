@@ -69,8 +69,8 @@ Se README.md for bugs.
 - Se README.md
 
 #### Klassediagram
-
-Link til klassediagram [APP CREATELY](https://app.creately.com/diagram/E4uRJsPIcEz/edit)
+Last ned bildet fra denne linken for best kvalitet
+https://imgur.com/35PeYM3
 
 ### Manuelle tester
 

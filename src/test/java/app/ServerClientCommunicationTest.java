@@ -15,13 +15,13 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ServerClientCommunicationTest {
 
     @BeforeEach
-    void init() {
+    void init(){
         Network.startServer(32401);
         Network.makeNewClient("localhost", 32401);
     }
 
     @AfterEach
-    void cleanup() {
+    void cleanup(){
         Network.shutdownServer();
     }
 
@@ -30,27 +30,11 @@ public class ServerClientCommunicationTest {
         Network.dealCardsToPlayers();
         ArrayList<ProgramCard> hand = Network.getCurrentProgramCards();
 
-        for (ProgramCard pc : hand) {
-            System.out.println(pc);
-        }
         assertEquals(9, hand.size());
     }
 
-
     @Test
-    void ServerDealsUniqueCardsToAllClients() {
-        try {
-            Client client1 = new Client("localhost", 32401);
-            Network.dealCardsToPlayers();
-
-            assertFalse(Network.getCurrentProgramCards().equals(client1.getCurrentHand().getCards()));
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-    }
-
-    @Test
-    void ClientKnowsWhenGameStarts() {
+    void ClientKnowsWhenGameStarts(){
         Network.startGame();
 
         await();
@@ -61,10 +45,10 @@ public class ServerClientCommunicationTest {
     /**
      * Method used to compensate for the time delay in server/client communication
      */
-    void await() {
+    void await(){
         try {
             Thread.sleep(100);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException e){
 
         }
     }
