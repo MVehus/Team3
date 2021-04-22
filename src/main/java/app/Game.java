@@ -392,6 +392,9 @@ public class Game extends InputAdapter implements ApplicationListener {
                 player.setPosition((int) xPos - 1, (int) yPos);
             }
         }
+        
+        render();
+
         Network.sendUpdatedPlayerModel(player.getModel());
     }
 
