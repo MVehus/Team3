@@ -1,5 +1,6 @@
 package network;
 
+import Models.PlayerModel;
 import app.Game;
 import com.esotericsoftware.kryonet.Connection;
 import player.Player;
@@ -44,6 +45,10 @@ public class Network {
 
     public static Boolean gameStarted() {
         return client.getGameStarted();
+    }
+
+    public static void sendUpdatedPlayerModel(PlayerModel playerModel){
+        client.sendTCP(playerModel);
     }
 
     public static int getMyId() {
