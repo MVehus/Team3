@@ -57,7 +57,7 @@ public class CardDeckTest {
 
     @Test
     public void PlayerInPowerDownGetsNoCard() {
-        Player player1 = new Player(1, "test1", new Vector2(1,1));
+        Player player1 = new Player(1, new Vector2(1,1));
         players.add(player1);
         players.get(0).setPowerDown();
         DECK.dealCards(players);
@@ -66,11 +66,11 @@ public class CardDeckTest {
 
     @Test
     public void FiveUndamagedPlayersDraw45Cards() {
-        Player player1 = new Player(1, "test1", new Vector2(1,1));
-        Player player2 = new Player(2, "test2", new Vector2(2,2));
-        Player player3 = new Player(3, "test3", new Vector2(3,3));
-        Player player4 = new Player(4, "test4", new Vector2(4,4));
-        Player player5 = new Player(5, "test5", new Vector2(5,5));
+        Player player1 = new Player(1,  new Vector2(1,1));
+        Player player2 = new Player(2,  new Vector2(2,2));
+        Player player3 = new Player(3,  new Vector2(3,3));
+        Player player4 = new Player(4,  new Vector2(4,4));
+        Player player5 = new Player(5,  new Vector2(5,5));
         players.add(player1);
         players.add(player2);
         players.add(player3);

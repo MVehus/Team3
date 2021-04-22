@@ -28,7 +28,6 @@ public class Game extends InputAdapter implements ApplicationListener {
     private BitmapFont font;
     private TiledMapTileLayer playerLayer;
     private Board gameBoard;
-    private List<Vector2> startPositions;
     private CardDeck deck;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
@@ -116,12 +115,28 @@ public class Game extends InputAdapter implements ApplicationListener {
             Network.sendPlayerListToClients();
         }
 
+        List<Vector2> startPositions = gameBoard.getTileLocations(Tile.RobotStart);
+
+
+        // TEST PLAYERS
+        /*Player p1 = new Player(1, startPositions.get(0));
+        players.add(p1);
+        Player p2 = new Player(2, startPositions.get(1));
+        players.add(p2);
+        Player p3 = new Player(3, startPositions.get(2));
+        players.add(p3);
+        Player p4 = new Player(4, startPositions.get(3));
+        players.add(p4);
+        Player p5 = new Player(5, startPositions.get(4));
+        players.add(p5);
+        Player p6 = new Player(6, startPositions.get(5));
+        players.add(p6);*/
+
         // CARDS
         deck = new CardDeck();
 
-
         System.out.println("LOADING TEXTURES...");
-        time(7000); // Må vente på at spillere skal connecte før den laster inn.
+        //time(7000); // Må vente på at spillere skal connecte før den laster inn.
         loadTextures(players);
     }
 
@@ -196,16 +211,16 @@ public class Game extends InputAdapter implements ApplicationListener {
     }
 
     public List<Player> getAllPlayersInLine(Player player) {
-        List<Player> neigbours = new ArrayList<>();
+        List<Player> neighbours = new ArrayList<>();
 
         List<Vector2> nextCells = getNextCells(player, players.size());
         for (Vector2 v : nextCells) {
             if (getPlayerOnCell(v) != null) {
-                neigbours.add(getPlayerOnCell(v));
+                neighbours.add(getPlayerOnCell(v));
             }
         }
 
-        return neigbours;
+        return neighbours;
     }
 
     public void push(Player player, List<Player> allPlayers) {
@@ -466,110 +481,35 @@ public class Game extends InputAdapter implements ApplicationListener {
     }
 
     private void loadTextures(List<Player> players) {
-        //TODO
-        // Find better way to load textures
-        TiledMapTileLayer.Cell player1_cell = new TiledMapTileLayer.Cell();
-        TiledMapTileLayer.Cell player1_wonCell = new TiledMapTileLayer.Cell();
-        TiledMapTileLayer.Cell player1_diedCell = new TiledMapTileLayer.Cell();
 
-        TiledMapTileLayer.Cell player2_cell = new TiledMapTileLayer.Cell();
-        TiledMapTileLayer.Cell player2_wonCell = new TiledMapTileLayer.Cell();
-        TiledMapTileLayer.Cell player2_diedCell = new TiledMapTileLayer.Cell();
-
-        TiledMapTileLayer.Cell player3_cell = new TiledMapTileLayer.Cell();
-        TiledMapTileLayer.Cell player3_wonCell = new TiledMapTileLayer.Cell();
-        TiledMapTileLayer.Cell player3_diedCell = new TiledMapTileLayer.Cell();
-
-        TiledMapTileLayer.Cell player4_cell = new TiledMapTileLayer.Cell();
-        TiledMapTileLayer.Cell player4_wonCell = new TiledMapTileLayer.Cell();
-        TiledMapTileLayer.Cell player4_diedCell = new TiledMapTileLayer.Cell();
-
-        TiledMapTileLayer.Cell player5_cell = new TiledMapTileLayer.Cell();
-        TiledMapTileLayer.Cell player5_wonCell = new TiledMapTileLayer.Cell();
-        TiledMapTileLayer.Cell player5_diedCell = new TiledMapTileLayer.Cell();
-
-        TiledMapTileLayer.Cell player6_cell = new TiledMapTileLayer.Cell();
-        TiledMapTileLayer.Cell player6_wonCell = new TiledMapTileLayer.Cell();
-        TiledMapTileLayer.Cell player6_diedCell = new TiledMapTileLayer.Cell();
+        List<String> imgNames = Arrays.asList("player_1.png", "player_2.png", "player_3.png", "player_4.png", "player_5.png", "player_6.png");
 
         List<List<TiledMapTileLayer.Cell>> allTextures = new ArrayList<>();
-        // 1
-        Texture player1Texture = new Texture("src/assets/players/player_1.png");
-        TextureRegion[][] texture1Region = TextureRegion.split(player1Texture, 300, 300);
-        player1_cell.setTile(new StaticTiledMapTile(texture1Region[0][0]));
-        player1_diedCell.setTile(new StaticTiledMapTile(texture1Region[0][2]));
-        player1_wonCell.setTile(new StaticTiledMapTile(texture1Region[0][1]));
-        List<TiledMapTileLayer.Cell> player1Textures = new ArrayList<>();
-        player1Textures.add(player1_cell);
-        player1Textures.add(player1_wonCell);
-        player1Textures.add(player1_diedCell);
 
-        // 2
-        Texture player2Texture = new Texture("src/assets/players/player_2.png");
-        TextureRegion[][] texture2Region = TextureRegion.split(player2Texture, 300, 300);
-        player2_cell.setTile(new StaticTiledMapTile(texture2Region[0][0]));
-        player2_diedCell.setTile(new StaticTiledMapTile(texture2Region[0][2]));
-        player2_wonCell.setTile(new StaticTiledMapTile(texture2Region[0][1]));
-        List<TiledMapTileLayer.Cell> player2Textures = new ArrayList<>();
-        player2Textures.add(player2_cell);
-        player2Textures.add(player2_wonCell);
-        player2Textures.add(player2_diedCell);
+        for(String img : imgNames){
+            TiledMapTileLayer.Cell playerCell = new TiledMapTileLayer.Cell();
+            TiledMapTileLayer.Cell playerWonCell = new TiledMapTileLayer.Cell();
+            TiledMapTileLayer.Cell playerDiedCell = new TiledMapTileLayer.Cell();
 
-        // 3
-        Texture player3Texture = new Texture("src/assets/players/player_3.png");
-        TextureRegion[][] texture3Region = TextureRegion.split(player3Texture, 300, 300);
-        player3_cell.setTile(new StaticTiledMapTile(texture3Region[0][0]));
-        player3_diedCell.setTile(new StaticTiledMapTile(texture3Region[0][2]));
-        player3_wonCell.setTile(new StaticTiledMapTile(texture3Region[0][1]));
-        List<TiledMapTileLayer.Cell> player3Textures = new ArrayList<>();
-        player3Textures.add(player3_cell);
-        player3Textures.add(player3_wonCell);
-        player3Textures.add(player3_diedCell);
+            Texture playerTexture = new Texture("src/assets/players/" + img);
+            TextureRegion[][] textureRegion = TextureRegion.split(playerTexture, 300, 300);
 
-        // 4
-        Texture player4Texture = new Texture("src/assets/players/player_4.png");
-        TextureRegion[][] texture4Region = TextureRegion.split(player4Texture, 300, 300);
-        player4_cell.setTile(new StaticTiledMapTile(texture4Region[0][0]));
-        player4_diedCell.setTile(new StaticTiledMapTile(texture4Region[0][2]));
-        player4_wonCell.setTile(new StaticTiledMapTile(texture4Region[0][1]));
-        List<TiledMapTileLayer.Cell> player4Textures = new ArrayList<>();
-        player4Textures.add(player4_cell);
-        player4Textures.add(player4_wonCell);
-        player4Textures.add(player4_diedCell);
+            playerCell.setTile(new StaticTiledMapTile(textureRegion[0][0]));
+            playerDiedCell.setTile(new StaticTiledMapTile(textureRegion[0][2]));
+            playerWonCell.setTile(new StaticTiledMapTile(textureRegion[0][1]));
 
-        // 5
-        Texture player5Texture = new Texture("src/assets/players/player_5.png");
-        TextureRegion[][] texture5Region = TextureRegion.split(player5Texture, 300, 300);
-        player5_cell.setTile(new StaticTiledMapTile(texture5Region[0][0]));
-        player5_diedCell.setTile(new StaticTiledMapTile(texture5Region[0][2]));
-        player5_wonCell.setTile(new StaticTiledMapTile(texture5Region[0][1]));
-        List<TiledMapTileLayer.Cell> player5Textures = new ArrayList<>();
-        player5Textures.add(player5_cell);
-        player5Textures.add(player5_wonCell);
-        player5Textures.add(player5_diedCell);
+            List<TiledMapTileLayer.Cell> playerTextures = new ArrayList<>();
 
-        // 6
-        Texture player6Texture = new Texture("src/assets/players/player_6.png");
-        TextureRegion[][] texture6Region = TextureRegion.split(player6Texture, 300, 300);
-        player6_cell.setTile(new StaticTiledMapTile(texture6Region[0][0]));
-        player6_diedCell.setTile(new StaticTiledMapTile(texture6Region[0][2]));
-        player6_wonCell.setTile(new StaticTiledMapTile(texture6Region[0][1]));
-        List<TiledMapTileLayer.Cell> player6Textures = new ArrayList<>();
-        player6Textures.add(player6_cell);
-        player6Textures.add(player6_wonCell);
-        player6Textures.add(player6_diedCell);
+            playerTextures.add(playerCell);
+            playerTextures.add(playerWonCell);
+            playerTextures.add(playerDiedCell);
 
-        allTextures.add(player1Textures);
-        allTextures.add(player2Textures);
-        allTextures.add(player3Textures);
-        allTextures.add(player4Textures);
-        allTextures.add(player5Textures);
-        allTextures.add(player6Textures);
+            allTextures.add(playerTextures);
+        }
 
         for (Player player : players) {
             playerTextures.put(player.getId(), allTextures.get(player.getId() - 1));
-            System.out.println(player.getId() + " " + allTextures.get(player.getId() - 1));
-        }
+         }
     }
 
     @Override

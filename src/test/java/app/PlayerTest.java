@@ -9,7 +9,7 @@ import static org.junit.Assert.assertEquals;
 
 public class PlayerTest {
     Vector2 pos = new Vector2(1,6);
-    Player player = new Player(1, "TestPlayer", pos);
+    Player player = new Player(1, pos);
     CardDeck deck = new CardDeck();
 
     @Test

@@ -28,7 +28,7 @@ public class Player implements Serializable {
 
     private Vector2 checkPointPosition;
 
-    public Player(int id, String name, Vector2 position) {
+    public Player(int id, Vector2 position) {
         this.id = id;
         this.name = "Player: " + id;
         this.isAlive = true;

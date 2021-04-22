@@ -50,7 +50,7 @@ public class Server {
                 if (!clients.contains(connection)) {
                     clients.add(connection);
                     sendId(connection);
-                    players.add(new Player(connection.getID(), null, StartPositionUtility.getStartPosition(connection.getID() - 1)));
+                    players.add(new Player(connection.getID(), StartPositionUtility.getStartPosition(connection.getID() - 1)));
                 }
             }
 
