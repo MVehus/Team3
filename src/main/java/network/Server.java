@@ -56,6 +56,7 @@ public class Server {
 
             public void disconnected(Connection connection) {
                 clients.remove(connection);
+                players.remove(players.get(connection.getID()-1));
             }
         });
     }
