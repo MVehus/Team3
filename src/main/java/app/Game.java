@@ -139,15 +139,18 @@ public class Game extends InputAdapter implements ApplicationListener {
     private boolean canMove(Player player, boolean pushed) {
         Vector2 currentPos = player.getPosition();
         List<Tile> currentTile = gameBoard.getTilesOnCell(currentPos.x, currentPos.y);
-        Vector2 newPos = null;
-        List<Tile> newTile = null;
+        Vector2 newPos = new Vector2();
+        List<Tile> newTile = new ArrayList<>();
 
         if(pushed || Value.ALL_MOVE_CARDS.contains(player.getCurrentCard().value)){
             newPos = player.getNextCell(true);
             newTile = gameBoard.getTilesOnCell(newPos.x, newPos.y);
-        } else if(player.getCurrentCard().value == Value.BACK_UP) {
+        }
+        else if(player.getCurrentCard().value == Value.BACK_UP) {
             newPos = player.getNextCell(false);
             newTile = gameBoard.getTilesOnCell(newPos.x, newPos.y);
+        } else if(player.getCurrentCard().value == null){
+            return false;
         }
 
         if (currentPos.y < newPos.y) {
