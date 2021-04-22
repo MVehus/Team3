@@ -335,7 +335,8 @@ public class ApplicationScreen extends AbstractScreen {
             public void changed(ChangeEvent event, Actor actor) {
                 if (chosenCards[0] != null) {
                     for(ProgramCard pc : chosenCards) {
-                        player.addProgramCard(pc);
+                        if(pc != null)
+                            player.addProgramCard(pc);
                     }
                     //player.addProgramCard(chosenCards[0]);
                     player.setProgramCardDone();

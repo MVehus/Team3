@@ -20,11 +20,9 @@ import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Vector2;
 import network.Network;
 import player.Player;
-import projectCard.ProgramCard;
 import projectCard.Value;
 
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 
 public class Game extends InputAdapter implements ApplicationListener {
     private SpriteBatch batch;
@@ -141,6 +139,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         Vector2 newPos = new Vector2();
         List<Tile> newTile = new ArrayList<>();
 
+
         if(pushed || Value.ALL_MOVE_CARDS.contains(player.getCurrentCard().value)){
             newPos = player.getNextCell(true);
             newTile = gameBoard.getTilesOnCell(newPos.x, newPos.y);
@@ -148,8 +147,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         else if(player.getCurrentCard().value == Value.BACK_UP) {
             newPos = player.getNextCell(false);
             newTile = gameBoard.getTilesOnCell(newPos.x, newPos.y);
-        } else if(player.getCurrentCard().value == null){
-            return false;
         }
 
         if (currentPos.y < newPos.y) {
@@ -428,33 +425,31 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         System.out.println("Player on: " + player.getPosition());
 
-        Value cardValue = player.useCurrentCard().getValue();
+        Value cardValue = player.getCurrentCard().getValue();
         Vector2 playerPos = player.getPosition();
         playerLayer.setCell((int) playerPos.x, (int) playerPos.y, null);
 
         if (cardValue == Value.U_TURN) {
             player.rotate(Direction.RIGHT);
             player.rotate(Direction.RIGHT);
-            updatePlayerState(player);
         } else if (cardValue == Value.ROTATE_RIGHT) {
             player.rotate(Direction.RIGHT);
-            updatePlayerState(player);
         } else if (cardValue == Value.ROTATE_LEFT) {
             player.rotate(Direction.LEFT);
-            updatePlayerState(player);
         } else if (cardValue == Value.MOVE_ONE) {
             if (canMove(player, false)) {
                 player.move();
-                updatePlayerState(player);
             }
         } else if (cardValue == Value.MOVE_TWO) {
 
             for (int step = 0; step < 2; step++) {
                 playerLayer.setCell((int) playerPos.x, (int) playerPos.y, null);
                 if (canMove(player, false)) {
-
                     player.move();
-                    updatePlayerState(player);
+                    time(500);
+                    if (checkForHole(player)){
+                        break;
+                    }
                 }
             }
         } else if (cardValue == Value.MOVE_THREE) {
@@ -463,19 +458,34 @@ public class Game extends InputAdapter implements ApplicationListener {
 
                 if (canMove(player, false)) {
                     player.move();
-                    updatePlayerState(player);
+                    time(500);
+                    render();
+                    if(checkForHole(player)){
+                        break;
+                    }
                 }
             }
         } else if (cardValue == Value.BACK_UP) {
             if(canMove(player, false)){
                 player.backUp();
-                updatePlayerState(player);
             }
         }
 
         System.out.println(player.information());
+        player.useCurrentCard();
 
+    }
 
+    private boolean checkForHole(Player player) {
+        List<Tile> tilesOnPos = gameBoard.getTilesOnCell(player.getPosition().x, player.getPosition().y);
+        for (Tile layer : tilesOnPos) {
+            if (layer.equals(Tile.Hole)) {
+                System.out.println(player.getName() + " is on hole, lost one token. ");
+                player.loseLifeToken();
+                return true;
+            }
+        }
+        return false;
     }
 
     private TiledMapTileLayer.Cell getPlayerTexture(Player player) {
