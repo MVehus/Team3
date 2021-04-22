@@ -38,6 +38,9 @@ public class Game extends InputAdapter implements ApplicationListener {
     private int boardWidth;
     private int boardHeight;
 
+    public Game(){
+        Network.setGameReferenceForClient(this);
+    }
     @Override
     public boolean keyUp(int keycode) {
 
@@ -107,9 +110,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         gameBoard = new Board(map);
 
         setupCameraAndRenderer();
-
-        // SET UP CLIENT
-        Network.setGameReferenceForClient(this);
 
         if (Network.hostingServer()) {
             Network.sendPlayerListToClients();
