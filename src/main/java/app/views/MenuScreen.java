@@ -1,17 +1,24 @@
 package app.views;
 
+import app.ScreenOrchestrator;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import app.ScreenOrchestrator;
 
 public class MenuScreen extends AbstractScreen {
+    private final int width;
+    private final int height;
 
     public MenuScreen(ScreenOrchestrator screenOrchestrator) {
         super(screenOrchestrator);
+        width = Gdx.graphics.getWidth();
+        height = Gdx.graphics.getHeight();
     }
 
     @Override
@@ -38,6 +45,12 @@ public class MenuScreen extends AbstractScreen {
         table.row().padTop(10);
         table.add(exitButton).fillX().uniformX();
 
+        Image banner = new Image(new Sprite(new Texture("src/assets/roboRallyBanner.jpg")));
+        banner.setWidth((float) (width/2.5));
+        banner.setHeight((float) (banner.getWidth()/2.7));
+        banner.setPosition(width/2-banner.getWidth()/2, (float) (height-banner.getHeight()*1.2));
+
+        stage.addActor(banner);
         stage.addActor(table);
 
         createGameButton.addListener(new ChangeListener() {
