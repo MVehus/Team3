@@ -288,36 +288,44 @@ public class Game extends InputAdapter implements ApplicationListener {
         if (cardValue == Value.U_TURN) {
             player.rotate(Direction.RIGHT);
             player.rotate(Direction.RIGHT);
-        } else if (cardValue == Value.ROTATE_RIGHT) {
+        }
+        else if (cardValue == Value.ROTATE_RIGHT) {
             player.rotate(Direction.RIGHT);
-        } else if (cardValue == Value.ROTATE_LEFT) {
+        }
+        else if (cardValue == Value.ROTATE_LEFT) {
             player.rotate(Direction.LEFT);
-        } else if (cardValue == Value.MOVE_ONE) {
+        }
+        else if (cardValue == Value.MOVE_ONE) {
             if (validMove(position, nextPosition)) {
                 player.move();
             }
-        } else if (cardValue == Value.MOVE_TWO) {
+        }
+        else if (cardValue == Value.MOVE_TWO) {
             for (int step = 0; step < 2; step++) {
                 playerLayer.setCell((int) position.x, (int) position.y, null);
                 if (validMove(position, nextPosition)) {
                     player.move();
+                    nextPosition = player.getNextCell(true);
                     if (checkForHole(player)){
                         break;
                     }
                 }
             }
 
-        } else if (cardValue == Value.MOVE_THREE){
+        }
+        else if (cardValue == Value.MOVE_THREE){
             for (int step = 0; step < 3; step++){
                 playerLayer.setCell((int) position.x, (int) position.y, null);
                 if (validMove(position, nextPosition)) {
                     player.move();
+                    nextPosition = player.getNextCell(true);
                     if (checkForHole(player)){
                         break;
                     }
                 }
             }
-        } else if (cardValue == Value.BACK_UP){
+        }
+        else if (cardValue == Value.BACK_UP){
             if(validMove(position, player.getNextCell(false))){
                 player.backUp();
             }
@@ -335,8 +343,6 @@ public class Game extends InputAdapter implements ApplicationListener {
     }
 
     private void updatePlayerFlagState(Player player) {
-
-
         float xPos = player.getPosition().x;
         float yPos = player.getPosition().y;
 
@@ -446,26 +452,52 @@ public class Game extends InputAdapter implements ApplicationListener {
         List<Tile> newTile = gameBoard.getTilesOnCell(to.x, to.y);
 
         if (from.y < to.y) {
-            if (currentTile.contains(Tile.WallTop) || currentTile.contains(Tile.WallTopRight) || currentTile.contains(Tile.WallTopLeft) ||
-                    newTile.contains(Tile.WallBottom) || newTile.contains(Tile.WallBottomRight) || newTile.contains(Tile.WallBottomLeft) ||
-                    currentTile.contains(Tile.PushWallTop) || newTile.contains(Tile.PushWallBottom))
-                return false;
-        } else if (from.y > to.y) {
-            if (currentTile.contains(Tile.WallBottom) || currentTile.contains(Tile.WallBottomRight) || currentTile.contains(Tile.WallBottomLeft) ||
-                    newTile.contains(Tile.WallTop) || newTile.contains(Tile.WallTopRight) || newTile.contains(Tile.WallTopLeft) ||
-                    currentTile.contains(Tile.PushWallBottom) || newTile.contains(Tile.PushWallTop))
-                return false;
-        } else if (from.x < to.x) {
-            if (currentTile.contains(Tile.WallRight) || currentTile.contains(Tile.WallTopRight) || currentTile.contains(Tile.WallBottomRight) ||
-                    newTile.contains(Tile.WallLeft) || newTile.contains(Tile.WallTopLeft) || newTile.contains(Tile.WallBottomLeft) ||
-                    currentTile.contains(Tile.PushWallRight) || newTile.contains(Tile.PushWallLeft))
-                return false;
-        } else if (from.x > to.x) {
-            if (currentTile.contains(Tile.WallLeft) || currentTile.contains(Tile.WallBottomLeft) || currentTile.contains(Tile.WallTopLeft) ||
-                    newTile.contains(Tile.WallRight) || newTile.contains(Tile.WallTopRight) || newTile.contains(Tile.WallBottomRight) ||
-                    currentTile.contains(Tile.PushWallLeft) || newTile.contains(Tile.PushWallRight))
+            if (currentTile.contains(Tile.WallTop) ||
+                    currentTile.contains(Tile.WallTopRight) ||
+                    currentTile.contains(Tile.WallTopLeft) ||
+                    newTile.contains(Tile.WallBottom) ||
+                    newTile.contains(Tile.WallBottomRight) ||
+                    newTile.contains(Tile.WallBottomLeft) ||
+                    currentTile.contains(Tile.PushWallTop) ||
+                    newTile.contains(Tile.PushWallBottom))
                 return false;
         }
+        else if (from.y > to.y) {
+            if (currentTile.contains(Tile.WallBottom) ||
+                    currentTile.contains(Tile.WallBottomRight) ||
+                    currentTile.contains(Tile.WallBottomLeft) ||
+                    newTile.contains(Tile.WallTop) ||
+                    newTile.contains(Tile.WallTopRight) ||
+                    newTile.contains(Tile.WallTopLeft) ||
+                    currentTile.contains(Tile.PushWallBottom) ||
+                    newTile.contains(Tile.PushWallTop))
+                return false;
+        }
+        else if (from.x < to.x) {
+            if (currentTile.contains(Tile.WallRight) ||
+                    currentTile.contains(Tile.WallTopRight) ||
+                    currentTile.contains(Tile.WallBottomRight) ||
+                    currentTile.contains(Tile.PushWallRight) ||
+                    newTile.contains(Tile.PushWallLeft) ||
+                    newTile.contains(Tile.WallLeft) ||
+                    newTile.contains(Tile.WallTopLeft) ||
+                    newTile.contains(Tile.WallBottomLeft))
+                return false;
+        }
+        else if (from.x > to.x) {
+            if (currentTile.contains(Tile.WallLeft) ||
+                    currentTile.contains(Tile.WallBottomLeft) ||
+                    currentTile.contains(Tile.WallTopLeft) ||
+                    newTile.contains(Tile.WallRight) ||
+                    newTile.contains(Tile.WallTopRight) ||
+                    newTile.contains(Tile.WallBottomRight) ||
+                    currentTile.contains(Tile.PushWallLeft) ||
+                    newTile.contains(Tile.PushWallRight))
+                return false;
+        } else if(from == to) {
+            return false;
+        }
+
         return true;
         
     }
