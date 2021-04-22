@@ -253,6 +253,7 @@ public class Game extends InputAdapter implements ApplicationListener {
     }
 
     private void drawLasers(){
+        /*
         for(Player p : players){
             List<Vector2> line = getNextCells(p);
             for(Vector2 cell : line){
@@ -263,19 +264,22 @@ public class Game extends InputAdapter implements ApplicationListener {
                 }
             }
         }
+
+         */
     }
 
     private void movePlayers() {
         for (Player p : players) {
             if(p.programCards.size() != 0) {
+                time(500);
+                System.out.println(p.getCurrentCard());
                 playerTurn(p);
-                time(2000);
+                time(700);
             }
         }
     }
 
     public void playerTurn(Player player) {
-
         Value cardValue = player.getCurrentCard().getValue();
         Vector2 position = player.getPosition();
         Vector2 nextPosition = player.getNextCell(true);
@@ -293,7 +297,6 @@ public class Game extends InputAdapter implements ApplicationListener {
                 player.move();
             }
         } else if (cardValue == Value.MOVE_TWO) {
-
             for (int step = 0; step < 2; step++) {
                 playerLayer.setCell((int) position.x, (int) position.y, null);
                 if (validMove(position, nextPosition)) {
@@ -303,7 +306,25 @@ public class Game extends InputAdapter implements ApplicationListener {
                     }
                 }
             }
+
+        } else if (cardValue == Value.MOVE_THREE){
+            for (int step = 0; step < 3; step++){
+                playerLayer.setCell((int) position.x, (int) position.y, null);
+                if (validMove(position, nextPosition)) {
+                    player.move();
+                    if (checkForHole(player)){
+                        break;
+                    }
+                }
+            }
+        } else if (cardValue == Value.BACK_UP){
+            if(validMove(position, player.getNextCell(false))){
+                player.backUp();
+            }
         }
+
+        System.out.println(player.information());
+        player.useCurrentCard();
     }
 
 
@@ -446,7 +467,7 @@ public class Game extends InputAdapter implements ApplicationListener {
                 return false;
         }
         return true;
-
+        
     }
 
     private boolean playerOnNextCell(Player player) {
