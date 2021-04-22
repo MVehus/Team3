@@ -381,12 +381,12 @@ public class ApplicationScreen extends AbstractScreen {
         lockInButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                /*for(ProgramCard pc : chosenCards) {
+                for(ProgramCard pc : chosenCards) {
                     if(pc != null)
                         player.addProgramCard(pc);
-                }*/
-                player.addProgramCard(chosenCards[0]);
-                //player.setProgramCardDone();
+                }
+                //player.addProgramCard(chosenCards[0]);
+                player.setProgramCardDone();
                 game.round();
             }
         });
