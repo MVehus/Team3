@@ -302,6 +302,9 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     private void boardElementsTurn() {
         // Move board elements
+        for (Player player : players) {
+            playerLayer.setCell((int) player.getPosition().x, (int) player.getPosition().y, null);
+        }
         gameBoard.conveyorBeltMove(players);
 
         for (Player p : players) {
