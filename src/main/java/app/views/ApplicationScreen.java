@@ -229,13 +229,17 @@ public class ApplicationScreen extends AbstractScreen {
                 break;
             default:
                 dmgTokensSprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens0.png"));
-                for (Actor a : stage.getActors()) {
-                    if (a == locked1Image || a == locked2Image || a == locked3Image || a == locked4Image) {
-                        a.remove();
-                    }
-                }
                 break;
         }
+
+        if (dmgTokens < 6) {
+            for (Actor a : stage.getActors()) {
+                if (a == locked1Image || a == locked2Image || a == locked3Image || a == locked4Image) {
+                    a.remove();
+                }
+            }
+        }
+
         dmgTokensImage = new Image(new SpriteDrawable(dmgTokensSprite));
         dmgTokensImage.setPosition(gameWidth, height - 150);
         dmgTokensImage.setWidth(width - gameWidth);
