@@ -30,6 +30,7 @@ public class Client {
                 if (object instanceof PlayerModel) {
                     PlayerModel updatedPlayerModel = (PlayerModel) object;
                     System.out.println("Player " + connection.getID() + " updated");
+                    System.out.println();
                     if (game != null) {
                         game.updatePlayer(updatedPlayerModel);
                     } else {

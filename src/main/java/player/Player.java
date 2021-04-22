@@ -109,53 +109,57 @@ public class Player implements Serializable {
 
     // MOVEMENT AND POSITION
 
-    public Vector2 getNextCell(){
+    /**
+     *
+     * @param forwards - true if forwards, false if backwards
+     * @return
+     */
+    public Vector2 getNextCell(boolean forwards){
         int xPos = (int) position.x;
         int yPos = (int) position.y;
         Vector2 nextCell = new Vector2();
-        switch (this.direction) {
-            case UP:
-                nextCell.x = xPos;
-                nextCell.y = yPos + 1;
-                break;
-            case DOWN:
-                nextCell.x = xPos;
-                nextCell.y = yPos - 1;
-                break;
-            case LEFT:
-                nextCell.x = xPos - 1;
-                nextCell.y = yPos;
-                break;
-            case RIGHT:
-                nextCell.x = xPos + 1;
-                nextCell.y = yPos;
-                break;
+        if(forwards){
+            // RETURN NEXT CELL
+            switch (this.direction) {
+                case UP:
+                    nextCell.x = xPos;
+                    nextCell.y = yPos + 1;
+                    break;
+                case DOWN:
+                    nextCell.x = xPos;
+                    nextCell.y = yPos - 1;
+                    break;
+                case LEFT:
+                    nextCell.x = xPos - 1;
+                    nextCell.y = yPos;
+                    break;
+                case RIGHT:
+                    nextCell.x = xPos + 1;
+                    nextCell.y = yPos;
+                    break;
+            }
+        } else {
+            // RETURN LAST CELL (USED FOR BACKUP MOVEMENT)
+            switch (this.direction) {
+                case UP:
+                    nextCell.x = xPos;
+                    nextCell.y = yPos - 1;
+                    break;
+                case DOWN:
+                    nextCell.x = xPos;
+                    nextCell.y = yPos + 1;
+                    break;
+                case LEFT:
+                    nextCell.x = xPos + 1;
+                    nextCell.y = yPos;
+                    break;
+                case RIGHT:
+                    nextCell.x = xPos - 1;
+                    nextCell.y = yPos;
+                    break;
+            }
         }
-        return nextCell;
-    }
 
-    public Vector2 getLastCell(){
-        int xPos = (int) position.x;
-        int yPos = (int) position.y;
-        Vector2 nextCell = new Vector2();
-        switch (this.direction) {
-            case UP:
-                nextCell.x = xPos;
-                nextCell.y = yPos - 1;
-                break;
-            case DOWN:
-                nextCell.x = xPos;
-                nextCell.y = yPos + 1;
-                break;
-            case LEFT:
-                nextCell.x = xPos + 1;
-                nextCell.y = yPos;
-                break;
-            case RIGHT:
-                nextCell.x = xPos - 1;
-                nextCell.y = yPos;
-                break;
-        }
         return nextCell;
     }
 

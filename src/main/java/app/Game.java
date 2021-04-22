@@ -20,6 +20,7 @@ import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Vector2;
 import network.Network;
 import player.Player;
+import projectCard.ProgramCard;
 import projectCard.Value;
 
 import java.util.*;
@@ -77,7 +78,7 @@ public class Game extends InputAdapter implements ApplicationListener {
             } else {
                 System.out.println("Cannot push");
             }
-        } else if (canMove(currentPlayer)) {
+        } else if (canMove(currentPlayer, false)) {
             currentPlayer.move();
         }
 
@@ -121,12 +122,32 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     }
 
-    private boolean canMove(Player player) {
+    @Override
+    public void render() {
+        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
+        renderer.render();
+
+        if (!players.isEmpty()) {
+            for (Player p : players) {
+                playerLayer.setCell((int) p.getPosition().x, (int) p.getPosition().y, getPlayerTexture(p));
+            }
+        }
+    }
+
+    private boolean canMove(Player player, boolean pushed) {
         Vector2 currentPos = player.getPosition();
         List<Tile> currentTile = gameBoard.getTilesOnCell(currentPos.x, currentPos.y);
+        Vector2 newPos = null;
+        List<Tile> newTile = null;
 
-        Vector2 newPos = player.getNextCell();
-        List<Tile> newTile = gameBoard.getTilesOnCell(newPos.x, newPos.y);
+        if(pushed || Value.ALL_MOVE_CARDS.contains(player.getCurrentCard().value)){
+            newPos = player.getNextCell(true);
+            newTile = gameBoard.getTilesOnCell(newPos.x, newPos.y);
+        } else if(player.getCurrentCard().value == Value.BACK_UP) {
+            newPos = player.getNextCell(false);
+            newTile = gameBoard.getTilesOnCell(newPos.x, newPos.y);
+        }
 
         if (currentPos.y < newPos.y) {
             if (currentTile.contains(Tile.WallTop) || currentTile.contains(Tile.WallTopRight) || currentTile.contains(Tile.WallTopLeft) ||
@@ -153,7 +174,7 @@ public class Game extends InputAdapter implements ApplicationListener {
     }
 
     private boolean playerOnNextCell(Player player) {
-        Vector2 nextCell = player.getNextCell();
+        Vector2 nextCell = player.getNextCell(true);
 
         return (getPlayerOnCell(nextCell) != null);
     }
@@ -220,7 +241,7 @@ public class Game extends InputAdapter implements ApplicationListener {
             Player lastPlayer = playersOnLine.get(playersOnLine.size() - 1);
             Direction lastPlayerDirection = lastPlayer.getDirection();
             lastPlayer.setDirection(player.getDirection());
-            if (canMove(lastPlayer)) {
+            if (canMove(lastPlayer, true)) {
                 lastPlayer.setDirection(lastPlayerDirection);
                 return true;
             } else {
@@ -238,19 +259,6 @@ public class Game extends InputAdapter implements ApplicationListener {
             }
         }
         return null;
-    }
-
-    @Override
-    public void render() {
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
-        renderer.render();
-
-        if (!players.isEmpty()) {
-            for (Player p : players) {
-                playerLayer.setCell((int) p.getPosition().x, (int) p.getPosition().y, getPlayerTexture(p));
-            }
-        }
     }
 
     public void updatePlayer(PlayerModel playerModel) {
@@ -374,6 +382,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         }
         // Loop through layers player is on
         List<Tile> tilesOnPos = gameBoard.getTilesOnCell(player.getPosition().x, player.getPosition().y);
+
         for (Tile layer : tilesOnPos) {
             if (layer.equals(Tile.Hole)) {
                 System.out.println(player.getName() + " is on hole, lost one token. ");
@@ -383,7 +392,6 @@ public class Game extends InputAdapter implements ApplicationListener {
                 player.takeDamage();
             } else if (layer.equals(Tile.PushWallBottom)){
                 player.setPosition((int) xPos, (int) yPos + 1);
-
             } else if (layer.equals(Tile.PushWallTop)){
                 player.setPosition((int) xPos, (int) yPos - 1);
             } else if (layer.equals(Tile.PushWallLeft)){
@@ -392,13 +400,13 @@ public class Game extends InputAdapter implements ApplicationListener {
                 player.setPosition((int) xPos - 1, (int) yPos);
             }
         }
-        
-        render();
 
         Network.sendUpdatedPlayerModel(player.getModel());
     }
 
     public void playerTurn(Player player) {
+
+        System.out.println("Player on: " + player.getPosition());
 
         Value cardValue = player.getCurrentCard().getValue();
         Vector2 playerPos = player.getPosition();
@@ -415,7 +423,7 @@ public class Game extends InputAdapter implements ApplicationListener {
             player.rotate(Direction.LEFT);
             updatePlayerState(player);
         } else if (cardValue == Value.MOVE_ONE) {
-            if (canMove(player)) {
+            if (canMove(player, false)) {
                 player.move();
                 updatePlayerState(player);
             }
@@ -423,7 +431,8 @@ public class Game extends InputAdapter implements ApplicationListener {
 
             for (int step = 0; step < 2; step++) {
                 playerLayer.setCell((int) playerPos.x, (int) playerPos.y, null);
-                if (canMove(player)) {
+                if (canMove(player, false)) {
+
                     player.move();
                     updatePlayerState(player);
                 }
@@ -431,13 +440,17 @@ public class Game extends InputAdapter implements ApplicationListener {
         } else if (cardValue == Value.MOVE_THREE) {
             for (int step = 0; step < 3; step++) {
                 playerLayer.setCell((int) playerPos.x, (int) playerPos.y, null);
-                if (canMove(player)) {
+
+                if (canMove(player, false)) {
                     player.move();
                     updatePlayerState(player);
                 }
             }
         } else if (cardValue == Value.BACK_UP) {
-            player.backUp();
+            if(canMove(player, false)){
+                player.backUp();
+                updatePlayerState(player);
+            }
         }
 
         System.out.println(player.information());
