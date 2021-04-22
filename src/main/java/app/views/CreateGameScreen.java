@@ -79,6 +79,7 @@ public class CreateGameScreen extends AbstractScreen{
         mainMenu.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                Network.shutdownServer();
                 parent.changeScreen(ScreenOrchestrator.MENU);
             }
         });

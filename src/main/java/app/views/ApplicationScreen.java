@@ -25,7 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ApplicationScreen extends AbstractScreen {
-    private Game game;
+    private Game game = new Game();
     private final Skin skin = new Skin(Gdx.files.internal("src/assets/skin/plain-james/plain-james-ui.json"));
     private final int width;
     private final int height;
@@ -49,7 +49,6 @@ public class ApplicationScreen extends AbstractScreen {
 
     @Override
     public void show() {
-        game = new Game();
         game.create();
         player = game.getPlayers().get(Network.getMyId()-1);
         gameWidth = Gdx.graphics.getWidth()*2/3;
@@ -225,6 +224,11 @@ public class ApplicationScreen extends AbstractScreen {
 
         if ((cardY > cardSlotsMiddle.getY() && cardY < height && cardX > gameWidth && cardX < width) || cardX < gameWidth) {
             cardImage.setPosition(cardImage.getOriginX(), cardImage.getOriginY());
+            for (int i = 0; i < 5; i++) {
+                if (chosenCards[i] == programCard) {
+                    chosenCards[i] = null;
+                }
+            }
             return;
         }
 
@@ -232,13 +236,21 @@ public class ApplicationScreen extends AbstractScreen {
             if (cardX > chooseCardPos.get(i).getX() - cardImage.getWidth() / 2 && cardX < chooseCardPos.get(i).getX() + cardImage.getWidth()
             && cardY > 0 && cardY < cardSlotsMiddle.getY()) {
                 if (chosenCards[i] != null) {
-                    Image prevImage = cardProgramImageMap.get(chosenCards[i]);
+                    ProgramCard prevProgramCard = chosenCards[i];
+                    Image prevImage = cardProgramImageMap.get(prevProgramCard);
                     prevImage.setPosition(prevImage.getOriginX(), prevImage.getOriginY());
                     for (int j = 0; j < 5; j++) {
                         if (chosenCards[j] == programCard) {
                             prevImage.setPosition(chooseCardPos.get(j).x, chooseCardPos.get(j).y);
-                            chosenCards[j] = chosenCards[i];
+                            chosenCards[j] = prevProgramCard;
                             break;
+                        }
+                    }
+                }
+                else {
+                    for (int j = 0; j < 5; j++) {
+                        if (chosenCards[j] == programCard) {
+                            chosenCards[j] = null;
                         }
                     }
                 }
