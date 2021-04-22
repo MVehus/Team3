@@ -1,7 +1,10 @@
 package app;
 
 import Models.PlayerModel;
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.ApplicationListener;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -17,8 +20,6 @@ import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.math.Vector2;
 import network.Network;
 import player.Player;
-import projectCard.CardDeck;
-import projectCard.ProgramCard;
 import projectCard.Value;
 
 import java.util.*;
@@ -28,7 +29,6 @@ public class Game extends InputAdapter implements ApplicationListener {
     private BitmapFont font;
     private TiledMapTileLayer playerLayer;
     private Board gameBoard;
-    private CardDeck deck;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
     private final HashMap<Integer, List<TiledMapTileLayer.Cell>> playerTextures = new HashMap<>();
@@ -133,8 +133,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         players.add(p6);*/
 
         // CARDS
-        deck = new CardDeck();
-
         System.out.println("LOADING TEXTURES...");
         time(3000); // Må vente på at spillere skal connecte før den laster inn.
 
@@ -395,22 +393,6 @@ public class Game extends InputAdapter implements ApplicationListener {
             } else if (layer.equals(Tile.LaserHorizontal) || layer.equals(Tile.LaserVertical)) {
                 System.out.println(player.getName() + " took one damage.");
                 player.takeDamage();
-            } else if (layer.equals(Tile.FlagOne)) {
-                if (player.getFlagScore() == 0) {
-                    System.out.println(player.getName() + " captured flag one!");
-                    player.registerFlag();
-                }
-            } else if (layer.equals(Tile.FlagTwo)) {
-                if (player.getFlagScore() == 1) {
-                    System.out.println(player.getName() + " captured flag two!");
-                    player.registerFlag();
-                }
-
-            } else if (layer.equals(Tile.FlagThree)) {
-                if (player.getFlagScore() == 2) {
-                    System.out.println(player.getName() + " captured flag three!");
-                    player.registerFlag();
-                }
             } else if (layer.equals(Tile.PushWallBottom)){
                 player.setPosition((int) xPos, (int) yPos + 1);
 
@@ -428,34 +410,28 @@ public class Game extends InputAdapter implements ApplicationListener {
     public void playerTurn(Player player) {
 
         Value cardValue = player.getCurrentCard().getValue();
-        System.out.println(player.getName() + " " + cardValue);
-        Player currentPlayer = players.get(Network.getMyId() - 1);
-        Vector2 playerPos = currentPlayer.getPosition();
+        Vector2 playerPos = player.getPosition();
         playerLayer.setCell((int) playerPos.x, (int) playerPos.y, null);
 
         if (cardValue == Value.U_TURN) {
-            time(1000);
             player.rotate(Direction.RIGHT);
             player.rotate(Direction.RIGHT);
             updatePlayerState(player);
         } else if (cardValue == Value.ROTATE_RIGHT) {
-            time(1000);
             player.rotate(Direction.RIGHT);
             updatePlayerState(player);
         } else if (cardValue == Value.ROTATE_LEFT) {
-            time(1000);
             player.rotate(Direction.LEFT);
             updatePlayerState(player);
         } else if (cardValue == Value.MOVE_ONE) {
-            if (canMove(player))
-                time(1000);
-            player.move();
-            updatePlayerState(player);
+            if (canMove(player)) {
+                player.move();
+                updatePlayerState(player);
+            }
         } else if (cardValue == Value.MOVE_TWO) {
 
             for (int step = 0; step < 2; step++) {
                 if (canMove(player)) {
-                    time(1000);
                     player.move();
                     updatePlayerState(player);
                 }
@@ -463,13 +439,11 @@ public class Game extends InputAdapter implements ApplicationListener {
         } else if (cardValue == Value.MOVE_THREE) {
             for (int step = 0; step < 3; step++) {
                 if (canMove(player)) {
-                    time(1000);
                     player.move();
                     updatePlayerState(player);
                 }
             }
         } else if (cardValue == Value.BACK_UP) {
-            time(1000);
             System.out.println("BACKUP NOT IMPLEMENTED");
         }
 
