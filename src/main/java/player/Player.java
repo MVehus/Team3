@@ -132,7 +132,31 @@ public class Player implements Serializable {
                 break;
         }
         return nextCell;
+    }
 
+    public Vector2 getLastCell(){
+        int xPos = (int) position.x;
+        int yPos = (int) position.y;
+        Vector2 nextCell = new Vector2();
+        switch (this.direction) {
+            case UP:
+                nextCell.x = xPos;
+                nextCell.y = yPos - 1;
+                break;
+            case DOWN:
+                nextCell.x = xPos;
+                nextCell.y = yPos + 1;
+                break;
+            case LEFT:
+                nextCell.x = xPos + 1;
+                nextCell.y = yPos;
+                break;
+            case RIGHT:
+                nextCell.x = xPos - 1;
+                nextCell.y = yPos;
+                break;
+        }
+        return nextCell;
     }
 
     public void move() {
@@ -152,6 +176,26 @@ public class Player implements Serializable {
                 setPosition(xPos + 1, yPos);
                 break;
         }
+    }
+
+    public void backUp(){
+        int xPos = (int) position.x;
+        int yPos = (int) position.y;
+        switch (this.direction) {
+            case UP:
+                setPosition(xPos, yPos - 1);
+                break;
+            case DOWN:
+                setPosition(xPos, yPos + 1);
+                break;
+            case LEFT:
+                setPosition(xPos + 1, yPos);
+                break;
+            case RIGHT:
+                setPosition(xPos - 1, yPos);
+                break;
+        }
+
     }
 
     public void moveDirection(Direction dir){

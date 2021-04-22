@@ -124,6 +124,7 @@ public class Game extends InputAdapter implements ApplicationListener {
     private boolean canMove(Player player) {
         Vector2 currentPos = player.getPosition();
         List<Tile> currentTile = gameBoard.getTilesOnCell(currentPos.x, currentPos.y);
+
         Vector2 newPos = player.getNextCell();
         List<Tile> newTile = gameBoard.getTilesOnCell(newPos.x, newPos.y);
 
@@ -431,7 +432,7 @@ public class Game extends InputAdapter implements ApplicationListener {
                 }
             }
         } else if (cardValue == Value.BACK_UP) {
-            System.out.println("BACKUP NOT IMPLEMENTED");
+            player.backUp();
         }
 
         System.out.println(player.information());
