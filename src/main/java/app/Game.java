@@ -28,6 +28,8 @@ public class Game extends InputAdapter implements ApplicationListener {
     private SpriteBatch batch;
     private BitmapFont font;
     private TiledMapTileLayer playerLayer;
+    private TiledMapTileLayer laserLayer;
+    private List<TiledMapTileLayer.Cell> laserTextures;
     private Board gameBoard;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
@@ -125,6 +127,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         // Setup camera
         TiledMapTileLayer boardLayer = gameBoard.getLayer(Tile.Board);
         playerLayer = gameBoard.getLayer(Tile.Player);
+        laserLayer = gameBoard.getLayer(Tile.Player);
         boardWidth = gameBoard.getNumColumns();
         boardHeight = gameBoard.getNumRows();
         OrthographicCamera camera = new OrthographicCamera();
@@ -137,6 +140,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     private void loadTextures() {
 
+        // LOAD PLAYER TEXTURES
         List<String> imgNames = Arrays.asList("player_1.png", "player_2.png", "player_3.png", "player_4.png", "player_5.png", "player_6.png");
 
         List<List<TiledMapTileLayer.Cell>> allTextures = new ArrayList<>();
@@ -161,6 +165,18 @@ public class Game extends InputAdapter implements ApplicationListener {
 
             allTextures.add(playerTextures);
         }
+
+        // LOAD LASER TEXTURES
+        TiledMapTileLayer.Cell laserHorizontal = new TiledMapTileLayer.Cell();
+        TiledMapTileLayer.Cell laserVertical = new TiledMapTileLayer.Cell();
+        Texture laserTexture = new Texture("src/assets/lazers/laser.png");
+        TextureRegion[][] textureRegion = TextureRegion.split(laserTexture, 300, 300);
+        laserVertical.setTile(new StaticTiledMapTile(textureRegion[0][0]));
+        laserHorizontal.setTile(new StaticTiledMapTile(textureRegion[0][1]));
+        laserTextures = new ArrayList<>();
+
+        laserTextures.add(laserHorizontal);
+        laserTextures.add(laserVertical);
 
         for(int i = 1; i <= 6; i++){
             playerTextures.put(i, allTextures.get(i - 1));
@@ -413,7 +429,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         }
     }
 
-
     private boolean canMove(Player player, boolean pushed) {
         Vector2 currentPos = player.getPosition();
         List<Tile> currentTile = gameBoard.getTilesOnCell(currentPos.x, currentPos.y);
@@ -556,7 +571,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         // if only one player left, set timer
     }
 
-
     private void selectPlayerTurn() {
         players.sort(new Comparator<Player>() {
             @Override
@@ -565,14 +579,6 @@ public class Game extends InputAdapter implements ApplicationListener {
             }
         });
     }
-
-
-
-
-
-
-
-
 
     //region UTILITIES
     private void time(int n) {
@@ -583,7 +589,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         }
     }
     //endregion
-
 
     @Override
     public void dispose() {
