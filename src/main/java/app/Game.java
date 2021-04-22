@@ -34,7 +34,7 @@ public class Game extends InputAdapter implements ApplicationListener {
     private OrthogonalTiledMapRenderer renderer;
     private OrthographicCamera camera;
     private final HashMap<Integer, List<TiledMapTileLayer.Cell>> playerTextures = new HashMap<>();
-    private List<Player> players = new ArrayList<>();
+    private ArrayList<Player> players = new ArrayList<>();
     private int boardWidth;
     private int boardHeight;
 
@@ -268,9 +268,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         return players;
     }
 
-    private void chooseCards() {
-        //TODO
-    }
 
     /**
      * A. Reveal Program Cards
@@ -279,10 +276,74 @@ public class Game extends InputAdapter implements ApplicationListener {
      * D. Lasers Fire
      * E. Touch Checkpoints
      */
+
     public void round() {
-        //TODO (Oblig 4)
-        // Move players based on current card
-        // Sort players by priority
+        deck.dealCards(players);
+        playersChooseCards();
+        selectPlayerTurn();
+        revealCards();
+        movePlayers();
+        boardElementsTurn();
+        checkForFlags();
+    }
+
+    private void revealCards() {
+        //TODO show cards on gameboard
+    }
+
+    private void checkForFlags() {
+        for (Player p : players) {
+            updatePlayerFlagState(p);
+        }
+    }
+
+    private void updatePlayerFlagState(Player player) {
+
+        float xPos = player.getPosition().x;
+        float yPos = player.getPosition().y;
+
+        // Loop through layers player is on
+        List<Tile> tilesOnPos = gameBoard.getTilesOnCell(player.getPosition().x, player.getPosition().y);
+        for (Tile layer : tilesOnPos) {
+            if (layer.equals(Tile.FlagOne)) {
+                if (player.getFlagScore() == 0) {
+                    System.out.println(player.getName() + " captured flag one!");
+                    player.registerFlag();
+                }
+            } else if (layer.equals(Tile.FlagTwo)) {
+                if (player.getFlagScore() == 1) {
+                    System.out.println(player.getName() + " captured flag two!");
+                    player.registerFlag();
+                }
+
+            } else if (layer.equals(Tile.FlagThree)) {
+                if (player.getFlagScore() == 2) {
+                    System.out.println(player.getName() + " captured flag three!");
+                    player.registerFlag();
+                }
+            }
+        }
+    }
+
+    private void playersChooseCards() {
+        //TODO
+        // check if all players are ready then continue
+        // if only one player left, set timer
+    }
+
+    private void boardElementsTurn() {
+        // Move board elements
+        gameBoard.conveyorBeltMove(players);
+
+        for (Player p : players) {
+            updatePlayerState(p);
+        }
+
+        // Fire lasers
+        System.out.println("___LASERS FIRE");
+    }
+
+    private void selectPlayerTurn() {
         players.sort(new Comparator<Player>() {
             @Override
             public int compare(Player p1, Player p2) {
@@ -293,20 +354,13 @@ public class Game extends InputAdapter implements ApplicationListener {
                 return 0;
             }
         });
+    }
 
+    private void movePlayers() {
         for (Player p : players) {
             playerTurn(p);
             render();
         }
-
-        // Move board elements
-        gameBoard.conveyorBeltMove(players);
-
-        // Fire lasers
-        System.out.println("___LASERS FIRE");
-
-        // Touch checkpoints
-        System.out.println("___TOUCH CHECKPOINTS");
     }
 
     private void time(int n) {
@@ -335,22 +389,6 @@ public class Game extends InputAdapter implements ApplicationListener {
             } else if (layer.equals(Tile.LaserHorizontal) || layer.equals(Tile.LaserVertical)) {
                 System.out.println(player.getName() + " took one damage.");
                 player.takeDamage();
-            } else if (layer.equals(Tile.FlagOne)) {
-                if (player.getFlagScore() == 0) {
-                    System.out.println(player.getName() + " captured flag one!");
-                    player.registerFlag();
-                }
-            } else if (layer.equals(Tile.FlagTwo)) {
-                if (player.getFlagScore() == 1) {
-                    System.out.println(player.getName() + " captured flag two!");
-                    player.registerFlag();
-                }
-
-            } else if (layer.equals(Tile.FlagThree)) {
-                if (player.getFlagScore() == 2) {
-                    System.out.println(player.getName() + " captured flag three!");
-                    player.registerFlag();
-                }
             } else if (layer.equals(Tile.PushWallBottom)){
                 player.setPosition((int) xPos, (int) yPos + 1);
 
