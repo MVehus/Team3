@@ -38,7 +38,7 @@ public class ApplicationScreen extends AbstractScreen {
     private Image flagsImage;
     private Image dmgTokensImage;
     private Image lifeTokensImage;
-    
+
     private int flags;
     private int dmgTokens;
     private int lifeTokens;
@@ -59,11 +59,18 @@ public class ApplicationScreen extends AbstractScreen {
         game = new Game();
         game.create();
 
-        player = game.getPlayers().get(Network.getMyId()-1);
+        while (player == null) {
+            try {
+                player = game.getPlayers().get(Network.getMyId() - 1);
+            } catch (Exception e) {
+                System.out.println("Game not set up correct yet");
+            }
+        }
+
         flags = player.getFlagScore();
         dmgTokens = player.getNumDamageTokens();
         lifeTokens = player.getHealth();
-        gameWidth = Gdx.graphics.getWidth()*2/3;
+        gameWidth = Gdx.graphics.getWidth() * 2 / 3;
         chosenCards = new ProgramCard[5];
         cardImageProgramMap = new HashMap<>(84);
         cardProgramImageMap = new HashMap<>(84);
@@ -86,10 +93,10 @@ public class ApplicationScreen extends AbstractScreen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         //Game side of screen
-        Gdx.gl.glViewport( 0,0,gameWidth,Gdx.graphics.getHeight() );
+        Gdx.gl.glViewport(0, 0, gameWidth, Gdx.graphics.getHeight());
         game.render();
-        player = game.getPlayers().get(Network.getMyId()-1);
-        
+        player = game.getPlayers().get(Network.getMyId() - 1);
+
         if (flags != player.getFlagScore()) {
             updateFlags();
         }
@@ -101,7 +108,7 @@ public class ApplicationScreen extends AbstractScreen {
         }
 
         //UI side of screen
-        Gdx.gl.glViewport( 0,0,width,Gdx.graphics.getHeight() );
+        Gdx.gl.glViewport(0, 0, width, Gdx.graphics.getHeight());
         //stage.setDebugAll(true);
         stage.act(Gdx.graphics.getDeltaTime());
         stage.draw();
@@ -124,9 +131,9 @@ public class ApplicationScreen extends AbstractScreen {
                 break;
         }
         flagsImage = new Image(new SpriteDrawable(sprite));
-        flagsImage.setPosition(gameWidth, height-(200+(width-gameWidth)/10));
-        flagsImage.setWidth((width-gameWidth)/2);
-        flagsImage.setHeight((width-gameWidth)/6);
+        flagsImage.setPosition(gameWidth, height - (200 + (width - gameWidth) / 10));
+        flagsImage.setWidth((width - gameWidth) / 2);
+        flagsImage.setHeight((width - gameWidth) / 6);
 
         stage.addActor(flagsImage);
 
@@ -150,9 +157,9 @@ public class ApplicationScreen extends AbstractScreen {
                 break;
         }
         lifeTokensImage = new Image(new SpriteDrawable(sprite));
-        lifeTokensImage.setPosition(gameWidth+((width-gameWidth)/2), height-(200+(width-gameWidth)/10));
-        lifeTokensImage.setWidth((width-gameWidth)/2);
-        lifeTokensImage.setHeight((width-gameWidth)/6);
+        lifeTokensImage.setPosition(gameWidth + ((width - gameWidth) / 2), height - (200 + (width - gameWidth) / 10));
+        lifeTokensImage.setWidth((width - gameWidth) / 2);
+        lifeTokensImage.setHeight((width - gameWidth) / 6);
 
         stage.addActor(lifeTokensImage);
 
@@ -197,9 +204,9 @@ public class ApplicationScreen extends AbstractScreen {
                 break;
         }
         dmgTokensImage = new Image(new SpriteDrawable(sprite));
-        dmgTokensImage.setPosition(gameWidth, height-150);
-        dmgTokensImage.setWidth(width-gameWidth);
-        dmgTokensImage.setHeight((width-gameWidth)/10);
+        dmgTokensImage.setPosition(gameWidth, height - 150);
+        dmgTokensImage.setWidth(width - gameWidth);
+        dmgTokensImage.setHeight((width - gameWidth) / 10);
 
         stage.addActor(dmgTokensImage);
 
@@ -207,13 +214,13 @@ public class ApplicationScreen extends AbstractScreen {
     }
 
     private void placeCards() {
-        int cardWidth = (width-gameWidth)/5;
-        int cardHeight = cardWidth*4/3;
-        if(Network.hostingServer()){
+        int cardWidth = (width - gameWidth) / 5;
+        int cardHeight = cardWidth * 4 / 3;
+        if (Network.hostingServer()) {
             Network.dealCardsToPlayers();
         }
         ArrayList<ProgramCard> cardsOnHand = Network.getCurrentProgramCards();
-        for (int i = 0; i < 9-player.getNumDamageTokens(); i++) {
+        for (int i = 0; i < 9 - player.getNumDamageTokens(); i++) {
             ProgramCard card = cardsOnHand.get(i);
             Sprite sprite = new Sprite(new Texture(card.getCardImagePath()));
             final Image cardImage = new Image(new SpriteDrawable(sprite));
@@ -221,12 +228,11 @@ public class ApplicationScreen extends AbstractScreen {
             cardImage.setHeight(cardHeight);
 
             if (i < 5) {
-                cardImage.setPosition(gameWidth+(cardWidth*i), cardHeight*2+80);
-                cardImage.setOrigin(gameWidth+(cardWidth*i), cardHeight*2+80);
-            }
-            else {
-                cardImage.setPosition(gameWidth+(cardWidth*(i-5)), cardHeight+80);
-                cardImage.setOrigin(gameWidth+(cardWidth*(i-5)), cardHeight+80);
+                cardImage.setPosition(gameWidth + (cardWidth * i), cardHeight * 2 + 80);
+                cardImage.setOrigin(gameWidth + (cardWidth * i), cardHeight * 2 + 80);
+            } else {
+                cardImage.setPosition(gameWidth + (cardWidth * (i - 5)), cardHeight + 80);
+                cardImage.setOrigin(gameWidth + (cardWidth * (i - 5)), cardHeight + 80);
             }
             cardImage.addListener(new DragListener() {
                 @Override
@@ -234,6 +240,7 @@ public class ApplicationScreen extends AbstractScreen {
                     cardImage.moveBy(x - cardImage.getWidth() / 2, y - cardImage.getHeight() / 2);
                     cardImage.toFront();
                 }
+
                 @Override
                 public void dragStop(InputEvent event, float x, float y, int pointer) {
                     super.dragStop(event, x, y, pointer);
@@ -258,7 +265,7 @@ public class ApplicationScreen extends AbstractScreen {
 
         for (int i = 0; i < 5; i++) {
             if (cardX > chooseCardPos.get(i).getX() - cardImage.getWidth() / 2 && cardX < chooseCardPos.get(i).getX() + cardImage.getWidth()
-            && cardY > 0 && cardY < cardSlotsMiddle.getY()) {
+                    && cardY > 0 && cardY < cardSlotsMiddle.getY()) {
                 if (chosenCards[i] != null) {
                     Image prevImage = cardProgramImageMap.get(chosenCards[i]);
                     prevImage.setPosition(prevImage.getOriginX(), prevImage.getOriginY());
@@ -280,31 +287,31 @@ public class ApplicationScreen extends AbstractScreen {
 
     private void initCurrentPlayer() {
         Label label = new Label("You are player " + player.getId(), skin);
-        label.setPosition(gameWidth+(width-gameWidth)/2-label.getWidth()/2, height-30);
+        label.setPosition(gameWidth + (width - gameWidth) / 2 - label.getWidth() / 2, height - 30);
         stage.addActor(label);
     }
 
     private void initCardSlots() {
         Sprite texture = new Sprite(new Texture("src/assets/playerGUI/cardSlots.jpg"));
         cardSlotsTop = new Image(new SpriteDrawable(texture));
-        cardSlotsTop.setWidth(width-gameWidth);
-        cardSlotsTop.setHeight((float) ((width-gameWidth)/5*4/3));
-        cardSlotsTop.setPosition(gameWidth, (float) ((width-gameWidth)/5*4/3)*2+80);
+        cardSlotsTop.setWidth(width - gameWidth);
+        cardSlotsTop.setHeight((float) ((width - gameWidth) / 5 * 4 / 3));
+        cardSlotsTop.setPosition(gameWidth, (float) ((width - gameWidth) / 5 * 4 / 3) * 2 + 80);
         cardSlotsTop.setColor(Color.LIGHT_GRAY);
 
         cardSlotsMiddle = new Image(new SpriteDrawable(texture));
-        cardSlotsMiddle.setWidth(width-gameWidth);
-        cardSlotsMiddle.setHeight((float) ((width-gameWidth)/5*4/3));
-        cardSlotsMiddle.setPosition(gameWidth, (float) ((width-gameWidth)/5*4/3)+80);
+        cardSlotsMiddle.setWidth(width - gameWidth);
+        cardSlotsMiddle.setHeight((float) ((width - gameWidth) / 5 * 4 / 3));
+        cardSlotsMiddle.setPosition(gameWidth, (float) ((width - gameWidth) / 5 * 4 / 3) + 80);
         cardSlotsMiddle.setColor(Color.LIGHT_GRAY);
 
         cardSlotsBottom = new Image(new SpriteDrawable(texture));
-        cardSlotsBottom.setWidth(width-gameWidth);
-        cardSlotsBottom.setHeight((float) ((width-gameWidth)/5*4/3));
+        cardSlotsBottom.setWidth(width - gameWidth);
+        cardSlotsBottom.setHeight((float) ((width - gameWidth) / 5 * 4 / 3));
         cardSlotsBottom.setPosition(gameWidth, 80);
 
         for (int i = 0; i < 5; i++) {
-            chooseCardPos.add(new Point(gameWidth+((width-gameWidth)/5*i),80));
+            chooseCardPos.add(new Point(gameWidth + ((width - gameWidth) / 5 * i), 80));
         }
 
         stage.addActor(cardSlotsTop);
@@ -314,24 +321,23 @@ public class ApplicationScreen extends AbstractScreen {
 
     private void initButtons() {
         TextButton lockInButton = new TextButton("Run card one", skin);
-        lockInButton.setPosition(width-((width-gameWidth)/3), 10);
-        lockInButton.setWidth((width-gameWidth)/3);
+        lockInButton.setPosition(width - ((width - gameWidth) / 3), 10);
+        lockInButton.setWidth((width - gameWidth) / 3);
         lockInButton.setHeight(60);
 
         TextButton powerDownButton = new TextButton("Power down", skin);
-        powerDownButton.setPosition(gameWidth+20, 10);
-        powerDownButton.setWidth((width-gameWidth)/3);
+        powerDownButton.setPosition(gameWidth + 20, 10);
+        powerDownButton.setWidth((width - gameWidth) / 3);
         powerDownButton.setHeight(60);
 
         lockInButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (chosenCards[0] != null){
+                if (chosenCards[0] != null) {
                     player.addProgramCard(chosenCards[0]);
                     player.setProgramCardDone();
                     game.playerTurn(player);
-                }
-                else {
+                } else {
                     System.out.println("Choose cards before locking in.");
                 }
             }
@@ -351,9 +357,9 @@ public class ApplicationScreen extends AbstractScreen {
     private void initDamageTokens() {
         Sprite texture = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens0.png"));
         dmgTokensImage = new Image(new SpriteDrawable(texture));
-        dmgTokensImage.setPosition(gameWidth, height-150);
-        dmgTokensImage.setWidth(width-gameWidth);
-        dmgTokensImage.setHeight((width-gameWidth)/10);
+        dmgTokensImage.setPosition(gameWidth, height - 150);
+        dmgTokensImage.setWidth(width - gameWidth);
+        dmgTokensImage.setHeight((width - gameWidth) / 10);
 
         stage.addActor(dmgTokensImage);
     }
@@ -361,9 +367,9 @@ public class ApplicationScreen extends AbstractScreen {
     private void initFlags() {
         Sprite texture = new Sprite(new Texture("src/assets/playerGUI/flags/flags0.png"));
         flagsImage = new Image(new SpriteDrawable(texture));
-        flagsImage.setPosition(gameWidth, height-(200+(width-gameWidth)/10));
-        flagsImage.setWidth((width-gameWidth)/2);
-        flagsImage.setHeight((width-gameWidth)/6);
+        flagsImage.setPosition(gameWidth, height - (200 + (width - gameWidth) / 10));
+        flagsImage.setWidth((width - gameWidth) / 2);
+        flagsImage.setHeight((width - gameWidth) / 6);
 
         stage.addActor(flagsImage);
     }
@@ -371,9 +377,9 @@ public class ApplicationScreen extends AbstractScreen {
     private void initLifeTokens() {
         Sprite texture = new Sprite(new Texture("src/assets/playerGUI/lifeTokens/lifeTokens0.png"));
         lifeTokensImage = new Image(new SpriteDrawable(texture));
-        lifeTokensImage.setPosition(gameWidth+((width-gameWidth)/2), height-(200+(width-gameWidth)/10));
-        lifeTokensImage.setWidth((width-gameWidth)/2);
-        lifeTokensImage.setHeight((width-gameWidth)/6);
+        lifeTokensImage.setPosition(gameWidth + ((width - gameWidth) / 2), height - (200 + (width - gameWidth) / 10));
+        lifeTokensImage.setWidth((width - gameWidth) / 2);
+        lifeTokensImage.setHeight((width - gameWidth) / 6);
 
         stage.addActor(lifeTokensImage);
     }
