@@ -324,7 +324,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         float yPos = player.getPosition().y;
         if (xPos < 0 || xPos > boardWidth || yPos < 0 || yPos > boardHeight) {
             player.loseLifeToken();
-            System.out.println("Lost LIFE");
+            System.out.println("Player: " + player.getId() + "Lost LIFE");
         }
         // Loop through layers player is on
         List<Tile> tilesOnPos = gameBoard.getTilesOnCell(player.getPosition().x, player.getPosition().y);
