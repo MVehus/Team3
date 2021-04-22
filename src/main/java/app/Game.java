@@ -284,6 +284,8 @@ public class Game extends InputAdapter implements ApplicationListener {
         Vector2 position = player.getPosition();
         Vector2 nextPosition = player.getNextCell(true);
         playerLayer.setCell((int) position.x, (int) position.y, null);
+        int startX = (int) position.x, startY = (int) position.y;
+
 
         if (cardValue == Value.U_TURN) {
             player.rotate(Direction.RIGHT);
@@ -331,6 +333,7 @@ public class Game extends InputAdapter implements ApplicationListener {
             }
         }
 
+        playerLayer.setCell(startX, startY, null);
         System.out.println(player.information());
         player.useCurrentCard();
     }
@@ -441,7 +444,6 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         if (!players.isEmpty()) {
             for (Player p : players) {
-                playerLayer.setCell((int) p.getPosition().x, (int) p.getPosition().y, null);
                 playerLayer.setCell((int) p.getPosition().x, (int) p.getPosition().y, getPlayerTexture(p));
             }
         }
