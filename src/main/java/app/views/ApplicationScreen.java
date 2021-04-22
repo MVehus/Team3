@@ -298,9 +298,14 @@ public class ApplicationScreen extends AbstractScreen {
         lockInButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                player.addProgramCard(chosenCards[0]);
-                player.setProgramCardDone();
-                game.playerTurn(player);
+                try {
+                    player.addProgramCard(chosenCards[0]);
+                    player.setProgramCardDone();
+                    game.playerTurn(player);
+                }
+                catch (Exception e) {
+                    System.out.println("Choose cards before locking in: " + e);
+                }
             }
         });
 
