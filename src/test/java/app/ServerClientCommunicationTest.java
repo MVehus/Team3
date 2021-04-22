@@ -33,16 +33,6 @@ public class ServerClientCommunicationTest {
         assertEquals(9, hand.size());
     }
 
-
-    @Test
-    void ServerDealsUniqueCardsToAllClients() {
-        Client client1 = new Client("localhost", 32401);
-
-        Network.dealCardsToPlayers();
-
-        assertTrue(!Network.getCurrentProgramCards().equals(client1.getCurrentHand().getCards()));
-    }
-
     @Test
     void ClientKnowsWhenGameStarts(){
         Network.startGame();

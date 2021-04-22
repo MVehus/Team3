@@ -19,15 +19,11 @@ public class Client {
     private Boolean gameStarted = false;
     private Hand currentHand;
 
-    public Client(String IpAddress, int port) {
+    public Client(String IpAddress, int port) throws IOException {
         client = new com.esotericsoftware.kryonet.Client();
         NetworkUtilities.setUpKryo(client.getKryo());
         client.start();
-        try {
-            client.connect(5000, IpAddress, port);
-        } catch (IOException e) {
-            System.out.println(e.toString());
-        }
+        client.connect(5000, IpAddress, port);
 
         client.addListener(new Listener() {
             public void received(Connection connection, Object object) {
