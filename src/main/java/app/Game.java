@@ -232,8 +232,7 @@ public class Game extends InputAdapter implements ApplicationListener {
      * E. Touch Checkpoints
      */
     public void round() {
-
-        while (true){
+        while (true) {
             int playersDone = 0;
             for (Player p : players) {
                 if (p.programCards.size() == 0){
@@ -244,7 +243,6 @@ public class Game extends InputAdapter implements ApplicationListener {
                 break;
             }
             movePlayers();
-            render();
             boardElementsTurn();
             drawLasers();
             checkForFlags();
@@ -255,26 +253,50 @@ public class Game extends InputAdapter implements ApplicationListener {
     }
 
     private void drawLasers(){
-        for(Player p : players){
-            List<Vector2> line = getNextCells(p);
-            for(Vector2 cell : line){
-                if(p.getDirection() == Direction.DOWN || p.getDirection() == Direction.UP)
-                    laserLayer.setCell((int) cell.x, (int) cell.y, laserTextures.get(1));
-                else {
-                    laserLayer.setCell((int) cell.x, (int) cell.y, laserTextures.get(0));
-                }
-            }
-        }
+
     }
 
     private void movePlayers() {
         for (Player p : players) {
             if(p.programCards.size() != 0) {
                 playerTurn(p);
-                time(1000);
+                time(2000);
             }
         }
     }
+
+    public void playerTurn(Player player) {
+
+        Value cardValue = player.getCurrentCard().getValue();
+        Vector2 position = player.getPosition();
+        Vector2 nextPosition = player.getNextCell(true);
+        playerLayer.setCell((int) position.x, (int) position.y, null);
+
+        if (cardValue == Value.U_TURN) {
+            player.rotate(Direction.RIGHT);
+            player.rotate(Direction.RIGHT);
+        } else if (cardValue == Value.ROTATE_RIGHT) {
+            player.rotate(Direction.RIGHT);
+        } else if (cardValue == Value.ROTATE_LEFT) {
+            player.rotate(Direction.LEFT);
+        } else if (cardValue == Value.MOVE_ONE) {
+            if (validMove(position, nextPosition)) {
+                player.move();
+            }
+        } else if (cardValue == Value.MOVE_TWO) {
+
+            for (int step = 0; step < 2; step++) {
+                playerLayer.setCell((int) position.x, (int) position.y, null);
+                if (validMove(position, nextPosition)) {
+                    player.move();
+                    if (checkForHole(player)){
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
 
     private void checkForFlags() {
         for (Player p : players) {
@@ -362,62 +384,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         Network.sendUpdatedPlayerModel(player.getModel());
     }
 
-    public void playerTurn(Player player) {
 
-        Value cardValue = player.getCurrentCard().getValue();
-        Vector2 position = player.getPosition();
-        Vector2 nextPosition = player.getNextCell(true);
-        playerLayer.setCell((int) position.x, (int) position.y, null);
-
-        if (cardValue == Value.U_TURN) {
-            player.rotate(Direction.RIGHT);
-            player.rotate(Direction.RIGHT);
-        } else if (cardValue == Value.ROTATE_RIGHT) {
-            player.rotate(Direction.RIGHT);
-        } else if (cardValue == Value.ROTATE_LEFT) {
-            player.rotate(Direction.LEFT);
-        } else if (cardValue == Value.MOVE_ONE) {
-            if (validMove(position, nextPosition)) {
-                player.move();
-            }
-        } else if (cardValue == Value.MOVE_TWO) {
-
-            for (int step = 0; step < 2; step++) {
-                playerLayer.setCell((int) position.x, (int) position.y, null);
-                if (validMove(position, nextPosition)) {
-                    player.move();
-                    time(500);
-                    if (checkForHole(player)){
-                        break;
-                    }
-                }
-            }
-        } else if (cardValue == Value.MOVE_THREE) {
-            for (int step = 0; step < 3; step++) {
-                playerLayer.setCell((int) position.x, (int) position.y, null);
-
-                if (validMove(position, nextPosition)) {
-                    player.move();
-                    time(500);
-                    render();
-                    if(checkForHole(player)){
-                        break;
-                    }
-                }
-            }
-        } else if (cardValue == Value.BACK_UP) {
-            if(validMove(position, nextPosition)){
-                player.backUp();
-            }
-        }
-
-        System.out.println("Player on: " + player.getPosition());
-        System.out.println("NextCells: " + getNextCells(player));
-
-        // System.out.println(player.information());
-        player.useCurrentCard();
-
-    }
 
     private boolean checkForHole(Player player) {
         List<Tile> tilesOnPos = gameBoard.getTilesOnCell(player.getPosition().x, player.getPosition().y);
