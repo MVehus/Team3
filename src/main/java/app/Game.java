@@ -299,6 +299,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         else if (cardValue == Value.MOVE_ONE) {
             if (validMove(position, nextPosition)) {
                 player.move();
+                updatePlayerState(player);
             }
         }
         else if (cardValue == Value.MOVE_TWO) {
@@ -306,6 +307,7 @@ public class Game extends InputAdapter implements ApplicationListener {
                 playerLayer.setCell((int) position.x, (int) position.y, null);
                 if (validMove(position, nextPosition)) {
                     player.move();
+                    updatePlayerState(player);
                     nextPosition = player.getNextCell(true);
                     if (checkForHole(player)){
                         break;
@@ -319,6 +321,7 @@ public class Game extends InputAdapter implements ApplicationListener {
                 playerLayer.setCell((int) position.x, (int) position.y, null);
                 if (validMove(position, nextPosition)) {
                     player.move();
+                    updatePlayerState(player);
                     nextPosition = player.getNextCell(true);
                     if (checkForHole(player)){
                         break;
@@ -329,6 +332,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         else if (cardValue == Value.BACK_UP){
             if(validMove(position, player.getNextCell(false))){
                 player.backUp();
+                updatePlayerState(player);
             }
         }
 
@@ -419,7 +423,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         }
         render();
 
-        Network.sendUpdatedPlayerModel(player.getModel());
     }
 
     private boolean checkForHole(Player player) {
