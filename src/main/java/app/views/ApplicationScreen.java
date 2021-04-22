@@ -38,6 +38,10 @@ public class ApplicationScreen extends AbstractScreen {
     private Image flagsImage;
     private Image dmgTokensImage;
     private Image lifeTokensImage;
+    private Image locked1Image = null;
+    private Image locked2Image = null;
+    private Image locked3Image = null;
+    private Image locked4Image = null;
 
     private int flags;
     private int dmgTokens;
@@ -167,43 +171,69 @@ public class ApplicationScreen extends AbstractScreen {
     }
 
     private void updateDamageTokens() {
-        Sprite sprite;
+        Sprite dmgTokensSprite;
+        Sprite lockedLabelSprite = new Sprite(new Texture("src/assets/lockedLabel.png"));
         switch (player.getNumDamageTokens()) {
             case 10:
-                sprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens10.png"));
+                dmgTokensSprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens10.png"));
                 break;
             case 9:
-                sprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens9.png"));
+                dmgTokensSprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens9.png"));
+                locked4Image = new Image(lockedLabelSprite);
+                locked4Image.setPosition((float) chooseCardPos.get(1).getX(), (float) chooseCardPos.get(1).getY() + cardSlotsBottom.getHeight()/2);
+                locked4Image.setWidth((float) (width - gameWidth) / 5);
+                locked4Image.setHeight(locked4Image.getWidth()/4);
+                stage.addActor(locked4Image);
                 break;
             case 8:
-                sprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens8.png"));
+                dmgTokensSprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens8.png"));
+                locked3Image = new Image(lockedLabelSprite);
+                locked3Image.setPosition((float) chooseCardPos.get(2).getX(), (float) chooseCardPos.get(2).getY() + cardSlotsBottom.getHeight()/2);
+                locked3Image.setWidth((float) (width - gameWidth) / 5);
+                locked3Image.setHeight(locked3Image.getWidth()/4);
+                stage.addActor(locked3Image);
                 break;
             case 7:
-                sprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens7.png"));
+                dmgTokensSprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens7.png"));
+                locked2Image = new Image(lockedLabelSprite);
+                locked2Image.setPosition((float) chooseCardPos.get(3).getX(), (float) chooseCardPos.get(3).getY() + cardSlotsBottom.getHeight()/2);
+                locked2Image.setWidth((float) (width - gameWidth) / 5);
+                locked2Image.setHeight(locked2Image.getWidth()/4);
+                stage.addActor(locked2Image);
                 break;
             case 6:
-                sprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens6.png"));
+                dmgTokensSprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens6.png"));
+                locked1Image = new Image(lockedLabelSprite);
+                locked1Image.setPosition((float) chooseCardPos.get(4).getX(), (float) chooseCardPos.get(4).getY() + cardSlotsBottom.getHeight()/2);
+                locked1Image.setWidth((float) (width - gameWidth) / 5);
+                locked1Image.setHeight(locked1Image.getWidth()/4);
+                stage.addActor(locked1Image);
                 break;
             case 5:
-                sprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens5.png"));
+                dmgTokensSprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens5.png"));
                 break;
             case 4:
-                sprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens4.png"));
+                dmgTokensSprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens4.png"));
                 break;
             case 3:
-                sprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens3.png"));
+                dmgTokensSprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens3.png"));
                 break;
             case 2:
-                sprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens2.png"));
+                dmgTokensSprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens2.png"));
                 break;
             case 1:
-                sprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens1.png"));
+                dmgTokensSprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens1.png"));
                 break;
             default:
-                sprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens0.png"));
+                dmgTokensSprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens0.png"));
+                for (Actor a : stage.getActors()) {
+                    if (a == locked1Image || a == locked2Image || a == locked3Image || a == locked4Image) {
+                        a.remove();
+                    }
+                }
                 break;
         }
-        dmgTokensImage = new Image(new SpriteDrawable(sprite));
+        dmgTokensImage = new Image(new SpriteDrawable(dmgTokensSprite));
         dmgTokensImage.setPosition(gameWidth, height - 150);
         dmgTokensImage.setWidth(width - gameWidth);
         dmgTokensImage.setHeight((width - gameWidth) / 10);
@@ -260,6 +290,11 @@ public class ApplicationScreen extends AbstractScreen {
 
         if ((cardY > cardSlotsMiddle.getY() && cardY < height && cardX > gameWidth && cardX < width) || cardX < gameWidth) {
             cardImage.setPosition(cardImage.getOriginX(), cardImage.getOriginY());
+            for (int i = 0; i < 5; i++) {
+                if (chosenCards[i] == programCard) {
+                    chosenCards[i] = null;
+                }
+            }
             return;
         }
 
@@ -267,13 +302,21 @@ public class ApplicationScreen extends AbstractScreen {
             if (cardX > chooseCardPos.get(i).getX() - cardImage.getWidth() / 2 && cardX < chooseCardPos.get(i).getX() + cardImage.getWidth()
                     && cardY > 0 && cardY < cardSlotsMiddle.getY()) {
                 if (chosenCards[i] != null) {
-                    Image prevImage = cardProgramImageMap.get(chosenCards[i]);
+                    ProgramCard prevProgramCard = chosenCards[i];
+                    Image prevImage = cardProgramImageMap.get(prevProgramCard);
                     prevImage.setPosition(prevImage.getOriginX(), prevImage.getOriginY());
                     for (int j = 0; j < 5; j++) {
                         if (chosenCards[j] == programCard) {
                             prevImage.setPosition(chooseCardPos.get(j).x, chooseCardPos.get(j).y);
-                            chosenCards[j] = chosenCards[i];
+                            chosenCards[j] = prevProgramCard;
                             break;
+                        }
+                    }
+                }
+                else {
+                    for (int j = 0; j < 5; j++) {
+                        if (chosenCards[j] == programCard) {
+                            chosenCards[j] = null;
                         }
                     }
                 }
@@ -341,7 +384,6 @@ public class ApplicationScreen extends AbstractScreen {
                     //player.addProgramCard(chosenCards[0]);
                     player.setProgramCardDone();
                     game.round();
-                    //game.playerTurn(player);
                 } else {
                     System.out.println("Choose cards before locking in.");
                 }
