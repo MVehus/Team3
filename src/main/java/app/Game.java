@@ -422,6 +422,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         } else if (cardValue == Value.MOVE_TWO) {
 
             for (int step = 0; step < 2; step++) {
+                playerLayer.setCell((int) playerPos.x, (int) playerPos.y, null);
                 if (canMove(player)) {
                     player.move();
                     updatePlayerState(player);
@@ -429,6 +430,7 @@ public class Game extends InputAdapter implements ApplicationListener {
             }
         } else if (cardValue == Value.MOVE_THREE) {
             for (int step = 0; step < 3; step++) {
+                playerLayer.setCell((int) playerPos.x, (int) playerPos.y, null);
                 if (canMove(player)) {
                     player.move();
                     updatePlayerState(player);
