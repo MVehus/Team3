@@ -334,9 +334,13 @@ public class ApplicationScreen extends AbstractScreen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (chosenCards[0] != null) {
-                    player.addProgramCard(chosenCards[0]);
+                    for(ProgramCard pc : chosenCards) {
+                        player.addProgramCard(pc);
+                    }
+                    //player.addProgramCard(chosenCards[0]);
                     player.setProgramCardDone();
-                    game.playerTurn(player);
+                    game.round();
+                    //game.playerTurn(player);
                 } else {
                     System.out.println("Choose cards before locking in.");
                 }

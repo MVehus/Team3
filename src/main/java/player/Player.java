@@ -3,6 +3,7 @@ package player;
 import Models.PlayerModel;
 import app.Direction;
 import com.badlogic.gdx.math.Vector2;
+import org.junit.Test;
 import projectCard.CardDeck;
 import projectCard.ProgramCard;
 
@@ -306,7 +307,13 @@ public class Player implements Serializable {
     // CARDS
 
     public ProgramCard getCurrentCard() {
-        return cards.get(0);
+        if (programCards.size() == 0)
+            return null;
+        return programCards.get(0);
+    }
+
+    public ProgramCard useCurrentCard() {
+        return programCards.remove(0);
     }
 
     public List<ProgramCard> getCards() {
@@ -321,6 +328,7 @@ public class Player implements Serializable {
     }
 
     public void setProgramCardDone(){
+
         programCardDone = true;
     }
 
@@ -338,7 +346,7 @@ public class Player implements Serializable {
     }
 
     public void addProgramCard(ProgramCard card) {
-        cards.add(card);
+        programCards.add(card);
     }
 
     public void removeCardFromSlot(ProgramCard card) {

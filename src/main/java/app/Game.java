@@ -24,6 +24,7 @@ import projectCard.ProgramCard;
 import projectCard.Value;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class Game extends InputAdapter implements ApplicationListener {
     private SpriteBatch batch;
@@ -281,12 +282,25 @@ public class Game extends InputAdapter implements ApplicationListener {
      * E. Touch Checkpoints
      */
     public void round() {
-        playersChooseCards();
-        selectPlayerTurn();
-        revealCards();
-        movePlayers();
-        boardElementsTurn();
-        checkForFlags();
+
+        while (true){
+            int playersDone = 0;
+            for (Player p : players) {
+                if (p.programCards.size() == 0){
+                    playersDone += 1;
+                }
+            }
+            if (playersDone == players.size()) {
+                break;
+            }
+            movePlayers();
+            render();
+            boardElementsTurn();
+            checkForFlags();
+        }
+        //playersChooseCards();
+        //selectPlayerTurn();
+        //revealCards();
     }
 
     private void revealCards() {
@@ -357,8 +371,10 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     private void movePlayers() {
         for (Player p : players) {
-            playerTurn(p);
-            render();
+            if(p.programCards.size() != 0) {
+                playerTurn(p);
+                time(1000);
+            }
         }
     }
 
@@ -408,7 +424,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         System.out.println("Player on: " + player.getPosition());
 
-        Value cardValue = player.getCurrentCard().getValue();
+        Value cardValue = player.useCurrentCard().getValue();
         Vector2 playerPos = player.getPosition();
         playerLayer.setCell((int) playerPos.x, (int) playerPos.y, null);
 
@@ -454,7 +470,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         }
 
         System.out.println(player.information());
-        player.getCards().remove(player.getCurrentCard());
+
 
     }
 
