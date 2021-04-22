@@ -173,6 +173,8 @@ public class ApplicationScreen extends AbstractScreen {
     private void updateDamageTokens() {
         Sprite dmgTokensSprite;
         Sprite lockedLabelSprite = new Sprite(new Texture("src/assets/lockedLabel.png"));
+        dmgTokens = player.getNumDamageTokens();
+
         switch (player.getNumDamageTokens()) {
             case 10:
                 dmgTokensSprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens10.png"));
@@ -184,6 +186,11 @@ public class ApplicationScreen extends AbstractScreen {
                 locked4Image.setWidth((float) (width - gameWidth) / 5);
                 locked4Image.setHeight(locked4Image.getWidth()/4);
                 stage.addActor(locked4Image);
+                if (chosenCards[1] != null) {
+                    Image currCardImage = cardProgramImageMap.get(chosenCards[1]);
+                    currCardImage.setPosition(currCardImage.getOriginX(), currCardImage.getOriginY());
+                    chosenCards[1] = null;
+                }
                 break;
             case 8:
                 dmgTokensSprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens8.png"));
@@ -192,6 +199,11 @@ public class ApplicationScreen extends AbstractScreen {
                 locked3Image.setWidth((float) (width - gameWidth) / 5);
                 locked3Image.setHeight(locked3Image.getWidth()/4);
                 stage.addActor(locked3Image);
+                if (chosenCards[2] != null) {
+                    Image currCardImage = cardProgramImageMap.get(chosenCards[2]);
+                    currCardImage.setPosition(currCardImage.getOriginX(), currCardImage.getOriginY());
+                    chosenCards[2] = null;
+                }
                 break;
             case 7:
                 dmgTokensSprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens7.png"));
@@ -200,6 +212,11 @@ public class ApplicationScreen extends AbstractScreen {
                 locked2Image.setWidth((float) (width - gameWidth) / 5);
                 locked2Image.setHeight(locked2Image.getWidth()/4);
                 stage.addActor(locked2Image);
+                if (chosenCards[3] != null) {
+                    Image currCardImage = cardProgramImageMap.get(chosenCards[3]);
+                    currCardImage.setPosition(currCardImage.getOriginX(), currCardImage.getOriginY());
+                    chosenCards[3] = null;
+                }
                 break;
             case 6:
                 dmgTokensSprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens6.png"));
@@ -207,6 +224,11 @@ public class ApplicationScreen extends AbstractScreen {
                 locked1Image.setPosition((float) chooseCardPos.get(4).getX(), (float) chooseCardPos.get(4).getY() + cardSlotsBottom.getHeight()/2);
                 locked1Image.setWidth((float) (width - gameWidth) / 5);
                 locked1Image.setHeight(locked1Image.getWidth()/4);
+                if (chosenCards[4] != null) {
+                    Image currCardImage = cardProgramImageMap.get(chosenCards[4]);
+                    currCardImage.setPosition(currCardImage.getOriginX(), currCardImage.getOriginY());
+                    chosenCards[4] = null;
+                }
                 stage.addActor(locked1Image);
                 break;
             case 5:
@@ -239,8 +261,6 @@ public class ApplicationScreen extends AbstractScreen {
         dmgTokensImage.setHeight((width - gameWidth) / 10);
 
         stage.addActor(dmgTokensImage);
-
-        dmgTokens = player.getNumDamageTokens();
     }
 
     private void placeCards() {
@@ -297,15 +317,15 @@ public class ApplicationScreen extends AbstractScreen {
             }
             return;
         }
-
-        for (int i = 0; i < 5; i++) {
+        int numberOfCardsToDraw = Math.min(10 - dmgTokens, 5);
+        for (int i = 0; i < numberOfCardsToDraw; i++) {
             if (cardX > chooseCardPos.get(i).getX() - cardImage.getWidth() / 2 && cardX < chooseCardPos.get(i).getX() + cardImage.getWidth()
                     && cardY > 0 && cardY < cardSlotsMiddle.getY()) {
                 if (chosenCards[i] != null) {
                     ProgramCard prevProgramCard = chosenCards[i];
                     Image prevImage = cardProgramImageMap.get(prevProgramCard);
                     prevImage.setPosition(prevImage.getOriginX(), prevImage.getOriginY());
-                    for (int j = 0; j < 5; j++) {
+                    for (int j = 0; j < numberOfCardsToDraw; j++) {
                         if (chosenCards[j] == programCard) {
                             prevImage.setPosition(chooseCardPos.get(j).x, chooseCardPos.get(j).y);
                             chosenCards[j] = prevProgramCard;
@@ -363,7 +383,7 @@ public class ApplicationScreen extends AbstractScreen {
     }
 
     private void initButtons() {
-        TextButton lockInButton = new TextButton("Run card one", skin);
+        TextButton lockInButton = new TextButton("Lock in cards", skin);
         lockInButton.setPosition(width - ((width - gameWidth) / 3), 10);
         lockInButton.setWidth((width - gameWidth) / 3);
         lockInButton.setHeight(60);
@@ -376,17 +396,13 @@ public class ApplicationScreen extends AbstractScreen {
         lockInButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (chosenCards[0] != null) {
-                    for(ProgramCard pc : chosenCards) {
-                        if(pc != null)
-                            player.addProgramCard(pc);
-                    }
-                    //player.addProgramCard(chosenCards[0]);
-                    player.setProgramCardDone();
-                    game.round();
-                } else {
-                    System.out.println("Choose cards before locking in.");
+                for(ProgramCard pc : chosenCards) {
+                    if(pc != null)
+                        player.addProgramCard(pc);
                 }
+                //player.addProgramCard(chosenCards[0]);
+                player.setProgramCardDone();
+                game.round();
             }
         });
 
