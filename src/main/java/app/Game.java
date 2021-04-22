@@ -255,7 +255,16 @@ public class Game extends InputAdapter implements ApplicationListener {
     }
 
     private void drawLasers(){
-
+        for(Player p : players){
+            List<Vector2> line = getNextCells(p);
+            for(Vector2 cell : line){
+                if(p.getDirection() == Direction.DOWN || p.getDirection() == Direction.UP)
+                    laserLayer.setCell((int) cell.x, (int) cell.y, laserTextures.get(1));
+                else {
+                    laserLayer.setCell((int) cell.x, (int) cell.y, laserTextures.get(0));
+                }
+            }
+        }
     }
 
     private void movePlayers() {
