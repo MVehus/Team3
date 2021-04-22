@@ -58,11 +58,7 @@ public class ApplicationScreen extends AbstractScreen {
     public void show() {
         game = new Game();
         game.create();
-        try {
-            Thread.sleep(1500);
-        } catch (Exception e) {
-            System.out.println("Could not sleep thread, while waiting for player lists to be sent to all players");
-        }
+
         player = game.getPlayers().get(Network.getMyId()-1);
         flags = player.getFlagScore();
         dmgTokens = player.getNumDamageTokens();
