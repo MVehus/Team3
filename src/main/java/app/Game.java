@@ -283,10 +283,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         return players;
     }
 
-    private void chooseCards() {
-        //TODO
-    }
-
     /**
      * A. Reveal Program Cards
      * B. Robots Move
@@ -295,33 +291,84 @@ public class Game extends InputAdapter implements ApplicationListener {
      * E. Touch Checkpoints
      */
     public void round() {
-        //TODO (Oblig 4)
-        // Move players based on current card
-        // Sort players by priority
+        playersChooseCards();
+        selectPlayerTurn();
+        revealCards();
+        movePlayers();
+        boardElementsTurn();
+        checkForFlags();
+    }
+
+    private void revealCards() {
+        //TODO show cards on gameboard
+    }
+
+    private void checkForFlags() {
+        for (Player p : players) {
+            updatePlayerFlagState(p);
+        }
+    }
+
+    private void updatePlayerFlagState(Player player) {
+
+        float xPos = player.getPosition().x;
+        float yPos = player.getPosition().y;
+
+        // Loop through layers player is on
+        List<Tile> tilesOnPos = gameBoard.getTilesOnCell(player.getPosition().x, player.getPosition().y);
+        for (Tile layer : tilesOnPos) {
+            if (layer.equals(Tile.FlagOne)) {
+                if (player.getFlagScore() == 0) {
+                    System.out.println(player.getName() + " captured flag one!");
+                    player.registerFlag();
+                }
+            } else if (layer.equals(Tile.FlagTwo)) {
+                if (player.getFlagScore() == 1) {
+                    System.out.println(player.getName() + " captured flag two!");
+                    player.registerFlag();
+                }
+
+            } else if (layer.equals(Tile.FlagThree)) {
+                if (player.getFlagScore() == 2) {
+                    System.out.println(player.getName() + " captured flag three!");
+                    player.registerFlag();
+                }
+            }
+        }
+    }
+
+    private void playersChooseCards() {
+        //TODO
+        // check if all players are ready then continue
+        // if only one player left, set timer
+    }
+
+    private void boardElementsTurn() {
+        // Move board elements
+        gameBoard.conveyorBeltMove(players);
+
+        for (Player p : players) {
+            updatePlayerState(p);
+        }
+
+        // Fire lasers
+        System.out.println("___LASERS FIRE");
+    }
+
+    private void selectPlayerTurn() {
         players.sort(new Comparator<Player>() {
             @Override
             public int compare(Player p1, Player p2) {
-                if (p1.getCurrentCard().getPriority() < p2.getCurrentCard().getPriority())
-                    return 1;
-                if (p1.getCurrentCard().getPriority() > p2.getCurrentCard().getPriority())
-                    return -1;
-                return 0;
+                return Integer.compare(p2.getCurrentCard().getPriority(), p1.getCurrentCard().getPriority());
             }
         });
+    }
 
+    private void movePlayers() {
         for (Player p : players) {
             playerTurn(p);
             render();
         }
-
-        // Move board elements
-        gameBoard.conveyorBeltMove(players);
-
-        // Fire lasers
-        System.out.println("___LASERS FIRE");
-
-        // Touch checkpoints
-        System.out.println("___TOUCH CHECKPOINTS");
     }
 
     private void time(int n) {
@@ -333,14 +380,12 @@ public class Game extends InputAdapter implements ApplicationListener {
     }
 
     public void updatePlayerState(Player player) {
-
         float xPos = player.getPosition().x;
         float yPos = player.getPosition().y;
         if (xPos < 0 || xPos > boardWidth || yPos < 0 || yPos > boardHeight) {
             player.loseLifeToken();
             System.out.println("Lost LIFE");
         }
-
         // Loop through layers player is on
         List<Tile> tilesOnPos = gameBoard.getTilesOnCell(player.getPosition().x, player.getPosition().y);
         for (Tile layer : tilesOnPos) {
@@ -371,10 +416,8 @@ public class Game extends InputAdapter implements ApplicationListener {
 
             } else if (layer.equals(Tile.PushWallTop)){
                 player.setPosition((int) xPos, (int) yPos - 1);
-
             } else if (layer.equals(Tile.PushWallLeft)){
                 player.setPosition((int) xPos + 1, (int) yPos);
-
             } else if (layer.equals(Tile.PushWallRight)){
                 player.setPosition((int) xPos - 1, (int) yPos);
             }
