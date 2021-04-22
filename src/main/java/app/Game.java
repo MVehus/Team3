@@ -119,8 +119,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         // CARDS
         System.out.println("LOADING GAME...");
-        time(3000); // Må vente på at spillere skal connecte før den laster inn.
-
+        time(3000);
     }
 
     @Override
@@ -357,6 +356,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         for (Player p : players) {
             updatePlayerState(p);
+
         }
 
         // Fire lasers
@@ -419,6 +419,7 @@ public class Game extends InputAdapter implements ApplicationListener {
                 player.setPosition((int) xPos - 1, (int) yPos);
             }
         }
+        render();
 
         Network.sendUpdatedPlayerModel(player.getModel());
     }
