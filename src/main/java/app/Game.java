@@ -309,6 +309,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     private void updatePlayerFlagState(Player player) {
 
+
         float xPos = player.getPosition().x;
         float yPos = player.getPosition().y;
 
@@ -378,6 +379,9 @@ public class Game extends InputAdapter implements ApplicationListener {
     }
 
     public void updatePlayerState(Player player) {
+
+        playerLayer.setCell((int) player.getPosition().x, (int) player.getPosition().y, null);
+
         float xPos = player.getPosition().x;
         float yPos = player.getPosition().y;
         if (xPos < 0 || xPos > boardWidth || yPos < 0 || yPos > boardHeight) {
