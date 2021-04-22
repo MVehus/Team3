@@ -286,7 +286,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         playerLayer.setCell((int) position.x, (int) position.y, null);
         int startX = (int) position.x, startY = (int) position.y;
 
-
         if (cardValue == Value.U_TURN) {
             player.rotate(Direction.RIGHT);
             player.rotate(Direction.RIGHT);
@@ -300,13 +299,14 @@ public class Game extends InputAdapter implements ApplicationListener {
         else if (cardValue == Value.MOVE_ONE) {
             if (validMove(position, nextPosition)) {
                 player.move();
+                updatePlayerState(player);
             }
         }
         else if (cardValue == Value.MOVE_TWO) {
             for (int step = 0; step < 2; step++) {
-                playerLayer.setCell((int) position.x, (int) position.y, null);
                 if (validMove(position, nextPosition)) {
                     player.move();
+                    updatePlayerState(player);
                     nextPosition = player.getNextCell(true);
                     if (checkForHole(player)){
                         break;
@@ -317,9 +317,9 @@ public class Game extends InputAdapter implements ApplicationListener {
         }
         else if (cardValue == Value.MOVE_THREE){
             for (int step = 0; step < 3; step++){
-                playerLayer.setCell((int) position.x, (int) position.y, null);
                 if (validMove(position, nextPosition)) {
                     player.move();
+                    updatePlayerState(player);
                     nextPosition = player.getNextCell(true);
                     if (checkForHole(player)){
                         break;
@@ -330,6 +330,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         else if (cardValue == Value.BACK_UP){
             if(validMove(position, player.getNextCell(false))){
                 player.backUp();
+                updatePlayerState(player);
             }
         }
 
