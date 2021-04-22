@@ -98,6 +98,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         font = new BitmapFont();
         font.setColor(Color.RED);
         Gdx.input.setInputProcessor(this);
+        loadTextures();
 
         // Setup map and layers
         map = new TmxMapLoader().load("src/assets/VaultMap.tmx");
@@ -118,7 +119,7 @@ public class Game extends InputAdapter implements ApplicationListener {
 
 
         // TEST PLAYERS
-        /*Player p1 = new Player(1, startPositions.get(0));
+       /* Player p1 = new Player(1, startPositions.get(0));
         players.add(p1);
         Player p2 = new Player(2, startPositions.get(1));
         players.add(p2);
@@ -135,8 +136,8 @@ public class Game extends InputAdapter implements ApplicationListener {
         deck = new CardDeck();
 
         System.out.println("LOADING TEXTURES...");
-        //time(7000); // Må vente på at spillere skal connecte før den laster inn.
-        loadTextures(players);
+        time(3000); // Må vente på at spillere skal connecte før den laster inn.
+
     }
 
     private boolean canMove(Player player) {
@@ -479,7 +480,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         renderer.setView(camera);
     }
 
-    private void loadTextures(List<Player> players) {
+    private void loadTextures() {
 
         List<String> imgNames = Arrays.asList("player_1.png", "player_2.png", "player_3.png", "player_4.png", "player_5.png", "player_6.png");
 
@@ -506,9 +507,9 @@ public class Game extends InputAdapter implements ApplicationListener {
             allTextures.add(playerTextures);
         }
 
-        for (Player player : players) {
-            playerTextures.put(player.getId(), allTextures.get(player.getId() - 1));
-         }
+        for(int i = 1; i <= 6; i++){
+            playerTextures.put(i, allTextures.get(i - 1));
+        }
     }
 
     @Override

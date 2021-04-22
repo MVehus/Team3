@@ -43,7 +43,6 @@ public class Player implements Serializable {
         this.programCardDone = false;
     }
 
-
     // PLAYERINFO
 
     public int getId() {
@@ -311,21 +310,5 @@ public class Player implements Serializable {
             programCards.add(i, cards.remove(rand.nextInt(cards.size())));
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 }

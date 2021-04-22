@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # RoboRally Team 3 
 ### Team3: 
 - Mathias Vehus
@@ -16,6 +16,7 @@
     - [Obligatorisk oppgave 1](https://github.com/MVehus/Team3/blob/main/Deliverables/ObligatoriskOppgave1.md)
     - [Obligatorisk oppgave 2](https://github.com/MVehus/Team3/blob/main/Deliverables/ObligatoriskOppgave2.md)
     - [Obligatorisk oppgave 3](https://github.com/MVehus/Team3/blob/main/Deliverables/ObligatoriskOppgave3.md)
+    
 
 ## How to play 
 
@@ -120,4 +121,3 @@ We have written Manual tests for Board and Game.
 ## Thanks to
 - Arild from "Taco-laget" for the program card images.
 - Czyzby for Skins. You can find his LibGDX skins on: [GitHub](https://github.com/czyzby/gdx-skins)
->>>>>>> 4f23c99c3ea96726af8a53a3dd314cff8b8ba890
