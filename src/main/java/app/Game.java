@@ -270,7 +270,7 @@ public class Game extends InputAdapter implements ApplicationListener {
     }
 
     public void updatePlayer(PlayerModel playerModel) {
-        players.get(playerModel.getId()).setNewPlayerState(playerModel);
+        players.get(playerModel.getId()-1).setNewPlayerState(playerModel);
     }
 
     public void setPlayerList(ArrayList<Player> players) {
