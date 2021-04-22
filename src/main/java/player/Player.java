@@ -209,27 +209,25 @@ public class Player implements Serializable {
     }
 
     public void rotate(Direction dir) {
-        switch (dir) {
-            case RIGHT:
-                if (direction == Direction.UP)
-                    setDirection(Direction.RIGHT);
-                else if (direction == Direction.RIGHT)
-                    setDirection(Direction.DOWN);
-                else if (direction == Direction.DOWN)
-                    setDirection(Direction.LEFT);
-                else if (direction == Direction.LEFT)
-                    setDirection(Direction.UP);
 
-            case LEFT:
-                if (direction == Direction.UP)
-                    setDirection(Direction.LEFT);
-                else if (direction == Direction.RIGHT)
-                    setDirection(Direction.UP);
-                else if (direction == Direction.DOWN)
-                    setDirection(Direction.RIGHT);
-                else if (direction == Direction.LEFT)
-                    setDirection(Direction.DOWN);
-
+        if(dir == Direction.RIGHT){
+            if (direction == Direction.UP)
+                setDirection(Direction.RIGHT);
+            else if (direction == Direction.RIGHT)
+                setDirection(Direction.DOWN);
+            else if (direction == Direction.DOWN)
+                setDirection(Direction.LEFT);
+            else if (direction == Direction.LEFT)
+                setDirection(Direction.UP);
+        } else if (dir == Direction.LEFT){
+            if (direction == Direction.UP)
+                setDirection(Direction.LEFT);
+            else if (direction == Direction.RIGHT)
+                setDirection(Direction.UP);
+            else if (direction == Direction.DOWN)
+                setDirection(Direction.RIGHT);
+            else if (direction == Direction.LEFT)
+                setDirection(Direction.DOWN);
         }
     }
 

@@ -115,25 +115,8 @@ public class Game extends InputAdapter implements ApplicationListener {
             Network.sendPlayerListToClients();
         }
 
-        List<Vector2> startPositions = gameBoard.getTileLocations(Tile.RobotStart);
-
-
-        // TEST PLAYERS
-       /* Player p1 = new Player(1, startPositions.get(0));
-        players.add(p1);
-        Player p2 = new Player(2, startPositions.get(1));
-        players.add(p2);
-        Player p3 = new Player(3, startPositions.get(2));
-        players.add(p3);
-        Player p4 = new Player(4, startPositions.get(3));
-        players.add(p4);
-        Player p5 = new Player(5, startPositions.get(4));
-        players.add(p5);
-        Player p6 = new Player(6, startPositions.get(5));
-        players.add(p6);*/
-
         // CARDS
-        System.out.println("LOADING TEXTURES...");
+        System.out.println("LOADING GAME...");
         time(3000); // Må vente på at spillere skal connecte før den laster inn.
 
     }
