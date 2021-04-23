@@ -409,7 +409,6 @@ public class ApplicationScreen extends AbstractScreen {
                     if(pc != null)
                         player.addProgramCard(pc);
                 }
-                player.setProgramCardDone();
                 game.round();
             }
         });
