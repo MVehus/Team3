@@ -56,7 +56,6 @@ public class Client {
     public void sendTCP(Object obj) {
         try {
             client.sendTCP(obj);
-            System.out.println("Client: Object: " + obj.toString() + " sent to server.");
         } catch (Exception e) {
             System.out.println("Client: Could not send object to server with excpetion: \n" + e.toString());
         }

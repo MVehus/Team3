@@ -54,4 +54,16 @@ public class PlayerModel implements Serializable {
         return currentCard;
     }
 
+    @Override
+    public String toString() {
+        return "PlayerModel{" +
+                "id=" + id +
+                ", position=" + position +
+                ", lifeTokens=" + lifeTokens +
+                ", damageTokens=" + damageTokens +
+                ", flagsTaken=" + flagsTaken +
+                ", direction=" + direction +
+                ", currentCard=" + currentCard +
+                '}';
+    }
 }
