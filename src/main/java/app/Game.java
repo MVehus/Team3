@@ -277,7 +277,6 @@ public class Game extends InputAdapter implements ApplicationListener {
             }
             else if (validMove(position, nextPosition)) {
                 player.move();
-                updatePlayerState(player);
             }
         }
         else if (cardValue == Value.MOVE_TWO) {
