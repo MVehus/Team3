@@ -265,6 +265,7 @@ public class Game extends InputAdapter implements ApplicationListener {
             playerLayer.setCell((int) position.x, (int) position.y, null);
             if (validMove(position, nextPosition)) {
                 player.move();
+                wipePlayerTrail(player);
                 updatePlayerState(player);
             }
         }
@@ -273,6 +274,7 @@ public class Game extends InputAdapter implements ApplicationListener {
                 playerLayer.setCell((int) position.x, (int) position.y, null);
                 if (validMove(position, nextPosition)) {
                     player.move();
+                    wipePlayerTrail(player);
                     updatePlayerState(player);
                     nextPosition = player.getNextCell(true);
                     if (checkForHole(player)){
@@ -287,6 +289,7 @@ public class Game extends InputAdapter implements ApplicationListener {
                 playerLayer.setCell((int) position.x, (int) position.y, null);
                 if (validMove(position, nextPosition)) {
                     player.move();
+                    wipePlayerTrail(player);
                     updatePlayerState(player);
                     nextPosition = player.getNextCell(true);
                     if (checkForHole(player)){
@@ -306,6 +309,22 @@ public class Game extends InputAdapter implements ApplicationListener {
         playerLayer.setCell(startX, startY, null);
         System.out.println(player.information());
         player.useCurrentCard();
+    }
+
+    private void wipePlayerTrail(Player p){
+        int x = (int) p.getPosition().x;
+        int y = (int) p.getPosition().y;
+        Direction dir = p.getDirection();
+
+        if (dir == Direction.UP) {
+            playerLayer.setCell(x, y-1, null);
+        } else if (dir == Direction.DOWN){
+            playerLayer.setCell(x, y + 1, null);
+        } else if (dir == Direction.LEFT) {
+            playerLayer.setCell(x +1, y, null);
+        } else if (dir == Direction.RIGHT){
+            playerLayer.setCell(x-1, y, null);
+        }
     }
 
     private void checkForFlags() {
