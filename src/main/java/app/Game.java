@@ -29,6 +29,7 @@ public class Game extends InputAdapter implements ApplicationListener {
     private TiledMapTileLayer playerLayer;
     private TiledMapTileLayer laserLayer;
     private List<TiledMapTileLayer.Cell> laserTextures;
+    private List<Vector2> laserPositions;
     private Board gameBoard;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
@@ -70,7 +71,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         // Setup camera
         TiledMapTileLayer boardLayer = gameBoard.getLayer(Tile.Board);
         playerLayer = gameBoard.getLayer(Tile.Player);
-        laserLayer = gameBoard.getLayer(Tile.Player);
+        laserLayer = gameBoard.getLayer(Tile.LaserHorizontal);
         boardWidth = gameBoard.getNumColumns();
         boardHeight = gameBoard.getNumRows();
         OrthographicCamera camera = new OrthographicCamera();
@@ -199,7 +200,7 @@ public class Game extends InputAdapter implements ApplicationListener {
             }
             movePlayers();
             boardElementsTurn();
-            drawLasers();
+            //drawLasers();
             checkForFlags();
         }
         //playersChooseCards();
@@ -212,19 +213,26 @@ public class Game extends InputAdapter implements ApplicationListener {
      * Laser should stop if hit player or wall.
      */
     private void drawLasers(){
-        /*
+        laserPositions = new ArrayList<>();
+
         for(Player p : players){
-            List<Vector2> line = getNextCells(p);
+            List<Vector2> line = availableCellsInFrontOfPlayer(p);
             for(Vector2 cell : line){
                 if(p.getDirection() == Direction.DOWN || p.getDirection() == Direction.UP)
                     laserLayer.setCell((int) cell.x, (int) cell.y, laserTextures.get(1));
                 else {
                     laserLayer.setCell((int) cell.x, (int) cell.y, laserTextures.get(0));
                 }
+                laserPositions.add(cell);
             }
         }
+    }
 
-         */
+    private void clearLasers(){
+        for(Vector2 cell : laserPositions){
+            laserPositions.remove(cell);
+            laserLayer.setCell((int) cell.x, (int) cell.y, null);
+        }
     }
 
     private void movePlayers() {
@@ -269,7 +277,6 @@ public class Game extends InputAdapter implements ApplicationListener {
             }
             else if (validMove(position, nextPosition)) {
                 player.move();
-                //wipePlayerTrail(player);
                 updatePlayerState(player);
             }
         }
@@ -283,8 +290,6 @@ public class Game extends InputAdapter implements ApplicationListener {
                 }
                 else if (validMove(position, nextPosition)) {
                     player.move();
-                    //wipePlayerTrail(player);
-                    updatePlayerState(player);
                     nextPosition = player.getNextCell(true);
                     if (checkForHole(player)){
                         break;
@@ -303,8 +308,6 @@ public class Game extends InputAdapter implements ApplicationListener {
                 }
                 else if (validMove(position, nextPosition)) {
                     player.move();
-                    //wipePlayerTrail(player);
-                    updatePlayerState(player);
                     nextPosition = player.getNextCell(true);
                     if (checkForHole(player)){
                         break;
@@ -316,7 +319,6 @@ public class Game extends InputAdapter implements ApplicationListener {
             playerLayer.setCell((int) position.x, (int) position.y, null);
             if(validMove(position, player.getNextCell(false))){
                 player.backUp();
-                updatePlayerState(player);
             }
         }
 
@@ -657,7 +659,6 @@ public class Game extends InputAdapter implements ApplicationListener {
             }
         }
     }
-
 
     //region UTILITIES
     private void time(int n) {
