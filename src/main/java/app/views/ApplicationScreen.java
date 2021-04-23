@@ -32,18 +32,17 @@ public class ApplicationScreen extends AbstractScreen {
     private int gameWidth;
     private Player player;
 
-    private Image cardSlotsTop;
     private Image cardSlotsMiddle;
     private Image cardSlotsBottom;
     private Image flagsImage;
     private Image dmgTokensImage;
     private Image lifeTokensImage;
-    private Image locked1Image = new Image(new Sprite(new Texture("src/assets/lockedLabel.png")));
-    private Image locked2Image = new Image(new Sprite(new Texture("src/assets/lockedLabel.png")));
-    private Image locked3Image = new Image(new Sprite(new Texture("src/assets/lockedLabel.png")));
-    private Image locked4Image = new Image(new Sprite(new Texture("src/assets/lockedLabel.png")));
+    private final Image locked1Image = new Image(new Sprite(new Texture("src/assets/lockedLabel.png")));
+    private final Image locked2Image = new Image(new Sprite(new Texture("src/assets/lockedLabel.png")));
+    private final Image locked3Image = new Image(new Sprite(new Texture("src/assets/lockedLabel.png")));
+    private final Image locked4Image = new Image(new Sprite(new Texture("src/assets/lockedLabel.png")));
 
-    private HashMap<Integer, Image> imageMap;
+    private final HashMap<Integer, Image> imageMap;
 
     private int flags;
     private int dmgTokens;
@@ -345,7 +344,7 @@ public class ApplicationScreen extends AbstractScreen {
     private void initCardSlots() {
         Sprite texture1 = new Sprite(new Texture("src/assets/playerGUI/cardSlots.jpg"));
         Sprite texture2 = new Sprite(new Texture("src/assets/playerGUI/cardSlotsNumbered.jpg"));
-        cardSlotsTop = new Image(new SpriteDrawable(texture1));
+        Image cardSlotsTop = new Image(new SpriteDrawable(texture1));
         cardSlotsTop.setWidth(width - gameWidth);
         cardSlotsTop.setHeight((float) ((width - gameWidth) / 5 * 4 / 3));
         cardSlotsTop.setPosition(gameWidth, (float) ((width - gameWidth) / 5 * 4 / 3) * 2 + 80);

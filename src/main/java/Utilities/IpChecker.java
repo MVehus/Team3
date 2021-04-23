@@ -11,10 +11,9 @@ public class IpChecker {
             BufferedReader in = new BufferedReader(new InputStreamReader(
                     whatismyip.openStream()));
 
-            String ip = in.readLine(); //you get the IP as a String
-            return ip;
+            return in.readLine();
         } catch (Exception e){
-            System.out.println("Could not extract public IP address with exeption: \n" + e.toString());
+            System.out.println("Could not extract public IP address with exeption: \n" + e);
             return "Not Found";
         }
 

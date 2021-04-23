@@ -8,9 +8,9 @@ import projectCard.CardDeck;
 import static org.junit.Assert.assertEquals;
 
 public class PlayerTest {
-    Vector2 pos = new Vector2(1,6);
-    Player player = new Player(1, pos);
-    CardDeck deck = new CardDeck();
+    final Vector2 pos = new Vector2(1,6);
+    final Player player = new Player(1, pos);
+    final CardDeck deck = new CardDeck();
 
     @Test
     public void PlayerHasFullHealthAtStart(){

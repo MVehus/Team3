@@ -23,7 +23,7 @@ public class Network {
             client = new Client(IpAddress, port);
             return true;
         } catch (Exception e) {
-            System.out.println("Could not connect new client to server with exception: \n" + e.toString());
+            System.out.println("Could not connect new client to server with exception: \n" + e);
             return false;
         }
     }

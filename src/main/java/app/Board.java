@@ -8,6 +8,7 @@ import player.Player;
 
 import java.util.*;
 
+@SuppressWarnings("unused")
 public class Board {
 
     private final int numColumns;
@@ -115,37 +116,6 @@ public class Board {
                     player.setPosition((int) newXPos, (int) newYPos + 1);
                 }
             }
-
-            /*
-            else if(tilesOnPos.contains(Tile.DoubleConveyorRight)){
-
-                player.setPosition((int) xPos + 1, (int) yPos);
-                float newXPos = player.getPosition().x;
-                float newYPos = player.getPosition().y;
-                tilesOnPos = getTilesOnCell(newXPos, newYPos);
-                if(tilesOnPos.contains(Tile.DoubleConveyorRight)){
-                    player.setPosition((int) newXPos + 1, (int) newYPos);
-                }
-                else if(tilesOnPos.contains(Tile.DoubleConveyorUp)){
-                    player.setPosition((int) newXPos, (int) newYPos + 1);
-                }
-            }
-
-            else if(tilesOnPos.contains(Tile.DoubleConveyorUp)){
-                player.setPosition((int) xPos, (int) yPos + 1);
-                float newXPos = player.getPosition().x;
-                float newYPos = player.getPosition().y;
-                tilesOnPos = getTilesOnCell(newXPos, newYPos);
-
-                if(tilesOnPos.contains(Tile.DoubleConveyorRight)){
-                    player.setPosition((int) newXPos + 1, (int) newYPos);
-                }
-                else if(tilesOnPos.contains(Tile.DoubleConveyorUp)){
-                    player.setPosition((int) newXPos, (int) newYPos + 1);
-                }
-            }
-            */
-
         }
     }
 }

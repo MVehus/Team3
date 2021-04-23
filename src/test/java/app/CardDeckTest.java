@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 public class CardDeckTest {
 
     private final CardDeck DECK = new CardDeck();
-    private ArrayList<Player> players = new ArrayList<>();
+    private final ArrayList<Player> players = new ArrayList<>();
 
     @Test
     public void FullDeckContains84Cards(){
@@ -48,7 +48,6 @@ public class CardDeckTest {
 
     @Test
     public void RestockDeck(){
-        ArrayList<ProgramCard> cards = new ArrayList<>();
         DECK.drawCards(30);
         DECK.restock();
         assertEquals(84, DECK.getDeckSize());

@@ -29,7 +29,6 @@ public class Game extends InputAdapter implements ApplicationListener {
     private TiledMapTileLayer playerLayer;
     private TiledMapTileLayer laserLayer;
     private List<TiledMapTileLayer.Cell> laserTextures;
-    private List<Vector2> laserPositions;
     private Board gameBoard;
     private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
@@ -200,12 +199,8 @@ public class Game extends InputAdapter implements ApplicationListener {
             }
             movePlayers();
             boardElementsTurn();
-            //drawLasers();
             checkForFlags();
         }
-        //playersChooseCards();
-        //selectPlayerTurn();
-        //revealCards();
     }
 
     /**
@@ -213,7 +208,7 @@ public class Game extends InputAdapter implements ApplicationListener {
      * Laser should stop if hit player or wall.
      */
     private void drawLasers(){
-        laserPositions = new ArrayList<>();
+        List<Vector2> laserPositions = new ArrayList<>();
 
         for(Player p : players){
             List<Vector2> line = availableCellsInFrontOfPlayer(p);
@@ -225,13 +220,6 @@ public class Game extends InputAdapter implements ApplicationListener {
                 }
                 laserPositions.add(cell);
             }
-        }
-    }
-
-    private void clearLasers(){
-        for(Vector2 cell : laserPositions){
-            laserPositions.remove(cell);
-            laserLayer.setCell((int) cell.x, (int) cell.y, null);
         }
     }
 
@@ -255,8 +243,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         Value cardValue = player.getCurrentCard().getValue();
         Vector2 position = player.getPosition();
         Vector2 nextPosition = player.getNextCell(true);
-        //playerLayer.setCell((int) position.x, (int) position.y, null);
-        int startX = (int) position.x, startY = (int) position.y;
 
         if (cardValue == Value.U_TURN) {
             player.rotate(Direction.RIGHT);
@@ -269,7 +255,6 @@ public class Game extends InputAdapter implements ApplicationListener {
             player.rotate(Direction.LEFT);
         }
         else if (cardValue == Value.MOVE_ONE) {
-            //playerLayer.setCell((int) position.x, (int) position.y, null);
             if(playerOnNextCell(player)){
                 if(canPush(player, getAllPlayersInLine(player))){
                     push(player, getAllPlayersInLine(player));
@@ -283,7 +268,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         }
         else if (cardValue == Value.MOVE_TWO) {
             for (int step = 0; step < 2; step++) {
-                //playerLayer.setCell((int) position.x, (int) position.y, null);
                 if(playerOnNextCell(player)){
                     if(canPush(player, getAllPlayersInLine(player))){
                         push(player, getAllPlayersInLine(player));
@@ -303,7 +287,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         }
         else if (cardValue == Value.MOVE_THREE){
             for (int step = 0; step < 3; step++){
-                //playerLayer.setCell((int) position.x, (int) position.y, null);
                 if(playerOnNextCell(player)){
                     if(canPush(player, getAllPlayersInLine(player))){
                         push(player, getAllPlayersInLine(player));
@@ -321,14 +304,12 @@ public class Game extends InputAdapter implements ApplicationListener {
             }
         }
         else if (cardValue == Value.BACK_UP){
-            //playerLayer.setCell((int) position.x, (int) position.y, null);
             if(validMove(position, player.getNextCell(false))){
                 player.backUp();
                 updatePlayerState(player);
             }
         }
 
-        System.out.println(player.information());
         player.useCurrentCard();
     }
 
@@ -339,9 +320,6 @@ public class Game extends InputAdapter implements ApplicationListener {
     }
 
     private void updatePlayerFlagState(Player player) {
-        float xPos = player.getPosition().x;
-        float yPos = player.getPosition().y;
-
         // Loop through layers player is on
         List<Tile> tilesOnPos = gameBoard.getTilesOnCell(player.getPosition().x, player.getPosition().y);
         for (Tile layer : tilesOnPos) {
@@ -378,8 +356,8 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         }
 
-        // Fire lasers
-        System.out.println("___LASERS FIRE");
+        //BUG with lasers
+        //drawLasers();
     }
 
     /**
@@ -395,7 +373,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         float yPos = player.getPosition().y;
         if (xPos < 0 || xPos > boardWidth || yPos < 0 || yPos > boardHeight) {
             player.loseLifeToken();
-            System.out.println("Player: " + player.getId() + "Lost LIFE");
+            System.out.println("Player: " + player.getId() + "Lost life");
         }
         // Loop through layers player is on
         List<Tile> tilesOnPos = gameBoard.getTilesOnCell(player.getPosition().x, player.getPosition().y);
@@ -512,54 +490,46 @@ public class Game extends InputAdapter implements ApplicationListener {
         List<Tile> newTile = gameBoard.getTilesOnCell(to.x, to.y);
 
         if (from.y < to.y) {
-            if (currentTile.contains(Tile.WallTop) ||
-                    currentTile.contains(Tile.WallTopRight) ||
-                    currentTile.contains(Tile.WallTopLeft) ||
-                    newTile.contains(Tile.WallBottom) ||
-                    newTile.contains(Tile.WallBottomRight) ||
-                    newTile.contains(Tile.WallBottomLeft) ||
-                    currentTile.contains(Tile.PushWallTop) ||
-                    newTile.contains(Tile.PushWallBottom))
-                return false;
+            return !currentTile.contains(Tile.WallTop) &&
+                    !currentTile.contains(Tile.WallTopRight) &&
+                    !currentTile.contains(Tile.WallTopLeft) &&
+                    !newTile.contains(Tile.WallBottom) &&
+                    !newTile.contains(Tile.WallBottomRight) &&
+                    !newTile.contains(Tile.WallBottomLeft) &&
+                    !currentTile.contains(Tile.PushWallTop) &&
+                    !newTile.contains(Tile.PushWallBottom);
         }
         else if (from.y > to.y) {
-            if (currentTile.contains(Tile.WallBottom) ||
-                    currentTile.contains(Tile.WallBottomRight) ||
-                    currentTile.contains(Tile.WallBottomLeft) ||
-                    newTile.contains(Tile.WallTop) ||
-                    newTile.contains(Tile.WallTopRight) ||
-                    newTile.contains(Tile.WallTopLeft) ||
-                    currentTile.contains(Tile.PushWallBottom) ||
-                    newTile.contains(Tile.PushWallTop))
-                return false;
+            return !currentTile.contains(Tile.WallBottom) &&
+                    !currentTile.contains(Tile.WallBottomRight) &&
+                    !currentTile.contains(Tile.WallBottomLeft) &&
+                    !newTile.contains(Tile.WallTop) &&
+                    !newTile.contains(Tile.WallTopRight) &&
+                    !newTile.contains(Tile.WallTopLeft) &&
+                    !currentTile.contains(Tile.PushWallBottom) &&
+                    !newTile.contains(Tile.PushWallTop);
         }
         else if (from.x < to.x) {
-            if (currentTile.contains(Tile.WallRight) ||
-                    currentTile.contains(Tile.WallTopRight) ||
-                    currentTile.contains(Tile.WallBottomRight) ||
-                    currentTile.contains(Tile.PushWallRight) ||
-                    newTile.contains(Tile.PushWallLeft) ||
-                    newTile.contains(Tile.WallLeft) ||
-                    newTile.contains(Tile.WallTopLeft) ||
-                    newTile.contains(Tile.WallBottomLeft))
-                return false;
+            return !currentTile.contains(Tile.WallRight) &&
+                    !currentTile.contains(Tile.WallTopRight) &&
+                    !currentTile.contains(Tile.WallBottomRight) &&
+                    !currentTile.contains(Tile.PushWallRight) &&
+                    !newTile.contains(Tile.PushWallLeft) &&
+                    !newTile.contains(Tile.WallLeft) &&
+                    !newTile.contains(Tile.WallTopLeft) &&
+                    !newTile.contains(Tile.WallBottomLeft);
         }
         else if (from.x > to.x) {
-            if (currentTile.contains(Tile.WallLeft) ||
-                    currentTile.contains(Tile.WallBottomLeft) ||
-                    currentTile.contains(Tile.WallTopLeft) ||
-                    newTile.contains(Tile.WallRight) ||
-                    newTile.contains(Tile.WallTopRight) ||
-                    newTile.contains(Tile.WallBottomRight) ||
-                    currentTile.contains(Tile.PushWallLeft) ||
-                    newTile.contains(Tile.PushWallRight))
-                return false;
-        } else if(from == to) {
-            return false;
-        }
+            return !currentTile.contains(Tile.WallLeft) &&
+                    !currentTile.contains(Tile.WallBottomLeft) &&
+                    !currentTile.contains(Tile.WallTopLeft) &&
+                    !newTile.contains(Tile.WallRight) &&
+                    !newTile.contains(Tile.WallTopRight) &&
+                    !newTile.contains(Tile.WallBottomRight) &&
+                    !currentTile.contains(Tile.PushWallLeft) &&
+                    !newTile.contains(Tile.PushWallRight);
+        } else return from != to;
 
-        return true;
-        
     }
 
     /**
@@ -630,25 +600,6 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     public List<Player> getPlayers() {
         return players;
-    }
-
-    private void revealCards() {
-        //TODO show cards on gameboard
-    }
-
-    private void playersChooseCards() {
-        //TODO
-        // check if all players are ready then continue
-        // if only one player left, set timer
-    }
-
-    private void selectPlayerTurn() {
-        players.sort(new Comparator<Player>() {
-            @Override
-            public int compare(Player p1, Player p2) {
-                return Integer.compare(p2.getCurrentCard().getPriority(), p1.getCurrentCard().getPriority());
-            }
-        });
     }
 
     /**

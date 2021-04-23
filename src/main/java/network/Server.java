@@ -8,7 +8,6 @@ import player.Player;
 import projectCard.CardDeck;
 import projectCard.Hand;
 
-import javax.sound.midi.Soundbank;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -26,7 +25,7 @@ public class Server {
         try {
             server.bind(port);
         } catch (IOException e) {
-            System.out.println(e.toString());
+            System.out.println(e);
         }
 
         clients = new ArrayList<>();
@@ -73,7 +72,7 @@ public class Server {
         try {
             connection.sendTCP(connection.getID());
         } catch (Exception e) {
-            System.out.println("Server: Could not send id to client with exception: \n" + e.toString());
+            System.out.println("Server: Could not send id to client with exception: \n" + e);
         }
     }
 
@@ -85,7 +84,7 @@ public class Server {
         try {
             connection.sendTCP(obj);
         } catch (Exception e) {
-            System.out.println("Server: Could not send message: " + obj.toString() + " to client: " + connection + "with exception:\n" + e.toString());
+            System.out.println("Server: Could not send message: " + obj.toString() + " to client: " + connection + "with exception:\n" + e);
         }
     }
 
@@ -119,7 +118,7 @@ public class Server {
                 return true;
             } catch (NumberFormatException e) {
                 System.out.println("Cardrequest needs a specified number of cards at the end of the string" +
-                        " Thrown with exception: " + e.toString());
+                        " Thrown with exception: " + e);
                 return false;
             }
         }

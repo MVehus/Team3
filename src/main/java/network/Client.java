@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class Client {
 
     private Game game;
-    com.esotericsoftware.kryonet.Client client;
+    final com.esotericsoftware.kryonet.Client client;
     private Integer id;
     private Boolean gameStarted = false;
     private Hand currentHand;
@@ -57,7 +57,7 @@ public class Client {
         try {
             client.sendTCP(obj);
         } catch (Exception e) {
-            System.out.println("Client: Could not send object to server with excpetion: \n" + e.toString());
+            System.out.println("Client: Could not send object to server with excpetion: \n" + e);
         }
     }
 

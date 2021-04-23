@@ -1,7 +1,6 @@
 package projectCard;
 
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Hand implements Serializable {

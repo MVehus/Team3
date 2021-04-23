@@ -3,8 +3,6 @@ package player;
 import Models.PlayerModel;
 import app.Direction;
 import com.badlogic.gdx.math.Vector2;
-import org.junit.Test;
-import projectCard.CardDeck;
 import projectCard.ProgramCard;
 
 import java.io.Serializable;
@@ -16,10 +14,10 @@ public class Player implements Serializable {
     private final int id;
     private final String name;
     private Vector2 position;
-    private Vector2 backupPosision;
+    private final Vector2 backupPosision;
     private Direction direction;
     public ArrayList<ProgramCard> cards = new ArrayList<ProgramCard>();
-    public ArrayList<ProgramCard> programCards = new ArrayList<ProgramCard>(5);
+    public final ArrayList<ProgramCard> programCards = new ArrayList<ProgramCard>(5);
     private int lifeTokens;
     private int damageTokens;
     private int flagsTaken;

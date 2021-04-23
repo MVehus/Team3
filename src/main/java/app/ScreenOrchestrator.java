@@ -6,6 +6,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class ScreenOrchestrator extends Game {
     private SpriteBatch batch;
     private LoadingScreen loadingScreen;
@@ -17,7 +18,7 @@ public class ScreenOrchestrator extends Game {
     private JoinGameScreen joinGameScreen;
     private CreateGameScreen createGameScreen;
     private AppPreferences preferences;
-    public MusicAssetManager assMan = new MusicAssetManager();
+    public final MusicAssetManager assMan = new MusicAssetManager();
     public Music playingSong;
 
     public final static int MENU = 0;

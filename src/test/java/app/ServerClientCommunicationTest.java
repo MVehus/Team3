@@ -1,7 +1,5 @@
 package app;
 
-import com.badlogic.gdx.Net;
-import network.Client;
 import network.Network;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
