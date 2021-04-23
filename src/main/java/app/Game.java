@@ -61,7 +61,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         if (Network.hostingServer()) {
             Network.sendPlayerListToClients();
         }
-        
+
         System.out.println("LOADING GAME...");
         time(3000);
     }
@@ -672,7 +672,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         for(int y = 0; y < boardHeight; y++){
             for(int x = 0; x < boardWidth; x++){
                 Vector2 cell = new Vector2(x, y);
-                if(getPlayerOnCell(cell) != null){
+                if(getPlayerOnCell(cell) == null){
                     playerLayer.setCell((int) cell.x, (int) cell.y, null);
                 }
             }
