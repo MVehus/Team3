@@ -645,6 +645,19 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         for (Player p : players) {
             playerLayer.setCell((int) p.getPosition().x, (int) p.getPosition().y, getPlayerTexture(p));
+            clearPlayerTexture(p);
+        }
+    }
+
+    public void clearPlayerTexture(Player player){
+        int x = (int) player.getPosition().x;
+        int y= (int) player.getPosition().y;
+        for (int i = x - 3; i < x + 3; i++){
+            for (int j = y - 3; j < y + 3; j++){
+                if(i != x && j != y) {
+                    playerLayer.setCell(i, j, null);
+                }
+            }
         }
     }
 

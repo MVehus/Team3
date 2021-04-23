@@ -41,7 +41,7 @@ public class ScreenOrchestrator extends Game {
         assMan.manager.finishLoading();
         // loads the 2 sounds we use
         playingSong = assMan.manager.get("src/assets/music/Rolemusic_-_pl4y1ng.mp3");
-        playingSong.play();
+        //playingSong.play();
         playingSong.setLooping(true);
     }
 
