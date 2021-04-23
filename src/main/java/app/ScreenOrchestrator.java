@@ -42,6 +42,7 @@ public class ScreenOrchestrator extends Game {
         // loads the 2 sounds we use
         playingSong = assMan.manager.get("src/assets/music/Rolemusic_-_pl4y1ng.mp3");
         playingSong.play();
+        playingSong.setLooping(true);
     }
 
     public void changeScreen(int screen){
@@ -82,7 +83,10 @@ public class ScreenOrchestrator extends Game {
         super.render();
         playingSong.setVolume(preferences.getMusicVolume());
         if (!preferences.isMusicEnabled()) {
-            playingSong.setVolume(0);
+            playingSong.pause();
+        }
+        else {
+            playingSong.play();
         }
     }
 
