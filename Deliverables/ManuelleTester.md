@@ -15,14 +15,14 @@ Spilleren skal få opp et nytt spillbrett
 ## Tester i Join Game
 Spilleren skal kunne bli med i et spill
 ##### Forutsetning: 
-Spilleren må ha en host han/hun kan koble seg til
+Spilleren må ha en host han/hun kan koble seg til.
 ##### Test steg:
 1. Kjør programmet
 2. Trykk på "Join Game"-knappen i hovedmenyen.
 3. Skriv inn IP og Port i henholdsvis "IP"- og "Port"-feltet
 4. Trykk på "Connect"-knappen
 ##### Forventet resultat:
-Spilleren skal bli med i et eksisterende spill
+Spilleren skal bli med i et eksisterende spill.
 
 ## Få spillet over i Fullscreen
 Spilleren skal kunne velge å spille spillet i Fullscreen-mode fra "Preferences"
@@ -43,7 +43,7 @@ Spilleren skal kunne lese reglene og deretter returnere til hovedmenyen.
 2. Trykk på "Rules"-knappen i hovedmenyen
 3. Trykk på "Main menu"-knappen inne på "Rules"-siden
 ##### Forventet resultat:
-Spilleren skal få et bilde av spillets regler i "Rules" og deretter returnere til hovedmenyen
+Spilleren skal få et bilde av spillets regler i "Rules" og deretter returnere til hovedmenyen.
 
 
 ## Avslutte programmet
@@ -54,7 +54,32 @@ Spilleren må være på spillets hovedmeny
 1. Kjør programmet
 2. Trykk på Exit-knappen i hovedmenyen
 ##### Forventet resultat:
-Programmet skal avsluttes
+Programmet skal avsluttes.
+
+
+## Kan skru musikk av/på
+Spilleren skal kunne skru av og på musikk fra preferences.
+##### Forutsetning:
+Musikk på være enten på eller av
+##### Test steg:
+1. Kjør programmet
+2. Trykk på "Preferences"-knappen i hovedmenyen
+3. Trykk på checkboxen ved "Music"
+##### Forventet resultat:
+Dersom musikk var av når programmet ble kjørt skal den nå være på, dersom den var på skal den nå være av.
+
+
+## Kan endre volum på musikk
+Spilleren skal kunne endre volum på musikk.
+##### Forutsetning:
+Musikken må være på.
+##### Test steg:
+1. Kjør programmet
+2. Trykk på "Preferences"-knappen i hovedmenyen
+3. Endre på volumbaren til høyre for "Music volume", til enten høyere eller lavere lyd.
+##### Forventet resultat:
+Om du drar volumbaren mot høyre skal musikken være høyere, om du drar den mot venstre skal musikken bli lavere.
+
 
 ## Tester i Game
 
