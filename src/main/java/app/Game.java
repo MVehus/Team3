@@ -3,7 +3,6 @@ package app;
 import Models.PlayerModel;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL30;
@@ -83,6 +82,9 @@ public class Game extends InputAdapter implements ApplicationListener {
         renderer.setView(camera);
     }
 
+    /**
+     * Load all .png files from assets folder
+     */
     private void loadTextures() {
 
         // LOAD PLAYER TEXTURES
@@ -128,6 +130,12 @@ public class Game extends InputAdapter implements ApplicationListener {
         }
     }
 
+    /**
+     * This method takes in a player and checks its status.
+     * Return correct texture based on isAlive, isWinner or returns normal texture.
+     * @param player
+     * @return - correct player texture
+     */
     private TiledMapTileLayer.Cell getPlayerTexture(Player player) {
 
         List<TiledMapTileLayer.Cell> textures = playerTextures.get(player.getId());
@@ -200,6 +208,10 @@ public class Game extends InputAdapter implements ApplicationListener {
         //revealCards();
     }
 
+    /**
+     * This method loops through all players, all draw lasers in available cells in front of player.
+     * Laser should stop if hit player or wall.
+     */
     private void drawLasers(){
         /*
         for(Player p : players){
@@ -227,6 +239,11 @@ public class Game extends InputAdapter implements ApplicationListener {
         }
     }
 
+    /**
+     * Take a turn based on current card.
+     *
+     * @param player
+     */
     public void playerTurn(Player player) {
         Value cardValue = player.getCurrentCard().getValue();
         Vector2 position = player.getPosition();
@@ -326,7 +343,7 @@ public class Game extends InputAdapter implements ApplicationListener {
                 }
             }
         }
-        Network.sendUpdatedPlayerModel(player.getModel());
+
     }
 
     private void boardElementsTurn() {
@@ -345,6 +362,11 @@ public class Game extends InputAdapter implements ApplicationListener {
         System.out.println("___LASERS FIRE");
     }
 
+    /**
+     * Loop through tiles on cell for each movement.
+     * Change playerState based on tile (change position, take damage or loose life)
+     * @param player
+     */
     public void updatePlayerState(Player player) {
 
         playerLayer.setCell((int) player.getPosition().x, (int) player.getPosition().y, null);
@@ -376,6 +398,7 @@ public class Game extends InputAdapter implements ApplicationListener {
             }
         }
         render();
+        Network.sendUpdatedPlayerModel(player.getModel());
 
     }
 
@@ -392,7 +415,14 @@ public class Game extends InputAdapter implements ApplicationListener {
     }
     //endregion
 
-
+    /**
+     * This method checks a movement from a postion to next cell.
+     * Check for walls.
+     *
+     * @param from - from position
+     * @param to - to position
+     * @return - true if possible move, false otherwise .
+     */
     private boolean validMove(Vector2 from, Vector2 to){
 
         List<Tile> currentTile = gameBoard.getTilesOnCell(from.x, from.y);
@@ -449,13 +479,25 @@ public class Game extends InputAdapter implements ApplicationListener {
         
     }
 
+    /**
+     *
+     * @param player
+     * @return - true if there is a player on current player's next cell .
+     */
     private boolean playerOnNextCell(Player player) {
         Vector2 nextCell = player.getNextCell(true);
 
         return (getPlayerOnCell(nextCell) != null);
     }
 
-    public List<Vector2> getNextCells(Player player) {
+    /**
+     * This method loops through cells in front of player, based on player direction.
+     * Stops if method hits a wall or player. Used to draw lasers.
+     *
+     * @param player - current player
+     * @return - list of available cells (in straight line)
+     */
+    public List<Vector2> availableCellsInFrontOfPlayer(Player player) {
         List<Vector2> cells = new ArrayList<>();
 
         Vector2 fromPos = player.getPosition();
@@ -494,10 +536,16 @@ public class Game extends InputAdapter implements ApplicationListener {
         return cells;
     }
 
+    /**
+     * Used for pushing multiple players.
+     *
+     * @param player
+     * @return - list of players which stand in front of current player.
+     */
     public List<Player> getAllPlayersInLine(Player player) {
         List<Player> neighbours = new ArrayList<>();
 
-        List<Vector2> nextCells = getNextCells(player);
+        List<Vector2> nextCells = availableCellsInFrontOfPlayer(player);
         for (Vector2 v : nextCells) {
             if (getPlayerOnCell(v) != null) {
                 neighbours.add(getPlayerOnCell(v));
@@ -507,6 +555,12 @@ public class Game extends InputAdapter implements ApplicationListener {
         return neighbours;
     }
 
+    /**
+     * This method push a list of players in current player's direction.
+     *
+     * @param player - pusher
+     * @param allPlayers - pushed players
+     */
     public void push(Player player, List<Player> allPlayers) {
 
         Collections.reverse(allPlayers);
@@ -517,6 +571,14 @@ public class Game extends InputAdapter implements ApplicationListener {
         player.move();
     }
 
+    /**
+     * Loops through all players in front of current player.
+     * Check if last player in line, can be push in current player's direction.
+     *
+     * @param player
+     * @param playersOnLine - true if last player can be pushed.
+     * @return
+     */
     public boolean canPush(Player player, List<Player> playersOnLine) {
         if (playersOnLine.size() > 0) {
             Player lastPlayer = playersOnLine.get(playersOnLine.size() - 1);
