@@ -29,23 +29,15 @@ public class Client {
             public void received(Connection connection, Object object) {
                 if (object instanceof PlayerModel) {
                     PlayerModel updatedPlayerModel = (PlayerModel) object;
-                    System.out.println("Player " + connection.getID() + " updated");
+                    System.out.println("Client: Player " + updatedPlayerModel.getId() + " updated");
                     System.out.println();
-                    if (game != null) {
-                        game.updatePlayer(updatedPlayerModel);
-                    } else {
-                        System.out.println("Game is not initialized in Client class.");
-                    }
+                    game.updatePlayer(updatedPlayerModel);
 
                 } else if (object instanceof Integer) {
                     id = (Integer) object;
 
                 } else if (object instanceof ArrayList) {
-                    if (game != null) {
-                        game.setPlayerList((ArrayList<Player>) object);
-                    } else {
-                        System.out.println("Game is not initialized in Client class.");
-                    }
+                    game.setPlayerList((ArrayList<Player>) object);
 
                 } else if (object instanceof Boolean) {
                     gameStarted = (Boolean) object;
@@ -64,9 +56,9 @@ public class Client {
     public void sendTCP(Object obj) {
         try {
             client.sendTCP(obj);
-            System.out.println("Object: " + obj.toString() + " sent to server.");
+            System.out.println("Client: Object: " + obj.toString() + " sent to server.");
         } catch (Exception e) {
-            System.out.println("Could not send object to server with excpetion: \n" + e.toString());
+            System.out.println("Client: Could not send object to server with excpetion: \n" + e.toString());
         }
     }
 

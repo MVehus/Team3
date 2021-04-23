@@ -37,7 +37,7 @@ public class Server {
             public void received(Connection connection, Object object) {
                 if (object instanceof PlayerModel) {
                     PlayerModel updatedPlayerModel = (PlayerModel) object;
-                    System.out.println("Received updated PlayerModel from connection : " + connection);
+                    System.out.println("Server: Received updated PlayerModel from connection : " + connection);
                     players.get(connection.getID() - 1).setNewPlayerState(updatedPlayerModel);
                     sendToAllClients(updatedPlayerModel);
                 } else if (object instanceof Boolean) {
@@ -73,7 +73,7 @@ public class Server {
         try {
             connection.sendTCP(connection.getID());
         } catch (Exception e) {
-            System.out.println("Could not send id to client with exception: \n" + e.toString());
+            System.out.println("Server: Could not send id to client with exception: \n" + e.toString());
         }
     }
 
@@ -85,7 +85,7 @@ public class Server {
         try {
             connection.sendTCP(obj);
         } catch (Exception e) {
-            System.out.println("Could not send message: " + obj.toString() + " to client: " + connection + "with exception:\n" + e.toString());
+            System.out.println("Server: Could not send message: " + obj.toString() + " to client: " + connection + "with exception:\n" + e.toString());
         }
     }
 

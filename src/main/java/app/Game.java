@@ -304,22 +304,23 @@ public class Game extends InputAdapter implements ApplicationListener {
         for (Tile layer : tilesOnPos) {
             if (layer.equals(Tile.FlagOne)) {
                 if (player.getFlagScore() == 0) {
-                    System.out.println(player.getName() + " captured flag one!");
+                    System.out.println(player.getId() + " captured flag one!");
                     player.registerFlag();
                 }
             } else if (layer.equals(Tile.FlagTwo)) {
                 if (player.getFlagScore() == 1) {
-                    System.out.println(player.getName() + " captured flag two!");
+                    System.out.println(player.getId() + " captured flag two!");
                     player.registerFlag();
                 }
 
             } else if (layer.equals(Tile.FlagThree)) {
                 if (player.getFlagScore() == 2) {
-                    System.out.println(player.getName() + " captured flag three!");
+                    System.out.println(player.getId() + " captured flag three!");
                     player.registerFlag();
                 }
             }
         }
+        Network.sendUpdatedPlayerModel(player.getModel());
     }
 
     private void boardElementsTurn() {
@@ -353,10 +354,10 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         for (Tile layer : tilesOnPos) {
             if (layer.equals(Tile.Hole)) {
-                System.out.println(player.getName() + " is on hole, lost one token. ");
+                System.out.println(player.getId() + " is on hole, lost one token. ");
                 player.loseLifeToken();
             } else if (layer.equals(Tile.LaserHorizontal) || layer.equals(Tile.LaserVertical)) {
-                System.out.println(player.getName() + " took one damage.");
+                System.out.println(player.getId() + " took one damage.");
                 player.takeDamage();
             } else if (layer.equals(Tile.PushWallBottom)){
                 player.setPosition((int) xPos, (int) yPos + 1);
