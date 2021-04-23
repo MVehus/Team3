@@ -35,12 +35,12 @@ strekke oss mot ved å yte vårt beste individuelt, og utnytte eksisterende retn
 |[ 5](#logic5) | Skadekonsekvens     | Logic       |<ul><li>- [x] </li></ul> |
 |[ 6](#logic6) | Kjøre runde         | Logic       |<ul><li>- [ ] </li></ul> |
 |[ 7](#logic7) | Stokke kortstokk    | Logic       |<ul><li>- [x] </li></ul> |
-|[ 8](#logic8) | Programkort         | Logic       |<ul><li>- [ ] </li></ul> |
+|[ 8](#logic8) | Programkort         | Logic       |<ul><li>- [x] </li></ul> |
 |[ 9](#logic9) | Timer               | Logic       |<ul><li>- [ ] </li></ul> |
 |[10](#logic10)| Power down          | Logic       |<ul><li>- [x] </li></ul> |
 |[11](#logic11)| Kjøre programkort   | Logic       |<ul><li>- [x] </li></ul> |
 |[12](#logic12)| Dytting             | Logic       |<ul><li>- [x] </li></ul> |
-|[13](#logic13)| Spesialtfelt        | Logic       |<ul><li>- [ ] </li></ul> |
+|[13](#logic13)| Spesialfelt         | Logic       |<ul><li>- [x] </li></ul> |
 |[14](#logic14)| Laserskade          | Logic       |<ul><li>- [x] </li></ul> |
 |[ 1](#multi1) | Spille med andre    | Multiplayer |<ul><li>- [x] </li></ul> |
 |[ 2](#multi2) | Host/client valg    | Multiplayer |<ul><li>- [x] </li></ul> |
