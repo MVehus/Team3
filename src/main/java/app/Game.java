@@ -395,7 +395,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         for (Player p : players) {
             playerLayer.setCell((int) p.getPosition().x, (int) p.getPosition().y, getPlayerTexture(p));
         }
-
     }
 
     private boolean validMove(Vector2 from, Vector2 to){
@@ -580,6 +579,8 @@ public class Game extends InputAdapter implements ApplicationListener {
     }
     //endregion
 
+    //region OVERRIDE
+
     @Override
     public void dispose() {
         batch.dispose();
@@ -597,5 +598,7 @@ public class Game extends InputAdapter implements ApplicationListener {
     @Override
     public void resize(int i, int i1) {
     }
+
+    //endregion
 
 }
