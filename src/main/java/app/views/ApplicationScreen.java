@@ -394,12 +394,12 @@ public class ApplicationScreen extends AbstractScreen {
             }
         });
 
-        powerDownButton.addListener(new ChangeListener() {
+        /*powerDownButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 player.setPowerDown();
             }
-        });
+        });*/
 
         stage.addActor(lockInButton);
         stage.addActor(powerDownButton);

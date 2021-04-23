@@ -95,8 +95,8 @@ public class CardDeck {
 
     public void dealCards(ArrayList<Player> players) {
         for(Player p : players) {
-            if(!p.inPowerDown())
-                p.cards = drawCards(9- p.getNumDamageTokens());
+            p.cards = drawCards(9- p.getNumDamageTokens());
+
         }
     }
 }

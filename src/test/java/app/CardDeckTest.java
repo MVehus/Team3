@@ -54,14 +54,6 @@ public class CardDeckTest {
         assertEquals(0, DECK.getUsedCardsSize());
     }
 
-    @Test
-    public void PlayerInPowerDownGetsNoCard() {
-        Player player1 = new Player(1, new Vector2(1,1));
-        players.add(player1);
-        players.get(0).setPowerDown();
-        DECK.dealCards(players);
-        assertEquals(84, DECK.getAvailableCards().size());
-    }
 
     @Test
     public void FiveUndamagedPlayersDraw45Cards() {

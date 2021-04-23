@@ -8,21 +8,19 @@ import projectCard.ProgramCard;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Player implements Serializable {
     private final int id;
     private final String name;
     private Vector2 position;
-    private final Vector2 backupPosision;
+    private final Vector2 backUpPosition;
     private Direction direction;
-    public ArrayList<ProgramCard> cards = new ArrayList<ProgramCard>();
-    public final ArrayList<ProgramCard> programCards = new ArrayList<ProgramCard>(5);
+    public ArrayList<ProgramCard> cards = new ArrayList<>();
+    public final ArrayList<ProgramCard> programCards = new ArrayList<>(5);
     private int lifeTokens;
     private int damageTokens;
     private int flagsTaken;
     private boolean isAlive;
-    private boolean powerDown;
     private boolean programCardDone;
 
     private Vector2 checkPointPosition;
@@ -32,17 +30,14 @@ public class Player implements Serializable {
         this.name = "Player: " + id;
         this.isAlive = true;
         this.position = position;
-        this.backupPosision = new Vector2(position.x, position.y);
-        this.checkPointPosition = position; // Checkpoint position as startposition until flag taken
+        this.backUpPosition = new Vector2(position.x, position.y);
+        this.checkPointPosition = position; // Checkpoint position as start position until flag taken
         this.direction = Direction.RIGHT;
         this.lifeTokens = 3;
         this.damageTokens = 0;
         this.flagsTaken = 0;
-        this.powerDown = false;
         this.programCardDone = false;
     }
-
-    // PLAYERINFO
 
     public int getId() {
         return id;
@@ -68,8 +63,6 @@ public class Player implements Serializable {
         return Integer.toString(getId());
     }
 
-    // LIFE
-
     public boolean isAlive() {
         return isAlive;
     }
@@ -85,20 +78,23 @@ public class Player implements Serializable {
         }
     }
 
-    public String information(){
-        return id + " on " + position + " looking " + direction;
-    }
-
+    /**
+     *
+     * @return - num damageTokens
+     */
     public int getNumDamageTokens() {
         return damageTokens;
     }
 
+    /**
+     * Loose a life token
+     */
     public void loseLifeToken() {
         if (lifeTokens > 1) {
             lifeTokens -= 1;
             damageTokens = 0;
             System.out.println("Lost life");
-            setPosition((int) backupPosision.x,(int) backupPosision.y);
+            setPosition((int) backUpPosition.x,(int) backUpPosition.y);
         }
         else {
             lifeTokens -= 1;
@@ -106,12 +102,10 @@ public class Player implements Serializable {
         }
     }
 
-    // MOVEMENT AND POSITION
-
     /**
      *
      * @param forwards - true if forwards, false if backwards
-     * @return
+     * @return - next cell according to direction.
      */
     public Vector2 getNextCell(boolean forwards){
         int xPos = (int) position.x;
@@ -278,8 +272,6 @@ public class Player implements Serializable {
         }
     }
 
-    // GAMESTATUS
-
     public int getFlagScore() {
         return flagsTaken;
     }
@@ -287,21 +279,6 @@ public class Player implements Serializable {
     public void registerFlag() {
         flagsTaken++;
     }
-
-    public boolean inPowerDown(){
-        return powerDown;
-    }
-
-    public void setPowerDown() {
-        powerDown = true;
-    }
-
-    public void powerDownComplete() {
-        damageTokens = 0;
-        powerDown = false;
-    }
-
-    // CARDS
 
     public ProgramCard getCurrentCard() {
         if (programCards.size() == 0)
@@ -325,41 +302,10 @@ public class Player implements Serializable {
     }
 
     public void setProgramCardDone(){
-
         programCardDone = true;
-    }
-
-    public void resetProgramCardDone(){
-        programCardDone = false;
-    }
-
-    public boolean getProgramCardStatus() {
-        return programCardDone;
-    }
-
-    public void selectCardForSlot(ProgramCard card, int slot) {
-        programCards.add(slot, card);
-        cards.remove(card);
     }
 
     public void addProgramCard(ProgramCard card) {
         programCards.add(card);
     }
-
-    public void removeCardFromSlot(ProgramCard card) {
-        cards.add(card);
-        programCards.remove(card);
-    }
-
-    public void clearAllSlots() {
-        programCards.clear();
-    }
-
-    public void assignRandomCards() {
-        Random rand = new Random();
-        for (int i = 0; i < programCards.size()-numLockedProgramCards(); i++) {
-            programCards.add(i, cards.remove(rand.nextInt(cards.size())));
-        }
-    }
-
 }
