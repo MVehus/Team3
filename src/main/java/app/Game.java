@@ -262,18 +262,16 @@ public class Game extends InputAdapter implements ApplicationListener {
             player.rotate(Direction.LEFT);
         }
         else if (cardValue == Value.MOVE_ONE) {
+            playerLayer.setCell((int) position.x, (int) position.y, null);
             if (validMove(position, nextPosition)) {
-                playerLayer.setCell((int) position.x, (int) position.y, null);
-                render();
                 player.move();
                 updatePlayerState(player);
             }
         }
         else if (cardValue == Value.MOVE_TWO) {
             for (int step = 0; step < 2; step++) {
+                playerLayer.setCell((int) position.x, (int) position.y, null);
                 if (validMove(position, nextPosition)) {
-                    playerLayer.setCell((int) position.x, (int) position.y, null);
-                    render();
                     player.move();
                     updatePlayerState(player);
                     nextPosition = player.getNextCell(true);
@@ -286,9 +284,8 @@ public class Game extends InputAdapter implements ApplicationListener {
         }
         else if (cardValue == Value.MOVE_THREE){
             for (int step = 0; step < 3; step++){
+                playerLayer.setCell((int) position.x, (int) position.y, null);
                 if (validMove(position, nextPosition)) {
-                    playerLayer.setCell((int) position.x, (int) position.y, null);
-                    render();
                     player.move();
                     updatePlayerState(player);
                     nextPosition = player.getNextCell(true);
@@ -299,9 +296,8 @@ public class Game extends InputAdapter implements ApplicationListener {
             }
         }
         else if (cardValue == Value.BACK_UP){
+            playerLayer.setCell((int) position.x, (int) position.y, null);
             if(validMove(position, player.getNextCell(false))){
-                playerLayer.setCell((int) position.x, (int) position.y, null);
-                render();
                 player.backUp();
                 updatePlayerState(player);
             }
@@ -626,6 +622,8 @@ public class Game extends InputAdapter implements ApplicationListener {
             }
         });
     }
+
+
 
     //region UTILITIES
     private void time(int n) {
