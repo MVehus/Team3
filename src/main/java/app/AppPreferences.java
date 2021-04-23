@@ -24,30 +24,12 @@ public class AppPreferences {
         getPrefs().flush();
     }
 
-    public boolean isSoundEnabled() {
-        return getPrefs().getBoolean(PREF_SOUND_ENABLED, true);
-    }
-
-    public void setSoundEnabled(boolean soundEnabled) {
-        getPrefs().putBoolean(PREF_SOUND_ENABLED, soundEnabled);
-        getPrefs().flush();
-    }
-
     public float getMusicVolume() {
         return getPrefs().getFloat(PREF_MUSIC_VOLUME, 0.5f);
     }
 
     public void setMusicVolume(float volume) {
         getPrefs().putFloat(PREF_MUSIC_VOLUME, volume);
-        getPrefs().flush();
-    }
-
-    public float getSoundVolume() {
-        return getPrefs().getFloat(PREF_SOUND_VOLUME, 0.5f);
-    }
-
-    public void setSoundVolume(float volume) {
-        getPrefs().putFloat(PREF_SOUND_VOLUME, volume);
         getPrefs().flush();
     }
 

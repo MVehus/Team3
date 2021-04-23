@@ -153,6 +153,13 @@ public class ApplicationScreen extends AbstractScreen {
 
     private void updateLifeTokens() {
         Sprite sprite;
+
+        for (Actor a : stage.getActors()) {
+            if (a == locked1Image || a == locked2Image || a == locked3Image || a == locked4Image) {
+                a.remove();
+            }
+        }
+
         switch (player.getHealth()) {
             case 0:
                 sprite = new Sprite(new Texture("src/assets/playerGUI/lifeTokens/lifeTokens3.png"));
@@ -230,14 +237,6 @@ public class ApplicationScreen extends AbstractScreen {
             default:
                 dmgTokensSprite = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens0.png"));
                 break;
-        }
-
-        if (dmgTokens < 6) {
-            for (Actor a : stage.getActors()) {
-                if (a == locked1Image || a == locked2Image || a == locked3Image || a == locked4Image) {
-                    a.remove();
-                }
-            }
         }
 
         dmgTokensImage = new Image(new SpriteDrawable(dmgTokensSprite));

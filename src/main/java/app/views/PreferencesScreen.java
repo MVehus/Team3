@@ -50,20 +50,6 @@ public class PreferencesScreen extends AbstractScreen {
             return false;
         });
 
-        Slider soundSlider = new Slider(0f, 1f, 0.1f,false, skin);
-        soundSlider.setValue(parent.getPreferences().getSoundVolume());
-        soundSlider.addListener(event -> {
-            parent.getPreferences().setSoundVolume(soundSlider.getValue());
-            return false;
-        });
-
-        CheckBox soundCheckbox = new CheckBox(null, skin);
-        soundCheckbox.setChecked(parent.getPreferences().isSoundEnabled());
-        soundCheckbox.addListener(event -> {
-            parent.getPreferences().setSoundEnabled(soundCheckbox.isChecked());
-            return false;
-        });
-
         TextButton mainMenu = new TextButton("Main menu", skin);
 
         mainMenu.addListener(new ChangeListener() {
@@ -75,9 +61,7 @@ public class PreferencesScreen extends AbstractScreen {
 
         Label titleLabel = new Label("Preferences", skin);
         Label musicLabel = new Label("Music volume", skin);
-        Label soundLabel = new Label("Sound volume", skin);
         Label musicCheckboxLabel = new Label("Music", skin);
-        Label soundCheckboxLabel = new Label("Sound", skin);
         Label fullscreenCheckboxLabel = new Label("Fullscreen", skin);
 
         table.add(titleLabel).colspan(2);
@@ -90,12 +74,6 @@ public class PreferencesScreen extends AbstractScreen {
         table.row().pad(10,5,0,5);
         table.add(musicCheckboxLabel).left();
         table.add(musicCheckbox);
-        table.row().pad(10,5,0,5);
-        table.add(soundLabel).left();
-        table.add(soundSlider);
-        table.row().pad(10,5,0,5);
-        table.add(soundCheckboxLabel).left();
-        table.add(soundCheckbox);
         table.row().pad(10,5,0,5);
         table.add(mainMenu).colspan(2);
 
