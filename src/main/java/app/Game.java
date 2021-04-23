@@ -61,8 +61,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         if (Network.hostingServer()) {
             Network.sendPlayerListToClients();
         }
-
-        // CARDS
+        
         System.out.println("LOADING GAME...");
         time(3000);
     }
@@ -265,7 +264,7 @@ public class Game extends InputAdapter implements ApplicationListener {
             playerLayer.setCell((int) position.x, (int) position.y, null);
             if (validMove(position, nextPosition)) {
                 player.move();
-                wipePlayerTrail(player);
+                //wipePlayerTrail(player);
                 updatePlayerState(player);
             }
         }
@@ -274,7 +273,7 @@ public class Game extends InputAdapter implements ApplicationListener {
                 playerLayer.setCell((int) position.x, (int) position.y, null);
                 if (validMove(position, nextPosition)) {
                     player.move();
-                    wipePlayerTrail(player);
+                    //wipePlayerTrail(player);
                     updatePlayerState(player);
                     nextPosition = player.getNextCell(true);
                     if (checkForHole(player)){
@@ -289,7 +288,7 @@ public class Game extends InputAdapter implements ApplicationListener {
                 playerLayer.setCell((int) position.x, (int) position.y, null);
                 if (validMove(position, nextPosition)) {
                     player.move();
-                    wipePlayerTrail(player);
+                    //wipePlayerTrail(player);
                     updatePlayerState(player);
                     nextPosition = player.getNextCell(true);
                     if (checkForHole(player)){
@@ -662,8 +661,21 @@ public class Game extends InputAdapter implements ApplicationListener {
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
         renderer.render();
 
+        clearBoard();
+
         for (Player p : players) {
             playerLayer.setCell((int) p.getPosition().x, (int) p.getPosition().y, getPlayerTexture(p));
+        }
+    }
+
+    public void clearBoard(){
+        for(int y = 0; y < boardHeight; y++){
+            for(int x = 0; x < boardWidth; x++){
+                Vector2 cell = new Vector2(x, y);
+                if(getPlayerOnCell(cell) != null){
+                    playerLayer.setCell((int) cell.x, (int) cell.y, null);
+                }
+            }
         }
     }
 
