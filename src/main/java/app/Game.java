@@ -255,7 +255,7 @@ public class Game extends InputAdapter implements ApplicationListener {
         Value cardValue = player.getCurrentCard().getValue();
         Vector2 position = player.getPosition();
         Vector2 nextPosition = player.getNextCell(true);
-        playerLayer.setCell((int) position.x, (int) position.y, null);
+        //playerLayer.setCell((int) position.x, (int) position.y, null);
         int startX = (int) position.x, startY = (int) position.y;
 
         if (cardValue == Value.U_TURN) {
@@ -269,26 +269,30 @@ public class Game extends InputAdapter implements ApplicationListener {
             player.rotate(Direction.LEFT);
         }
         else if (cardValue == Value.MOVE_ONE) {
-            playerLayer.setCell((int) position.x, (int) position.y, null);
+            //playerLayer.setCell((int) position.x, (int) position.y, null);
             if(playerOnNextCell(player)){
                 if(canPush(player, getAllPlayersInLine(player))){
                     push(player, getAllPlayersInLine(player));
+                    updatePlayerState(player);
                 }
             }
             else if (validMove(position, nextPosition)) {
                 player.move();
+                updatePlayerState(player);
             }
         }
         else if (cardValue == Value.MOVE_TWO) {
             for (int step = 0; step < 2; step++) {
-                playerLayer.setCell((int) position.x, (int) position.y, null);
+                //playerLayer.setCell((int) position.x, (int) position.y, null);
                 if(playerOnNextCell(player)){
                     if(canPush(player, getAllPlayersInLine(player))){
                         push(player, getAllPlayersInLine(player));
+                        updatePlayerState(player);
                     }
                 }
                 else if (validMove(position, nextPosition)) {
                     player.move();
+                    updatePlayerState(player);
                     nextPosition = player.getNextCell(true);
                     if (checkForHole(player)){
                         break;
@@ -299,14 +303,16 @@ public class Game extends InputAdapter implements ApplicationListener {
         }
         else if (cardValue == Value.MOVE_THREE){
             for (int step = 0; step < 3; step++){
-                playerLayer.setCell((int) position.x, (int) position.y, null);
+                //playerLayer.setCell((int) position.x, (int) position.y, null);
                 if(playerOnNextCell(player)){
                     if(canPush(player, getAllPlayersInLine(player))){
                         push(player, getAllPlayersInLine(player));
+                        updatePlayerState(player);
                     }
                 }
                 else if (validMove(position, nextPosition)) {
                     player.move();
+                    updatePlayerState(player);
                     nextPosition = player.getNextCell(true);
                     if (checkForHole(player)){
                         break;
@@ -315,13 +321,13 @@ public class Game extends InputAdapter implements ApplicationListener {
             }
         }
         else if (cardValue == Value.BACK_UP){
-            playerLayer.setCell((int) position.x, (int) position.y, null);
+            //playerLayer.setCell((int) position.x, (int) position.y, null);
             if(validMove(position, player.getNextCell(false))){
                 player.backUp();
+                updatePlayerState(player);
             }
         }
 
-        playerLayer.setCell(startX, startY, null);
         System.out.println(player.information());
         player.useCurrentCard();
     }
