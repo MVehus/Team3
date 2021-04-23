@@ -21,7 +21,6 @@ public class Player implements Serializable {
     private int damageTokens;
     private int flagsTaken;
     private boolean isAlive;
-    private boolean programCardDone;
     private Vector2 checkPointPosition;
 
     /**
@@ -40,7 +39,6 @@ public class Player implements Serializable {
         this.lifeTokens = 3;
         this.damageTokens = 0;
         this.flagsTaken = 0;
-        this.programCardDone = false;
     }
 
     /**
@@ -155,7 +153,10 @@ public class Player implements Serializable {
     //endregion
 
     //region NETWORK
-
+    /**
+     * Sets/Updates the field values of the player object according to given new player model
+     * @param playerModel New player model
+     */
     public void setNewPlayerState(PlayerModel playerModel) {
         this.position = playerModel.getPosition();
         this.lifeTokens = playerModel.getLifeTokens();
@@ -164,33 +165,55 @@ public class Player implements Serializable {
         this.direction = playerModel.getDirection();
     }
 
+    /**
+     * Return a PlayerModel object with the field variable values of the this player object.
+     * @return PlayerModel object of this player
+     */
     public PlayerModel getModel() {
         return new PlayerModel(id, position, lifeTokens, damageTokens, flagsTaken, direction, getCurrentCard());
     }
 
+    /**
+     * To string, identifying the player with an id
+     * @return The id as a string
+     */
     public String toString() {
         return Integer.toString(getId());
     }
-
-
     //endregion
 
     //region CARD METHODS
 
+    /**
+     *
+     * @return The first card in the hand of the player.
+     */
     public ProgramCard getCurrentCard() {
         if (programCards.size() == 0)
             return null;
         return programCards.get(0);
     }
 
+    /**
+     * Removes the current card
+     * @return The removed card
+     */
     public ProgramCard useCurrentCard() {
         return programCards.remove(0);
     }
 
+    /**
+     *
+     * @return all (9-1) cards dealt during a round
+     */
     public List<ProgramCard> getCards() {
         return cards;
     }
 
+    /**
+     *
+     * @return The number og locked program cards based on how much damage is taken.
+     */
     public int numLockedProgramCards() {
         if (getNumDamageTokens() <= 9 && getNumDamageTokens() >= 5) {
             return getNumDamageTokens() - 4;
@@ -198,24 +221,35 @@ public class Player implements Serializable {
         return 0;
     }
 
-    public void setProgramCardDone(){
-        programCardDone = true;
-    }
-
+    /**
+     * Adds a card to the 5 selected program cards to run in a round.
+     * @param card The card to be added.
+     */
     public void addProgramCard(ProgramCard card) {
         programCards.add(card);
     }
 
     //endregion
 
+    /**
+     *
+     * @return True if the player is alive, false otherwise
+     */
     public boolean isAlive() {
         return isAlive;
     }
 
+    /**
+     *
+     * @return Number of life tokens.
+     */
     public int getHealth() {
         return lifeTokens;
     }
 
+    /**
+     * Increments the number of damage tokens taken, and if it reaches 9, you loose a life token
+     */
     public void takeDamage() {
         damageTokens += 1;
         if (damageTokens == 10) {
