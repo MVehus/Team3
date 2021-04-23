@@ -343,20 +343,21 @@ public class ApplicationScreen extends AbstractScreen {
     }
 
     private void initCardSlots() {
-        Sprite texture = new Sprite(new Texture("src/assets/playerGUI/cardSlots.jpg"));
-        cardSlotsTop = new Image(new SpriteDrawable(texture));
+        Sprite texture1 = new Sprite(new Texture("src/assets/playerGUI/cardSlots.jpg"));
+        Sprite texture2 = new Sprite(new Texture("src/assets/playerGUI/cardSlotsNumbered.jpg"));
+        cardSlotsTop = new Image(new SpriteDrawable(texture1));
         cardSlotsTop.setWidth(width - gameWidth);
         cardSlotsTop.setHeight((float) ((width - gameWidth) / 5 * 4 / 3));
         cardSlotsTop.setPosition(gameWidth, (float) ((width - gameWidth) / 5 * 4 / 3) * 2 + 80);
         cardSlotsTop.setColor(Color.LIGHT_GRAY);
 
-        cardSlotsMiddle = new Image(new SpriteDrawable(texture));
+        cardSlotsMiddle = new Image(new SpriteDrawable(texture1));
         cardSlotsMiddle.setWidth(width - gameWidth);
         cardSlotsMiddle.setHeight((float) ((width - gameWidth) / 5 * 4 / 3));
         cardSlotsMiddle.setPosition(gameWidth, (float) ((width - gameWidth) / 5 * 4 / 3) + 80);
         cardSlotsMiddle.setColor(Color.LIGHT_GRAY);
 
-        cardSlotsBottom = new Image(new SpriteDrawable(texture));
+        cardSlotsBottom = new Image(new SpriteDrawable(texture2));
         cardSlotsBottom.setWidth(width - gameWidth);
         cardSlotsBottom.setHeight((float) ((width - gameWidth) / 5 * 4 / 3));
         cardSlotsBottom.setPosition(gameWidth, 80);
