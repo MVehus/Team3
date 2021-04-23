@@ -117,3 +117,39 @@ etter bilder til kortene i spillet. Sammen har vi oppdatert UML-diagrammet og g�
 
 **Innhold:** Merget spillogikk-branchen inn i master, og begynner nå å integrere
 multiplayer i spillogikken.
+
+
+### Mandag 12.04.2021
+**Varighet:** 2 timer,
+**Sted:** Discord,
+**Oppmøte:** Alle
+
+**Innhold:** Oppstartsmøte etter påske, gjennomgang av tilbakemelding fra oblig 3, samt
+diskusjon av arbeidsoppgaver for oblig 4.
+
+
+### Mandag 19.04.2021
+**Varighet:** 2 timer,
+**Sted:** Discord,
+**Oppmøte:** Alle
+
+**Innhold:** Videre diskusjon av oblig 4 og gjennomgang av det som me har tenkt og
+gjort siden sist uke. Og planlegging av inspurten av oblig 4.
+
+
+### Torsdag 22.04.2021
+**Varighet:** Hele dagen,
+**Sted:** Discord,
+**Oppmøte:** Alle
+
+**Innhold:** Jobba med oblig 4, det satt stort sett noen i discord hele dagen,
+god innsats og godt humør.
+
+
+### Fresdag 23.04.2021
+**Varighet:** 6 timer,
+**Sted:** Discord,
+**Oppmøte:** Alle
+
+**Innhold:** Siste finpuss, med bugfix, ferdigstilling av prosjekt og dokumentasjon, 
+og fjerning av unødvending kode.
