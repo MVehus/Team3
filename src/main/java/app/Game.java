@@ -326,7 +326,7 @@ public class Game extends InputAdapter implements ApplicationListener {
                 }
             }
         }
-        Network.sendUpdatedPlayerModel(player.getModel());
+
     }
 
     private void boardElementsTurn() {
@@ -376,6 +376,7 @@ public class Game extends InputAdapter implements ApplicationListener {
             }
         }
         render();
+        Network.sendUpdatedPlayerModel(player.getModel());
 
     }
 
@@ -391,7 +392,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         return false;
     }
     //endregion
-
 
     private boolean validMove(Vector2 from, Vector2 to){
 
