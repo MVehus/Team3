@@ -124,6 +124,9 @@ public class ApplicationScreen extends AbstractScreen {
         stage.draw();
     }
 
+    /**
+     * Updates flag in GUI based on progress in the game
+     */
     private void updateFlags() {
         Sprite sprite;
         switch (player.getFlagScore()) {
@@ -150,6 +153,9 @@ public class ApplicationScreen extends AbstractScreen {
         flags = player.getFlagScore();
     }
 
+    /**
+     * Updates number of life tokens in GUI when player loses a life
+     */
     private void updateLifeTokens() {
         Sprite sprite;
 
@@ -183,6 +189,9 @@ public class ApplicationScreen extends AbstractScreen {
         lifeTokens = player.getHealth();
     }
 
+    /**
+     * Updates damage tokens in GUI when the player takes damage
+     */
     private void updateDamageTokens() {
         Sprite dmgTokensSprite;
         dmgTokens = player.getNumDamageTokens();
@@ -246,6 +255,10 @@ public class ApplicationScreen extends AbstractScreen {
         stage.addActor(dmgTokensImage);
     }
 
+    /**
+     * If current player is hosting the server, deal cards to all players.
+     * Get program cards from server and place these on screen with respective file in assets.
+     */
     private void placeCards() {
         int cardWidth = (width - gameWidth) / 5;
         int cardHeight = cardWidth * 4 / 3;
@@ -286,6 +299,9 @@ public class ApplicationScreen extends AbstractScreen {
         }
     }
 
+    /**
+     * When a card is picked up and dragged by mouse, this method places it in the right place.
+     */
     private void dragDropCard(Image cardImage) {
         float cardX = cardImage.getX() + cardImage.getWidth() / 2;
         float cardY = cardImage.getY() + cardImage.getHeight() / 2;
@@ -335,12 +351,18 @@ public class ApplicationScreen extends AbstractScreen {
         }
     }
 
+    /**
+     * Initializes label to show which number the current player is.
+     */
     private void initCurrentPlayer() {
         Label label = new Label("You are player " + player.getId(), skin);
         label.setPosition(gameWidth + (width - gameWidth) / 2 - label.getWidth() / 2, height - 30);
         stage.addActor(label);
     }
 
+    /**
+     * Initializes the cards slots where the program cards are placed
+     */
     private void initCardSlots() {
         Sprite texture1 = new Sprite(new Texture("src/assets/playerGUI/cardSlots.jpg"));
         Sprite texture2 = new Sprite(new Texture("src/assets/playerGUI/cardSlotsNumbered.jpg"));
@@ -370,16 +392,15 @@ public class ApplicationScreen extends AbstractScreen {
         stage.addActor(cardSlotsBottom);
     }
 
+    /**
+     * Initializes buttons
+     * "Lock in" sends a signal to Game.java that the cards on hand is the ones that will be used
+     */
     private void initButtons() {
         TextButton lockInButton = new TextButton("Lock in cards", skin);
-        lockInButton.setPosition(width - ((width - gameWidth) / 3), 10);
+        lockInButton.setPosition(width - ((width - gameWidth) / 3) - 10, 10);
         lockInButton.setWidth((width - gameWidth) / 3);
         lockInButton.setHeight(60);
-
-        TextButton powerDownButton = new TextButton("Power down", skin);
-        powerDownButton.setPosition(gameWidth + 20, 10);
-        powerDownButton.setWidth((width - gameWidth) / 3);
-        powerDownButton.setHeight(60);
 
         lockInButton.addListener(new ChangeListener() {
             @Override
@@ -388,23 +409,17 @@ public class ApplicationScreen extends AbstractScreen {
                     if(pc != null)
                         player.addProgramCard(pc);
                 }
-                //player.addProgramCard(chosenCards[0]);
                 player.setProgramCardDone();
                 game.round();
             }
         });
 
-        /*powerDownButton.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                player.setPowerDown();
-            }
-        });*/
-
         stage.addActor(lockInButton);
-        stage.addActor(powerDownButton);
     }
 
+    /**
+     * Initializes picture to show the amount of damage tokens
+     */
     private void initDamageTokens() {
         Sprite texture = new Sprite(new Texture("src/assets/playerGUI/damageTokens/damageTokens0.png"));
         dmgTokensImage = new Image(new SpriteDrawable(texture));
@@ -415,6 +430,9 @@ public class ApplicationScreen extends AbstractScreen {
         stage.addActor(dmgTokensImage);
     }
 
+    /**
+     * Initializes picture to show the amount of flags scored
+     */
     private void initFlags() {
         Sprite texture = new Sprite(new Texture("src/assets/playerGUI/flags/flags0.png"));
         flagsImage = new Image(new SpriteDrawable(texture));
@@ -425,6 +443,9 @@ public class ApplicationScreen extends AbstractScreen {
         stage.addActor(flagsImage);
     }
 
+    /**
+     * Initializes picture to show the amount of life tokens
+     */
     private void initLifeTokens() {
         Sprite texture = new Sprite(new Texture("src/assets/playerGUI/lifeTokens/lifeTokens0.png"));
         lifeTokensImage = new Image(new SpriteDrawable(texture));

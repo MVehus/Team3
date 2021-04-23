@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>app.views.AbstractScreen</OriginalElement>
+  <nodes>
+    <node x="0.0" y="3133.5">app.views.JoinGameScreen</node>
+    <node x="579.9093406593407" y="675.0">Models.GameStateModel</node>
+    <node x="1227.0" y="3133.5">app.views.PreferencesScreen</node>
+    <node x="876.9093406593407" y="686.0">projectCard.Hand</node>
+    <node x="1136.9093406593406" y="114.0">player.Player</node>
+    <node x="195.0" y="3640.0">Utilities.IpChecker</node>
+    <node x="811.0" y="2447.0">app.views.AbstractScreen</node>
+    <node x="1604.0" y="2211.0">network.Network</node>
+    <node x="1425.9093406593406" y="554.0">Models.PlayerModel</node>
+    <node x="0.0" y="3640.0">app.Main</node>
+    <node x="2272.0" y="2211.0">app.AppPreferences</node>
+    <node x="1657.9093406593406" y="620.0">projectCard.ProgramCard</node>
+    <node x="2793.0" y="2211.0">projectCard.CardDeck</node>
+    <node x="260.9093406593407" y="543.0">java.lang.Enum</node>
+    <node x="3127.0" y="2211.0">Utilities.StartPositionUtility</node>
+    <node x="923.0" y="3133.5">app.views.EndScreen</node>
+    <node x="335.9093406593407" y="1385.0">app.Tile</node>
+    <node x="180.0" y="2726.0">app.views.ApplicationScreen</node>
+    <node x="1281.9093406593406" y="1693.0">app.Direction</node>
+    <node x="1431.0" y="3111.0">app.views.MenuScreen</node>
+    <node x="1973.0" y="2211.0">network.Server</node>
+    <node x="156.90934065934073" y="1660.0">projectCard.Value</node>
+    <node x="2619.1593406593406" y="258.0">com.badlogic.gdx.InputAdapter</node>
+    <node x="2305.6593406593406" y="890.0">com.badlogic.gdx.Game</node>
+    <node x="1993.9093406593406" y="967.5">java.lang.SuppressWarnings</node>
+    <node x="2495.6593406593406" y="516.0">app.Game</node>
+    <node x="831.0" y="2211.0">com.badlogic.gdx.Screen</node>
+    <node x="1198.9093406593406" y="12.0">java.io.Serializable</node>
+    <node x="3380.0" y="2211.0">network.NetworkUtilities</node>
+    <node x="0.0" y="0.0">java.lang.constant.Constable</node>
+    <node x="2340.6593406593406" y="280.0">com.badlogic.gdx.ApplicationListener</node>
+    <node x="751.0" y="3122.5">app.views.LoadingScreen</node>
+    <node x="1894.9093406593406" y="1666.0">app.Board</node>
+    <node x="2619.1593406593406" y="0.0">com.badlogic.gdx.InputProcessor</node>
+    <node x="366.0" y="0.0">java.lang.Comparable</node>
+    <node x="2200.9093406593406" y="1523.0">app.ScreenOrchestrator</node>
+    <node x="2556.0" y="2211.0">network.Client</node>
+    <node x="555.0" y="3122.0">app.views.CreateGameScreen</node>
+    <node x="1063.0" y="3100.0">app.views.RuleScreen</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="Models.GameStateModel" target="java.io.Serializable">
+      <point x="0.0" y="-49.5" />
+      <point x="718.4093406593407" y="84.0" />
+      <point x="1229.7664835164837" y="84.0" />
+      <point x="-41.14285714285711" y="15.0" />
+    </edge>
+    <edge source="app.views.CreateGameScreen" target="app.views.AbstractScreen">
+      <point x="0.0" y="-38.5" />
+      <point x="643.0" y="2696.0" />
+      <point x="869.75" y="2696.0" />
+      <point x="-35.25" y="104.5" />
+    </edge>
+    <edge source="app.Game" target="com.badlogic.gdx.InputAdapter">
+      <point x="80.5" y="-478.5" />
+      <point x="0.0" y="104.0" />
+    </edge>
+    <edge source="Models.PlayerModel" target="java.io.Serializable">
+      <point x="0.0" y="-170.5" />
+      <point x="1531.9093406593406" y="84.0" />
+      <point x="1312.052197802198" y="84.0" />
+      <point x="41.14285714285711" y="15.0" />
+    </edge>
+    <edge source="app.Tile" target="java.lang.Enum">
+      <point x="0.0" y="-390.5" />
+      <point x="0.0" y="181.5" />
+    </edge>
+    <edge source="app.ScreenOrchestrator" target="com.badlogic.gdx.Game">
+      <point x="63.25" y="-280.5" />
+      <point x="0.0" y="104.5" />
+    </edge>
+    <edge source="app.views.JoinGameScreen" target="app.views.AbstractScreen">
+      <point x="0.0" y="-27.0" />
+      <point x="80.0" y="2676.0" />
+      <point x="822.75" y="2676.0" />
+      <point x="-82.25" y="104.5" />
+    </edge>
+    <edge source="player.Player" target="java.io.Serializable">
+      <point x="0.0" y="-610.5" />
+      <point x="0.0" y="15.0" />
+    </edge>
+    <edge source="app.Game" target="com.badlogic.gdx.ApplicationListener">
+      <point x="-80.5" y="-478.5" />
+      <point x="2576.1593406593406" y="491.0" />
+      <point x="2490.6593406593406" y="491.0" />
+      <point x="50.0" y="82.0" />
+    </edge>
+    <edge source="projectCard.ProgramCard" target="java.io.Serializable">
+      <point x="0.0" y="-104.5" />
+      <point x="1753.9093406593406" y="74.0" />
+      <point x="1332.6236263736264" y="74.0" />
+      <point x="61.71428571428578" y="15.0" />
+    </edge>
+    <edge source="app.views.AbstractScreen" target="com.badlogic.gdx.Screen">
+      <point x="0.0" y="-104.5" />
+      <point x="0.0" y="93.0" />
+    </edge>
+    <edge source="app.Board" target="java.lang.SuppressWarnings">
+      <point x="0.0" y="-137.5" />
+      <point x="-44.0" y="27.0" />
+    </edge>
+    <edge source="java.lang.Enum" target="java.io.Serializable">
+      <point x="99.66666666666669" y="-181.5" />
+      <point x="510.0760073260074" y="74.0" />
+      <point x="1209.1950549450548" y="74.0" />
+      <point x="-61.71428571428578" y="15.0" />
+    </edge>
+    <edge source="app.views.RuleScreen" target="app.views.AbstractScreen">
+      <point x="0.0" y="-60.5" />
+      <point x="1135.0" y="2696.0" />
+      <point x="940.25" y="2696.0" />
+      <point x="35.25" y="104.5" />
+    </edge>
+    <edge source="com.badlogic.gdx.InputAdapter" target="com.badlogic.gdx.InputProcessor">
+      <point x="0.0" y="-104.0" />
+      <point x="0.0" y="104.0" />
+    </edge>
+    <edge source="app.Direction" target="java.io.Serializable">
+      <point x="44.5" y="-82.5" />
+      <point x="1415.4093406593406" y="94.0" />
+      <point x="1291.4807692307695" y="94.0" />
+      <point x="20.57142857142867" y="15.0" />
+    </edge>
+    <edge source="app.Direction" target="java.lang.Enum">
+      <point x="-44.5" y="-82.5" />
+      <point x="1326.4093406593406" y="1360.0" />
+      <point x="510.0760073260074" y="1360.0" />
+      <point x="99.66666666666669" y="181.5" />
+    </edge>
+    <edge source="java.lang.Enum" target="java.lang.constant.Constable">
+      <point x="-99.66666666666669" y="-181.5" />
+      <point x="310.7426739926741" y="94.0" />
+      <point x="173.0" y="94.0" />
+      <point x="0.0" y="27.0" />
+    </edge>
+    <edge source="app.views.ApplicationScreen" target="app.views.AbstractScreen">
+      <point x="0.0" y="-434.5" />
+      <point x="357.5" y="2686.0" />
+      <point x="846.25" y="2686.0" />
+      <point x="-58.75" y="104.5" />
+    </edge>
+    <edge source="app.views.PreferencesScreen" target="app.views.AbstractScreen">
+      <point x="0.0" y="-27.0" />
+      <point x="1319.0" y="2686.0" />
+      <point x="963.75" y="2686.0" />
+      <point x="58.75" y="104.5" />
+    </edge>
+    <edge source="app.views.MenuScreen" target="app.views.AbstractScreen">
+      <point x="0.0" y="-49.5" />
+      <point x="1495.0" y="2676.0" />
+      <point x="987.25" y="2676.0" />
+      <point x="82.25" y="104.5" />
+    </edge>
+    <edge source="app.views.LoadingScreen" target="app.views.AbstractScreen">
+      <point x="0.0" y="-38.0" />
+      <point x="827.0" y="2706.0" />
+      <point x="893.25" y="2706.0" />
+      <point x="-11.75" y="104.5" />
+    </edge>
+    <edge source="app.views.EndScreen" target="app.views.AbstractScreen">
+      <point x="0.0" y="-27.0" />
+      <point x="983.0" y="2706.0" />
+      <point x="916.75" y="2706.0" />
+      <point x="11.75" y="104.5" />
+    </edge>
+    <edge source="java.lang.Enum" target="java.lang.Comparable">
+      <point x="0.0" y="-181.5" />
+      <point x="410.4093406593407" y="94.0" />
+      <point x="437.0" y="94.0" />
+      <point x="0.0" y="27.0" />
+    </edge>
+    <edge source="projectCard.Value" target="java.lang.Enum">
+      <point x="0.0" y="-115.5" />
+      <point x="236.40934065934073" y="1360.0" />
+      <point x="310.7426739926741" y="1360.0" />
+      <point x="-99.66666666666669" y="181.5" />
+    </edge>
+    <edge source="projectCard.Hand" target="java.io.Serializable">
+      <point x="0.0" y="-38.5" />
+      <point x="996.9093406593407" y="94.0" />
+      <point x="1250.3379120879122" y="94.0" />
+      <point x="-20.57142857142867" y="15.0" />
+    </edge>
+    <edge source="com.badlogic.gdx.Game" target="com.badlogic.gdx.ApplicationListener">
+      <point x="0.0" y="-104.5" />
+      <point x="-50.0" y="82.0" />
+    </edge>
+    <edge source="app.ScreenOrchestrator" target="java.lang.SuppressWarnings">
+      <point x="-63.25" y="-280.5" />
+      <point x="2264.1593406593406" y="1498.0" />
+      <point x="2125.9093406593406" y="1498.0" />
+      <point x="44.0" y="27.0" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.17124394184168013" x="1778.0" y="1847.0" />
+  <SelectedNodes>
+    <node>app.views.AbstractScreen</node>
+  </SelectedNodes>
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
