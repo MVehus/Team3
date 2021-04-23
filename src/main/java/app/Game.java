@@ -43,6 +43,9 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     //region SETUP
     @Override
+    /**
+     * Creates the game, and sets up all the necessary attributes
+     */
     public void create() {
         batch = new SpriteBatch();
         font = new BitmapFont();
@@ -66,6 +69,9 @@ public class Game extends InputAdapter implements ApplicationListener {
         time(3000);
     }
 
+    /**
+     * Sets up the camera and renderer for the game
+     */
     private void setupCameraAndRenderer() {
         // Setup camera
         TiledMapTileLayer boardLayer = gameBoard.getLayer(Tile.Board);
@@ -169,6 +175,11 @@ public class Game extends InputAdapter implements ApplicationListener {
     //endregion
 
     //region NETWORK
+
+    /**
+     * Updates a player in the players list with a new set of data given in playerModel
+     * @param playerModel New updated player model
+     */
     public void updatePlayer(PlayerModel playerModel) {
         players.get(playerModel.getId()-1).setNewPlayerState(playerModel);
     }
@@ -199,7 +210,7 @@ public class Game extends InputAdapter implements ApplicationListener {
             }
             movePlayers();
             boardElementsTurn();
-            checkForFlags();
+            updatePlayerFlagState();
         }
     }
 
@@ -223,11 +234,13 @@ public class Game extends InputAdapter implements ApplicationListener {
         }
     }
 
+    /**
+     * Moves all the players
+     */
     private void movePlayers() {
         for (Player p : players) {
             if(p.programCards.size() != 0) {
                 time(500);
-                System.out.println(p.getCurrentCard());
                 playerTurn(p);
                 time(700);
             }
@@ -313,37 +326,40 @@ public class Game extends InputAdapter implements ApplicationListener {
         player.useCurrentCard();
     }
 
-    private void checkForFlags() {
-        for (Player p : players) {
-            updatePlayerFlagState(p);
-        }
-    }
+    /**
+     * Updates the flag score of a player if he is situated on a flag, and has
+     * visited the previous flags
+     */
+    private void updatePlayerFlagState() {
+        for (Player player : players) {
+            // Loop through layers player is on
+            List<Tile> tilesOnPos = gameBoard.getTilesOnCell(player.getPosition().x, player.getPosition().y);
+            for (Tile layer : tilesOnPos) {
+                if (layer.equals(Tile.FlagOne)) {
+                    if (player.getFlagScore() == 0) {
+                        System.out.println(player.getId() + " captured flag one!");
+                        player.registerFlag();
+                    }
+                } else if (layer.equals(Tile.FlagTwo)) {
+                    if (player.getFlagScore() == 1) {
+                        System.out.println(player.getId() + " captured flag two!");
+                        player.registerFlag();
+                    }
 
-    private void updatePlayerFlagState(Player player) {
-        // Loop through layers player is on
-        List<Tile> tilesOnPos = gameBoard.getTilesOnCell(player.getPosition().x, player.getPosition().y);
-        for (Tile layer : tilesOnPos) {
-            if (layer.equals(Tile.FlagOne)) {
-                if (player.getFlagScore() == 0) {
-                    System.out.println(player.getId() + " captured flag one!");
-                    player.registerFlag();
-                }
-            } else if (layer.equals(Tile.FlagTwo)) {
-                if (player.getFlagScore() == 1) {
-                    System.out.println(player.getId() + " captured flag two!");
-                    player.registerFlag();
-                }
-
-            } else if (layer.equals(Tile.FlagThree)) {
-                if (player.getFlagScore() == 2) {
-                    System.out.println(player.getId() + " captured flag three!");
-                    player.registerFlag();
+                } else if (layer.equals(Tile.FlagThree)) {
+                    if (player.getFlagScore() == 2) {
+                        System.out.println(player.getId() + " captured flag three!");
+                        player.registerFlag();
+                    }
                 }
             }
         }
-
     }
 
+    /**
+     * Does a turn for all the board elements
+     * (conveyor belt, etc...)
+     */
     private void boardElementsTurn() {
         // Move board elements
         for (Player player : players) {
@@ -363,7 +379,7 @@ public class Game extends InputAdapter implements ApplicationListener {
     /**
      * Loop through tiles on cell for each movement.
      * Change playerState based on tile (change position, take damage or loose life)
-     * @param player
+     * @param player The given player to have its playerState changed.
      */
     public void updatePlayerState(Player player) {
 
@@ -400,11 +416,16 @@ public class Game extends InputAdapter implements ApplicationListener {
 
     }
 
+    /**
+     * Checks if the given players in on a hole
+     * @param player The player in question
+     * @return True if the player is on a hole, false otherwise
+     */
     private boolean checkForHole(Player player) {
         List<Tile> tilesOnPos = gameBoard.getTilesOnCell(player.getPosition().x, player.getPosition().y);
         for (Tile layer : tilesOnPos) {
             if (layer.equals(Tile.Hole)) {
-                System.out.println(player.getName() + " is on hole, lost one token. ");
+                System.out.println(player.getId() + " is on hole, lost one token. ");
                 player.loseLifeToken();
                 return true;
             }
@@ -589,6 +610,11 @@ public class Game extends InputAdapter implements ApplicationListener {
         return cells;
     }
 
+    /**
+     * Checks if there is a player on the given cell
+     * @param cell The cell to check
+     * @return If true the player on the cell, null otherwise.
+     */
     public Player getPlayerOnCell(Vector2 cell) {
         for (Player player : players) {
             if (player.getPosition().equals(cell)) {
@@ -598,6 +624,10 @@ public class Game extends InputAdapter implements ApplicationListener {
         return null;
     }
 
+    /**
+     *
+     * @return The list of players in the game
+     */
     public List<Player> getPlayers() {
         return players;
     }
