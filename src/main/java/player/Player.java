@@ -280,7 +280,6 @@ public class Player implements Serializable {
         }
     }
 
-
     // GAMESTATUS
 
     public int getFlagScore() {

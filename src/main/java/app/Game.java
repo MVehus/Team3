@@ -41,58 +41,6 @@ public class Game extends InputAdapter implements ApplicationListener {
     public Game(){
         Network.setGameReferenceForClient(this);
     }
-    @Override
-    public boolean keyUp(int keycode) {
-
-        Player currentPlayer = players.get(Network.getMyId() - 1);
-
-        //Player currentPlayer = players.get(0);
-
-        Vector2 playerPos = currentPlayer.getPosition();
-
-        playerLayer.setCell((int) playerPos.x, (int) playerPos.y, null);
-
-        if (keycode == Input.Keys.UP) {
-            if (currentPlayer.getDirection() != Direction.UP) {
-                currentPlayer.setDirection(Direction.UP);
-                return super.keyUp(keycode);
-            }
-        } else if (keycode == Input.Keys.DOWN) {
-            if (currentPlayer.getDirection() != Direction.DOWN) {
-                currentPlayer.setDirection(Direction.DOWN);
-                return super.keyUp(keycode);
-            }
-        } else if (keycode == Input.Keys.LEFT) {
-            if (currentPlayer.getDirection() != Direction.LEFT) {
-                currentPlayer.setDirection(Direction.LEFT);
-                return super.keyUp(keycode);
-            }
-        } else if (keycode == Input.Keys.RIGHT) {
-            if (currentPlayer.getDirection() != Direction.RIGHT) {
-                currentPlayer.setDirection(Direction.RIGHT);
-                return super.keyUp(keycode);
-            }
-
-        }
-
-        // IF NO ROTATION
-        if (playerOnNextCell(currentPlayer)) {
-            if (canPush(currentPlayer, getAllPlayersInLine(currentPlayer))) {
-                push(currentPlayer, getAllPlayersInLine(currentPlayer));
-            } else {
-                System.out.println("Cannot push");
-            }
-        }
-
-        // UPDATE ALLE PLAYERS
-        for (Player p : players) {
-            updatePlayerState(p);
-        }
-
-        render();
-
-        return super.keyUp(keycode);
-    }
 
     //region SETUP
     @Override
@@ -341,7 +289,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         player.useCurrentCard();
     }
 
-
     private void checkForFlags() {
         for (Player p : players) {
             updatePlayerFlagState(p);
@@ -444,11 +391,10 @@ public class Game extends InputAdapter implements ApplicationListener {
         Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
         renderer.render();
 
-        if (!players.isEmpty()) {
-            for (Player p : players) {
-                playerLayer.setCell((int) p.getPosition().x, (int) p.getPosition().y, getPlayerTexture(p));
-            }
+        for (Player p : players) {
+            playerLayer.setCell((int) p.getPosition().x, (int) p.getPosition().y, getPlayerTexture(p));
         }
+
     }
 
     private boolean validMove(Vector2 from, Vector2 to){
