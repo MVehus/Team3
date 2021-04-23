@@ -262,7 +262,12 @@ public class Game extends InputAdapter implements ApplicationListener {
         }
         else if (cardValue == Value.MOVE_ONE) {
             playerLayer.setCell((int) position.x, (int) position.y, null);
-            if (validMove(position, nextPosition)) {
+            if(playerOnNextCell(player)){
+                if(canPush(player, getAllPlayersInLine(player))){
+                    push(player, getAllPlayersInLine(player));
+                }
+            }
+            else if (validMove(position, nextPosition)) {
                 player.move();
                 //wipePlayerTrail(player);
                 updatePlayerState(player);
@@ -271,7 +276,12 @@ public class Game extends InputAdapter implements ApplicationListener {
         else if (cardValue == Value.MOVE_TWO) {
             for (int step = 0; step < 2; step++) {
                 playerLayer.setCell((int) position.x, (int) position.y, null);
-                if (validMove(position, nextPosition)) {
+                if(playerOnNextCell(player)){
+                    if(canPush(player, getAllPlayersInLine(player))){
+                        push(player, getAllPlayersInLine(player));
+                    }
+                }
+                else if (validMove(position, nextPosition)) {
                     player.move();
                     //wipePlayerTrail(player);
                     updatePlayerState(player);
@@ -286,7 +296,12 @@ public class Game extends InputAdapter implements ApplicationListener {
         else if (cardValue == Value.MOVE_THREE){
             for (int step = 0; step < 3; step++){
                 playerLayer.setCell((int) position.x, (int) position.y, null);
-                if (validMove(position, nextPosition)) {
+                if(playerOnNextCell(player)){
+                    if(canPush(player, getAllPlayersInLine(player))){
+                        push(player, getAllPlayersInLine(player));
+                    }
+                }
+                else if (validMove(position, nextPosition)) {
                     player.move();
                     //wipePlayerTrail(player);
                     updatePlayerState(player);
@@ -308,22 +323,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         playerLayer.setCell(startX, startY, null);
         System.out.println(player.information());
         player.useCurrentCard();
-    }
-
-    private void wipePlayerTrail(Player p){
-        int x = (int) p.getPosition().x;
-        int y = (int) p.getPosition().y;
-        Direction dir = p.getDirection();
-
-        if (dir == Direction.UP) {
-            playerLayer.setCell(x, y-1, null);
-        } else if (dir == Direction.DOWN){
-            playerLayer.setCell(x, y + 1, null);
-        } else if (dir == Direction.LEFT) {
-            playerLayer.setCell(x +1, y, null);
-        } else if (dir == Direction.RIGHT){
-            playerLayer.setCell(x-1, y, null);
-        }
     }
 
     private void checkForFlags() {
@@ -427,6 +426,69 @@ public class Game extends InputAdapter implements ApplicationListener {
         }
         return false;
     }
+    //endregion
+
+    //region PUSH-METHODS
+
+    /**
+     * Used for pushing multiple players.
+     *
+     * @param player
+     * @return - list of players which stand in front of current player.
+     */
+    public List<Player> getAllPlayersInLine(Player player) {
+        List<Player> neighbours = new ArrayList<>();
+
+        List<Vector2> nextCells = availableCellsInFrontOfPlayer(player);
+        for (Vector2 v : nextCells) {
+            if (getPlayerOnCell(v) != null) {
+                neighbours.add(getPlayerOnCell(v));
+            }
+        }
+
+        return neighbours;
+    }
+
+    /**
+     * This method push a list of players in current player's direction.
+     *
+     * @param player - pusher
+     * @param allPlayers - pushed players
+     */
+    public void push(Player player, List<Player> allPlayers) {
+
+        Collections.reverse(allPlayers);
+
+        for (Player p : allPlayers) {
+            p.moveDirection(player.getDirection());
+        }
+        player.move();
+    }
+
+    /**
+     * Loops through all players in front of current player.
+     * Check if last player in line, can be push in current player's direction.
+     *
+     * @param player
+     * @param playersOnLine - true if last player can be pushed.
+     * @return
+     */
+    public boolean canPush(Player player, List<Player> playersOnLine) {
+        if (playersOnLine.size() > 0) {
+            Player lastPlayer = playersOnLine.get(playersOnLine.size() - 1);
+            Direction lastPlayerDirection = lastPlayer.getDirection();
+            lastPlayer.setDirection(player.getDirection());
+            if (validMove(lastPlayer.getPosition(), lastPlayer.getNextCell(true))) {
+                lastPlayer.setDirection(lastPlayerDirection);
+                return true;
+            } else {
+                lastPlayer.setDirection(lastPlayerDirection);
+                return false;
+            }
+        }
+        return false;
+    }
+
     //endregion
 
     /**
@@ -550,65 +612,6 @@ public class Game extends InputAdapter implements ApplicationListener {
         return cells;
     }
 
-    /**
-     * Used for pushing multiple players.
-     *
-     * @param player
-     * @return - list of players which stand in front of current player.
-     */
-    public List<Player> getAllPlayersInLine(Player player) {
-        List<Player> neighbours = new ArrayList<>();
-
-        List<Vector2> nextCells = availableCellsInFrontOfPlayer(player);
-        for (Vector2 v : nextCells) {
-            if (getPlayerOnCell(v) != null) {
-                neighbours.add(getPlayerOnCell(v));
-            }
-        }
-
-        return neighbours;
-    }
-
-    /**
-     * This method push a list of players in current player's direction.
-     *
-     * @param player - pusher
-     * @param allPlayers - pushed players
-     */
-    public void push(Player player, List<Player> allPlayers) {
-
-        Collections.reverse(allPlayers);
-
-        for (Player p : allPlayers) {
-            p.moveDirection(player.getDirection());
-        }
-        player.move();
-    }
-
-    /**
-     * Loops through all players in front of current player.
-     * Check if last player in line, can be push in current player's direction.
-     *
-     * @param player
-     * @param playersOnLine - true if last player can be pushed.
-     * @return
-     */
-    public boolean canPush(Player player, List<Player> playersOnLine) {
-        if (playersOnLine.size() > 0) {
-            Player lastPlayer = playersOnLine.get(playersOnLine.size() - 1);
-            Direction lastPlayerDirection = lastPlayer.getDirection();
-            lastPlayer.setDirection(player.getDirection());
-            if (validMove(lastPlayer.getPosition(), lastPlayer.getNextCell(true))) {
-                lastPlayer.setDirection(lastPlayerDirection);
-                return true;
-            } else {
-                lastPlayer.setDirection(lastPlayerDirection);
-                return false;
-            }
-        }
-        return false;
-    }
-
     public Player getPlayerOnCell(Vector2 cell) {
         for (Player player : players) {
             if (player.getPosition().equals(cell)) {
@@ -641,6 +644,19 @@ public class Game extends InputAdapter implements ApplicationListener {
         });
     }
 
+    /**
+     * Loops through board, clear trails from players
+     */
+    public void clearBoard(){
+        for(int y = 0; y < boardHeight; y++){
+            for(int x = 0; x < boardWidth; x++){
+                Vector2 cell = new Vector2(x, y);
+                if(getPlayerOnCell(cell) == null){
+                    playerLayer.setCell((int) cell.x, (int) cell.y, null);
+                }
+            }
+        }
+    }
 
 
     //region UTILITIES
@@ -665,31 +681,6 @@ public class Game extends InputAdapter implements ApplicationListener {
 
         for (Player p : players) {
             playerLayer.setCell((int) p.getPosition().x, (int) p.getPosition().y, getPlayerTexture(p));
-        }
-    }
-
-    public void clearBoard(){
-        for(int y = 0; y < boardHeight; y++){
-            for(int x = 0; x < boardWidth; x++){
-                Vector2 cell = new Vector2(x, y);
-                if(getPlayerOnCell(cell) == null){
-                    playerLayer.setCell((int) cell.x, (int) cell.y, null);
-                }
-            }
-        }
-    }
-
-    public void clearPlayerTexture(Player player){
-        int x = (int) player.getPosition().x;
-        int y = (int) player.getPosition().y;
-        for (int i = x - 3; i < x + 3; i++){
-            for (int j = y - 3; j < y + 3; j++){
-                for (Player p : players){
-                    if(!(i == p.getPosition().x && j == p.getPosition().y || !(i == x && j == y))){
-                        playerLayer.setCell(i, j, null);
-                    }
-                }
-            }
         }
     }
 
