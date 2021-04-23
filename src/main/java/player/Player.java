@@ -22,9 +22,13 @@ public class Player implements Serializable {
     private int flagsTaken;
     private boolean isAlive;
     private boolean programCardDone;
-
     private Vector2 checkPointPosition;
 
+    /**
+     * Construct a new player object, initialize fields .
+     * @param id - player ID
+     * @param position - start position
+     */
     public Player(int id, Vector2 position) {
         this.id = id;
         this.name = "Player: " + id;
@@ -39,6 +43,9 @@ public class Player implements Serializable {
         this.programCardDone = false;
     }
 
+    /**
+     * @return - players ID
+     */
     public int getId() {
         return id;
     }
@@ -46,6 +53,108 @@ public class Player implements Serializable {
     public String getName() {
         return name;
     }
+
+    //region MOVEMENT & ROTATION
+
+    /**
+     * Move player according to his direction
+     */
+    public void move() {
+        int xPos = (int) position.x;
+        int yPos = (int) position.y;
+        switch (this.direction) {
+            case UP:
+                setPosition(xPos, yPos + 1);
+                break;
+            case DOWN:
+                setPosition(xPos, yPos - 1);
+                break;
+            case LEFT:
+                setPosition(xPos - 1, yPos);
+                break;
+            case RIGHT:
+                setPosition(xPos + 1, yPos);
+                break;
+        }
+    }
+
+    /**
+     * BackUp movement, move opposite direction.
+     */
+    public void backUp(){
+        int xPos = (int) position.x;
+        int yPos = (int) position.y;
+        switch (this.direction) {
+            case UP:
+                setPosition(xPos, yPos - 1);
+                break;
+            case DOWN:
+                setPosition(xPos, yPos + 1);
+                break;
+            case LEFT:
+                setPosition(xPos + 1, yPos);
+                break;
+            case RIGHT:
+                setPosition(xPos - 1, yPos);
+                break;
+        }
+
+    }
+
+    /**
+     * Move player in direction, used in force movements (as push)
+     * @param dir - direction movement
+     */
+    public void moveDirection(Direction dir){
+        int xPos = (int) position.x;
+        int yPos = (int) position.y;
+        switch (dir) {
+            case UP:
+                setPosition(xPos, yPos + 1);
+                break;
+            case DOWN:
+                setPosition(xPos, yPos - 1);
+                break;
+            case LEFT:
+                setPosition(xPos - 1, yPos);
+                break;
+            case RIGHT:
+                setPosition(xPos + 1, yPos);
+                break;
+        }
+    }
+
+    /**
+     * Rotate player 90 degrees
+     * @param dir - direction
+     */
+    public void rotate(Direction dir) {
+
+        if(dir == Direction.RIGHT){
+            if (direction == Direction.UP)
+                setDirection(Direction.RIGHT);
+            else if (direction == Direction.RIGHT)
+                setDirection(Direction.DOWN);
+            else if (direction == Direction.DOWN)
+                setDirection(Direction.LEFT);
+            else if (direction == Direction.LEFT)
+                setDirection(Direction.UP);
+        } else if (dir == Direction.LEFT){
+            if (direction == Direction.UP)
+                setDirection(Direction.LEFT);
+            else if (direction == Direction.RIGHT)
+                setDirection(Direction.UP);
+            else if (direction == Direction.DOWN)
+                setDirection(Direction.RIGHT);
+            else if (direction == Direction.LEFT)
+                setDirection(Direction.DOWN);
+        }
+    }
+
+
+    //endregion
+
+    //region NETWORK
 
     public void setNewPlayerState(PlayerModel playerModel) {
         this.position = playerModel.getPosition();
@@ -62,6 +171,42 @@ public class Player implements Serializable {
     public String toString() {
         return Integer.toString(getId());
     }
+
+
+    //endregion
+
+    //region CARD METHODS
+
+    public ProgramCard getCurrentCard() {
+        if (programCards.size() == 0)
+            return null;
+        return programCards.get(0);
+    }
+
+    public ProgramCard useCurrentCard() {
+        return programCards.remove(0);
+    }
+
+    public List<ProgramCard> getCards() {
+        return cards;
+    }
+
+    public int numLockedProgramCards() {
+        if (getNumDamageTokens() <= 9 && getNumDamageTokens() >= 5) {
+            return getNumDamageTokens() - 4;
+        }
+        return 0;
+    }
+
+    public void setProgramCardDone(){
+        programCardDone = true;
+    }
+
+    public void addProgramCard(ProgramCard card) {
+        programCards.add(card);
+    }
+
+    //endregion
 
     public boolean isAlive() {
         return isAlive;
@@ -156,64 +301,11 @@ public class Player implements Serializable {
         return nextCell;
     }
 
-    public void move() {
-        int xPos = (int) position.x;
-        int yPos = (int) position.y;
-        switch (this.direction) {
-            case UP:
-                setPosition(xPos, yPos + 1);
-                break;
-            case DOWN:
-                setPosition(xPos, yPos - 1);
-                break;
-            case LEFT:
-                setPosition(xPos - 1, yPos);
-                break;
-            case RIGHT:
-                setPosition(xPos + 1, yPos);
-                break;
-        }
-    }
-
-    public void backUp(){
-        int xPos = (int) position.x;
-        int yPos = (int) position.y;
-        switch (this.direction) {
-            case UP:
-                setPosition(xPos, yPos - 1);
-                break;
-            case DOWN:
-                setPosition(xPos, yPos + 1);
-                break;
-            case LEFT:
-                setPosition(xPos + 1, yPos);
-                break;
-            case RIGHT:
-                setPosition(xPos - 1, yPos);
-                break;
-        }
-
-    }
-
-    public void moveDirection(Direction dir){
-        int xPos = (int) position.x;
-        int yPos = (int) position.y;
-        switch (dir) {
-            case UP:
-                setPosition(xPos, yPos + 1);
-                break;
-            case DOWN:
-                setPosition(xPos, yPos - 1);
-                break;
-            case LEFT:
-                setPosition(xPos - 1, yPos);
-                break;
-            case RIGHT:
-                setPosition(xPos + 1, yPos);
-                break;
-        }
-    }
-
+    /**
+     * Update position
+     * @param x - xPos
+     * @param y - yPos
+     */
     public void setPosition(int x, int y) {
         position.x = x;
         position.y = y;
@@ -230,10 +322,17 @@ public class Player implements Serializable {
         return direction;
     }
 
+    /**
+     * Set new direction
+     * @param newDirection - new direction
+     */
     public void setDirection(Direction newDirection) {
         this.direction = newDirection;
     }
 
+    /**
+     * Mark checkpoint (flags)
+     */
     public void markPosAsCheckpoint(){
         checkPointPosition = this.getPosition();
     }
@@ -242,6 +341,9 @@ public class Player implements Serializable {
         return checkPointPosition;
     }
 
+    /**
+     * Reset player, change position and reset health status
+     */
     public void reset() {
         if(lifeTokens <= 0){
             isAlive = true;
@@ -249,63 +351,16 @@ public class Player implements Serializable {
         }
     }
 
-    public void rotate(Direction dir) {
-
-        if(dir == Direction.RIGHT){
-            if (direction == Direction.UP)
-                setDirection(Direction.RIGHT);
-            else if (direction == Direction.RIGHT)
-                setDirection(Direction.DOWN);
-            else if (direction == Direction.DOWN)
-                setDirection(Direction.LEFT);
-            else if (direction == Direction.LEFT)
-                setDirection(Direction.UP);
-        } else if (dir == Direction.LEFT){
-            if (direction == Direction.UP)
-                setDirection(Direction.LEFT);
-            else if (direction == Direction.RIGHT)
-                setDirection(Direction.UP);
-            else if (direction == Direction.DOWN)
-                setDirection(Direction.RIGHT);
-            else if (direction == Direction.LEFT)
-                setDirection(Direction.DOWN);
-        }
-    }
-
     public int getFlagScore() {
         return flagsTaken;
     }
 
+    /**
+     * Capture flag
+     */
     public void registerFlag() {
         flagsTaken++;
     }
 
-    public ProgramCard getCurrentCard() {
-        if (programCards.size() == 0)
-            return null;
-        return programCards.get(0);
-    }
 
-    public ProgramCard useCurrentCard() {
-        return programCards.remove(0);
-    }
-
-    public List<ProgramCard> getCards() {
-        return cards;
-    }
-
-    public int numLockedProgramCards() {
-        if (getNumDamageTokens() <= 9 && getNumDamageTokens() >= 5) {
-            return getNumDamageTokens() - 4;
-        }
-        return 0;
-    }
-
-    public void setProgramCardDone(){
-        programCardDone = true;
-    }
-
-    public void addProgramCard(ProgramCard card) {
-        programCards.add(card);
-    }
 }
