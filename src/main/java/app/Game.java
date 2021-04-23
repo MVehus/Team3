@@ -246,14 +246,17 @@ public class Game extends InputAdapter implements ApplicationListener {
         }
         else if (cardValue == Value.MOVE_ONE) {
             if (validMove(position, nextPosition)) {
+                playerLayer.setCell((int) position.x, (int) position.y, null);
+                render();
                 player.move();
                 updatePlayerState(player);
             }
         }
         else if (cardValue == Value.MOVE_TWO) {
             for (int step = 0; step < 2; step++) {
-                playerLayer.setCell((int) position.x, (int) position.y, null);
                 if (validMove(position, nextPosition)) {
+                    playerLayer.setCell((int) position.x, (int) position.y, null);
+                    render();
                     player.move();
                     updatePlayerState(player);
                     nextPosition = player.getNextCell(true);
@@ -266,8 +269,9 @@ public class Game extends InputAdapter implements ApplicationListener {
         }
         else if (cardValue == Value.MOVE_THREE){
             for (int step = 0; step < 3; step++){
-                playerLayer.setCell((int) position.x, (int) position.y, null);
                 if (validMove(position, nextPosition)) {
+                    playerLayer.setCell((int) position.x, (int) position.y, null);
+                    render();
                     player.move();
                     updatePlayerState(player);
                     nextPosition = player.getNextCell(true);
@@ -279,6 +283,8 @@ public class Game extends InputAdapter implements ApplicationListener {
         }
         else if (cardValue == Value.BACK_UP){
             if(validMove(position, player.getNextCell(false))){
+                playerLayer.setCell((int) position.x, (int) position.y, null);
+                render();
                 player.backUp();
                 updatePlayerState(player);
             }
@@ -386,16 +392,6 @@ public class Game extends InputAdapter implements ApplicationListener {
     }
     //endregion
 
-    @Override
-    public void render() {
-        Gdx.gl.glClearColor(1, 1, 1, 1);
-        Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
-        renderer.render();
-
-        for (Player p : players) {
-            playerLayer.setCell((int) p.getPosition().x, (int) p.getPosition().y, getPlayerTexture(p));
-        }
-    }
 
     private boolean validMove(Vector2 from, Vector2 to){
 
@@ -580,6 +576,17 @@ public class Game extends InputAdapter implements ApplicationListener {
     //endregion
 
     //region OVERRIDE
+
+    @Override
+    public void render() {
+        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClear(GL30.GL_COLOR_BUFFER_BIT);
+        renderer.render();
+
+        for (Player p : players) {
+            playerLayer.setCell((int) p.getPosition().x, (int) p.getPosition().y, getPlayerTexture(p));
+        }
+    }
 
     @Override
     public void dispose() {
