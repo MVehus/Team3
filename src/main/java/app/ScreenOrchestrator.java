@@ -1,7 +1,9 @@
 package app;
 
+import app.sound.MusicAssetManager;
 import app.views.*;
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class ScreenOrchestrator extends Game {
@@ -15,6 +17,8 @@ public class ScreenOrchestrator extends Game {
     private JoinGameScreen joinGameScreen;
     private CreateGameScreen createGameScreen;
     private AppPreferences preferences;
+    public MusicAssetManager assMan = new MusicAssetManager();
+    public Music playingSong;
 
     public final static int MENU = 0;
     public final static int PREFERENCES = 1;
@@ -30,7 +34,17 @@ public class ScreenOrchestrator extends Game {
         loadingScreen = new LoadingScreen(this);
         setScreen(loadingScreen);
         preferences = new AppPreferences();
+
+        // tells our asset manger that we want to load the images set in loadImages method
+        assMan.queueAddMusic();
+        // tells the asset manager to load the images and wait until finished loading.
+        assMan.manager.finishLoading();
+        // loads the 2 sounds we use
+        playingSong = assMan.manager.get("src/assets/music/Rolemusic_-_pl4y1ng.mp3");
+
+        playingSong.play();
     }
+
     public void changeScreen(int screen){
         switch(screen){
             case MENU:
@@ -78,4 +92,5 @@ public class ScreenOrchestrator extends Game {
     public AppPreferences getPreferences() {
         return this.preferences;
     }
+
 }
