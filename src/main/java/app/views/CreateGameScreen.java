@@ -64,7 +64,7 @@ public class CreateGameScreen extends AbstractScreen{
 
                 stage.addActor(createGameTable);
 
-                Network.makeNewClient("localhost", port);
+                Network.startClient("localhost", port);
             }
         });
 

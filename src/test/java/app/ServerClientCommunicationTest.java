@@ -15,7 +15,7 @@ public class ServerClientCommunicationTest {
     @BeforeEach
     void init(){
         Network.startServer(32401);
-        Network.makeNewClient("localhost", 32401);
+        Network.startClient("localhost", 32401);
     }
 
     @AfterEach

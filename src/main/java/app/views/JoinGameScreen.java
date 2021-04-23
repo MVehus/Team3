@@ -50,7 +50,7 @@ public class JoinGameScreen extends AbstractScreen{
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 joinGameTable.remove();
-                if (Network.makeNewClient(ipInput.getText(), Integer.parseInt(portInput.getText()))) {
+                if (Network.startClient(ipInput.getText(), Integer.parseInt(portInput.getText()))) {
                     connectedTable.add(connectedLabel);
                     connectedTable.row().padTop(10);
                     connectedTable.add(mainMenu);
